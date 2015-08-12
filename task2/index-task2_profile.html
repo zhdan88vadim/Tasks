@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="../bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
+
+<link rel="stylesheet" href="index-task2.css">
+
+</head>
+<body>
+	
+<div class="page-wrapper">	
+	<div class="header">
+		<a href="index-task2.html">index-task2.html</a>
+		&nbsp;
+		<a href="index-task2_profile.html">index-task2_profile.html</a>
+		&nbsp;
+		<a href="index-task2_loginForm.html">index-task2_loginForm.html</a>
+	</div>
+	<div class="main">
+		<div class="sidebar box">
+		</div>
+		<div class="content box">
+
+			<div id="profile-user-form" class="user-form">
+				<span class="title">User Profile</span>
+				<form action="">
+					<div class="form-group">
+						<label for="name">Name</label>
+						<input type="text" name="name" readonly>					
+					</div>
+
+					<div class="form-group">
+						<label for="email">Email</label>
+						<input type="text" name="email" readonly>
+					</div>
+
+					<div class="form-group">
+						<label for="phone">Phone</label>
+						<input type="text" name="phone" readonly>
+					</div>
+
+					<div class="form-group">
+						<label for="password">Password</label>
+						<input type="text" name="password" readonly>
+					</div>
+
+					<div class="clear"></div>
+				</form>
+			</div>
+
+		</div>
+		<div class="sidebar box">			
+		</div>
+	</div>
+	<div class="footer">footer (table-row)</div>
+</div>
+
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+<script src="../bower_components/knockout/dist/knockout.js"></script>
+
+<script src="index-task2.js"></script>
+
+<script>
+	var email = QueryString.email;
+	loadUserProfile(email);
+</script>
+
+</body>
+</html>

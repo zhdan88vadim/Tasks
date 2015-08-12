@@ -1,0 +1,98 @@
+html, body {
+		height: 100%;
+		margin:0;
+	 	padding:0;
+    	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    	font-size: 14px;
+	}
+	.clear {
+		clear: both;
+	}
+	.page-wrapper {
+		display:table;
+		height: 100%;
+		width: 100%;
+		/*text-align: center;*/
+	}
+	.box {
+		display: table-cell;
+	}
+	.header {
+		height: 40px;
+		line-height: 40px;
+		background: #ffd34e;
+	}
+	.main {
+		display: table;
+		height: 100%;
+		width: 100%;
+	}	
+	.content {
+		background: #EAEAEA;
+		width:60%;
+		/*vertical-align: middle;*/
+	}
+	.sidebar {
+		background:#F9C9A8;
+		width:20%;
+		vertical-align: middle;
+		text-align: center;
+	}
+	.footer {
+	   height: 40px;
+	   line-height: 40px;
+	   background: #AA3939;	 
+	}
+	.header, .footer {
+	   display: table-row;
+	   text-align: center;
+	}
+	
+
+	/* User Form */
+
+	.form-group {
+		margin-bottom: 15px;
+	}
+	.right {
+		float: right;
+	}
+	.user-form {
+		width: 60%;
+		
+		margin: 0 auto;
+		margin-top: 60px;
+		padding: 24px 6px 0px;
+
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		background: #FFF;
+	}
+	.user-form form {
+		padding: 18px 6px 12px;
+	}
+	.user-form input {
+		width: 100%;
+		display: block;
+
+		padding: 6px 0; 	/*padding: 6px 12px;*/
+		margin-bottom: 5px;
+		
+		border: 1px solid #ccc;
+		border-radius: 4px;
+	}
+	.user-form .title {
+		padding-left: 6px;
+		color: #959595;
+		text-transform: uppercase;
+	}
+	.user-form label {
+		font-weight: bold;
+		color: #333;
+
+	    margin-bottom: 5px;
+	    display: inline-block;
+	}
+	.user-form button {
+
+	}

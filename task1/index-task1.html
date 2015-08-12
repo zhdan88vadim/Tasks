@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="../bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
+
+<style>
+	html, body {
+	   height: 100%;
+	   margin:0;
+	   padding:0;
+	}
+	.page-wrapper {
+		display:table;
+		height: 100%;
+		width: 100%;
+		text-align: center;
+	}
+	.box {
+		display: table-cell;
+	}
+	.header {
+		height: 40px;
+		line-height: 40px;
+		background: #ffd34e;
+	}
+	.main {
+		display: table;
+		height: 100%;
+	}	
+	.content {
+		background: #D8D8D8;
+		width:60%;
+		vertical-align: middle;
+	}
+	.sidebar {
+		background:#F6B0B0;
+		width:20%;
+		vertical-align: middle;
+	}
+	.footer {
+	   height: 40px;
+	   line-height: 40px;
+	   background: #AA3939;	 
+	}
+	.header, .footer {
+	   display: table-row;	
+	}
+</style>
+
+</head>
+<body>
+	
+<div class="page-wrapper">	
+	<div class="header">header (table-row)</div>
+	<div class="main">
+		<div class="sidebar box">
+			sidebar-left (table-cell)
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet tempore dolores maxime doloribus pariatur asperiores quasi, in voluptas odit illum, quo sequi nemo voluptate? Minima, numquam sapiente id delectus atque.
+		</div>
+		<div class="content box">main (table-cell)</div>
+		<div class="sidebar box">
+			sidebar-right short text (table-cell)						
+		</div>
+	</div>
+	<div class="footer">footer (table-row)</div>
+</div>
+
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+<script src="../bower_components/knockout/dist/knockout.js"></script>
+
+</body>
+</html>
