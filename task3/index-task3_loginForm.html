@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="../bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
+
+	<link rel="stylesheet" href="index-task3.css">
+
+</head>
+<body>
+	
+<div class="page-wrapper">	
+	<div class="header">
+		<a href="index-task3.html">index-task3.html</a>
+		&nbsp;
+		<a href="index-task3_profile.html">index-task3_profile.html</a>
+		&nbsp;
+		<a href="index-task3_loginForm.html">index-task3_loginForm.html</a>
+		&nbsp;
+		<a id="login-link" href="#" class="login-link">Login Link</a>
+	</div>
+	<div class="main">
+		<div class="sidebar box"></div>
+		<div class="content box">
+			<div id="login-user-form" class="user-form">
+				<span class="title">Login Form</span>
+				<form action="">
+					<div class="form-group">
+						<label for="email">Email</label>
+						<input type="text" name="email">
+					</div>
+				
+					<div class="form-group">
+						<label for="password">Password</label>
+						<input type="text" name="password">					
+					</div>
+
+					<button id="btn-sign-in" class="ui-button right">Sign In</button>
+					<div class="clear"></div>
+				</form>
+			</div>
+		</div>
+		<div class="sidebar box"></div>
+	</div>
+	<div class="footer">footer (table-row)</div>
+</div>
+
+<div id="login-dialog-form" title="Login Form">
+  <p class="validateTips">All form fields are required.</p>
+ 
+  <form>
+    <fieldset>
+      <label for="email">Email</label>
+      <input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all">
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all">
+
+    </fieldset>
+  </form>
+</div>
+
+
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+<script src="../bower_components/knockout/dist/knockout.js"></script>
+
+<script src="index-task3.js"></script>
+
+</body>
+</html>

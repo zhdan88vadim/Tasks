@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="../bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
+
+	<link rel="stylesheet" href="index-task3.css">
+
+</head>
+<body>
+	
+<div class="page-wrapper">	
+	<div class="header">
+		<a href="index-task3.html">index-task3.html</a>
+		&nbsp;
+		<a href="index-task3_profile.html">index-task3_profile.html</a>
+		&nbsp;
+		<a href="index-task3_loginForm.html">index-task3_loginForm.html</a>
+	</div>
+	<div class="main">
+		
+		<div class="sidebar box"></div>
+		<div class="content box">
+			<div id="user-list" class="user-form user-list">
+				<span class="title">Existing Users</span>
+				<form action="">
+							
+				<table class="ui-widget ui-widget-content">
+						<thead>
+							<tr class="ui-widget-header">
+								<th>Name</th>
+								<th>Email</th>
+								<th>Phone</th>
+								<th>Password</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+
+					<button id="btn-update-userlist" class="ui-button right">Update</button>
+					<div class="clear"></div>
+
+				</form>
+			</div>
+		</div>
+		<div class="sidebar box"></div>
+	</div>
+	<div class="footer">footer (table-row)</div>
+</div>
+
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+<script src="../bower_components/knockout/dist/knockout.js"></script>
+
+<script src="index-task3.js"></script>
+
+<script>
+	loadUserList();
+</script>
+
+</body>
+</html>

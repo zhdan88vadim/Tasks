@@ -1,0 +1,21 @@
+{
+  "name": "task 1",
+  "version": "0.0.0",
+  "authors": [
+    "Zhdan Vadim"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "jquery-ui": "~1.11.4",
+    "knockout": "~3.3.0",
+    "bootstrap": "~3.3.5"
+  }
+}
