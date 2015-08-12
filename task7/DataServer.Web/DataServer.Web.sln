@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Web
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataServer.Web", "DataServer.Web\DataServer.Web.csproj", "{22CC1C22-816E-41DF-9D9D-5CEA1C903DD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataServer.DatabaseAccess", "DataServer.DatabaseAccess\DataServer.DatabaseAccess.csproj", "{65944460-F763-4F25-A86F-77C210AB2752}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{22CC1C22-816E-41DF-9D9D-5CEA1C903DD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22CC1C22-816E-41DF-9D9D-5CEA1C903DD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22CC1C22-816E-41DF-9D9D-5CEA1C903DD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22CC1C22-816E-41DF-9D9D-5CEA1C903DD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65944460-F763-4F25-A86F-77C210AB2752}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65944460-F763-4F25-A86F-77C210AB2752}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65944460-F763-4F25-A86F-77C210AB2752}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65944460-F763-4F25-A86F-77C210AB2752}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

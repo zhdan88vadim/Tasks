@@ -1,1 +1,5 @@
 /bower_components
+/task7/DataServer.Web/DataServer.Web/bin
+/task7/DataServer.Web/DataServer.Web/obj
+/task7/DataServer.Web/DataServer.DatabaseAccess/bin
+/task7/DataServer.Web/DataServer.DatabaseAccess/obj
