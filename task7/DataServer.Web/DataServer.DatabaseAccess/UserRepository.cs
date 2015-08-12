@@ -31,9 +31,10 @@ namespace DataServer.DatabaseAccess
             if (item != null)
             {
                 item.Name = user.Name;
-                item.Login = user.Login;
+                item.Email = user.Email;
                 item.Phone = user.Phone;
                 item.Password = user.Password;
+                DataServerDb.SaveChanges();
 
                 return true;
             }

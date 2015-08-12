@@ -63,6 +63,7 @@
 			<table class="users table">
 			    <thead>
 			    	<tr>
+                        <th>ID</th>
 			    		<th>Name</th>
 			    		<th>Email</th>
 			    		<th>Phone</th>
@@ -71,6 +72,7 @@
 			    </thead>
 			    <tbody data-bind="foreach: usersList">
 			        <tr>
+                        <td data-bind="text: id"></td>
 			            <td data-bind="text: name"></td>
 			            <td data-bind="text: email"></td>
 			            <td data-bind="text: phone"></td>
@@ -94,10 +96,13 @@
       <input type="text" name="name" data-bind="value: user().name" class="text ui-widget-content ui-corner-all">
 
       <label for="email">Email</label>
-      <input type="text" name="email" data-bind="value: user().email" class="text ui-widget-content ui-corner-all" readonly>
+      <input type="text" name="email" data-bind="value: user().email" class="text ui-widget-content ui-corner-all">
      
       <label for="password">Password</label>
       <input type="text" name="password" data-bind="value: user().password" class="text ui-widget-content ui-corner-all">
+   
+      <input id="fileUpload" type="file" /><br>
+      <div id="image-holder"></div>
     </fieldset>
   </form>
 </div>
@@ -134,7 +139,7 @@
 
 @*<script src="index-task6.js"></script>*@
 
-<script src="~/App/index-task6.js"></script>
+<script src="~/App/main.js"></script>
 
 </body>
 </html>

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DataServerModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DataServerModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="DataServerModelStoreContainer">
           <EntitySet Name="Users" EntityType="DataServerModel.Store.Users" store:Type="Tables" Schema="dbo" />
         </EntityContainer>
@@ -14,13 +14,12 @@
           </Key>
           <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="250" />
-          <Property Name="Login" Type="nvarchar" Nullable="false" MaxLength="250" />
           <Property Name="Phone" Type="nvarchar" Nullable="false" MaxLength="250" />
           <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="250" />
+          <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="250" />
           <Property Name="Image" Type="nvarchar" MaxLength="250" />
         </EntityType>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DataServerModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -31,12 +30,12 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" Unicode="true" FixedLength="false" />
-          <Property Name="Login" Type="String" Nullable="false" MaxLength="250" Unicode="true" FixedLength="false" />
-          <Property Name="Phone" Type="String" Nullable="false" MaxLength="250" Unicode="true" FixedLength="false" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="250" Unicode="true" FixedLength="false" />
-          <Property Name="Image" Type="String" MaxLength="250" Unicode="true" FixedLength="false" />
+          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Image" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -47,12 +46,12 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="DataServerModel.User">
               <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Login" ColumnName="Login" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

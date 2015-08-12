@@ -26,7 +26,8 @@ Types.User = User;
 
 /* User */
 
-function User(name, email, phone, password){
+function User(id, name, email, phone, password) {
+    this.id = id;
 	this.name = name;
 	this.email = email;
 	this.phone = phone;
@@ -34,7 +35,7 @@ function User(name, email, phone, password){
 }
 /* Static functions. */
 User.revive = function(data){
-	return new User(data.name, data.email, data.phone, data.password);
+    return new User(data.id, data.name, data.email, data.phone, data.password);
 };
 /* Dynamic functions. */
 User.prototype = {
@@ -44,15 +45,17 @@ User.prototype = {
 	},
 	toJSON: function() {
 		return {
-			"__type": "User",
+		    "__type": "User",
+		    "id": this.id,
 			"name": this.name,
 			"email": this.email,
 			"phone": this.phone,
 			"password": this.password
-		}
+        }
 	},
 	toTableRow: function(){
-		return "<tr><td>" + this.name 
+	    return "<tr><td>" + this.name
+        + "</td><td>" + this.id
 		+ "</td><td>" + this.email 
 		+ "</td><td>" + this.phone 
 		+ "</td><td>" + this.password + "</td></tr>";
@@ -67,8 +70,8 @@ function UserManager(userService) {
 }
 UserManager.prototype = {
 	constructor: UserManager,
-	loadUserByEmail: function(email) {
-		var user = this.userService.loadUserByEmail(email);		
+	loadUserById: function (id, callback) {
+	    var user = this.userService.loadUserById(id, callback);
 		return user;	
 	},
 	checkUser: function(email, password) {
@@ -88,67 +91,60 @@ UserManager.prototype = {
 	deleteUser: function(email) {
 		this.userService.deleteUser(email);	
 	},
-	getUserList: function() {
-		return this.userService.getUserList();
+	getUserList: function (callback) {
+	    return this.userService.getUserList(callback);
 	}
 }
 
 
-/* UserService */
+/* UserServerService */
 
-function UserService() {
+function UserServerService() {
 
 }
-UserService.prototype = {
-	constructor: UserService,
-	loadUserByEmail: function(email) {
-		var userJSONString = localStorage.getItem(email);
-		if(userJSONString === null) return null;
-		return JSON.parse(userJSONString, function(key, value) {
-			return key === '' && value.hasOwnProperty('__type')
-			? Types[value.__type].revive(value) : this[key];
-		});	
-	},
-	saveUser: function(user) {
-		if(!(user.name && user.email && user.password && user.phone)) {
-			throw Error("All fields must be filled!");
-		}
-		if(this.__isExistUser(user.email)) {
-			throw Error("Error saving data! User with this email already exists!");
-		}
-		localStorage.setItem(user.email, JSON.stringify(user));
-		return true;
-	},
-	updateUser: function(user) {
-		if(!this.__isExistUser(user.email)) {
-			throw Error("Error saving data! User not found!");
-		}
-		localStorage.setItem(user.email, JSON.stringify(user));
-	},
-	deleteUser: function(email) {
-		/* Always return undefined. */
-		localStorage.removeItem(email);	
-	},
-	checkUser: function(email, password) {
-		if(!(email && password)) return false;
-		var user = this.loadUserByEmail(email);
-		if (user == null) return false;
-		return (user.password === password);
-	},
-	__isExistUser: function(email) {
-		return (this.loadUserByEmail(email) != null)
-	},
-	getUserList: function() {
-		var userArray = [];
-		for (var key in localStorage){
-			var user = this.loadUserByEmail(key);
-			userArray.push(user);
-		}
-		return userArray;
-	}
+UserServerService.prototype = {
+    constructor: UserServerService,
+    loadUserById: function (id, callback) {
+        $.getJSON("/api/user/" + id + "?time=" + Date.now(), function (item) {
+            var user = new User(item.ID, item.Name, item.Email, item.Phone, item.Password);
+            callback(user);
+        });
+    },
+    saveUser: function (user) {
+        if (!(user.name && user.email && user.password && user.phone)) {
+            throw Error("All fields must be filled!");
+        }
+        $.ajax("/api/user/" + user.id, {
+            data: JSON.stringify(user),
+            type: "POST", contentType: "application/json",
+            success: function (result) { alert(result) }
+        });
+        return true;
+    },
+    updateUser: function (user) {
+        if (!(user.name && user.email && user.password && user.phone)) {
+            throw Error("All fields must be filled!");
+        }
+        $.ajax("/api/user/" + user.id, {
+            data: JSON.stringify(user),
+            type: "POST", contentType: "application/json",
+            success: function (result) {}
+        });
+        return true;
+    },
+    deleteUser: function (email) {
+        /* Always return undefined. */
+        localStorage.removeItem(email);
+    },
+    getUserList: function (callback) {
+        $.getJSON("/api/user" + "?time=" + Date.now(), function (allData) {
+            var mappedUser = $.map(allData, function (item) { return new User(item.ID, item.Name, item.Email, item.Phone, item.Password) });
+            callback(mappedUser);
+        });
+    }
 }
 
-var userManager = new UserManager(new UserService());
+var userManager = new UserManager(new UserServerService());
 
 
 /* For testing */
@@ -220,12 +216,39 @@ function initDeleteDialog(deleteFunction){
     return dialog;
 }
 
+function initUploadComponent() {
+    $("#fileUpload").off('change').change(function () {
+        var countFiles = $(this)[0].files.length;
+        if (countFiles == 0) return false;
+
+        if (typeof (FileReader) != "undefined") {
+
+            var image_holder = $("#image-holder");
+            image_holder.empty();
+
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("<img />", {
+                    "src": e.target.result,
+                    "class": "thumb-image"
+                }).appendTo(image_holder);
+
+            }
+            image_holder.show();
+            reader.readAsDataURL($(this)[0].files[0]);
+        } else {
+            alert("This browser does not support FileReader.");
+        }
+    });
+}
+
 function UserViewModel() {
 	
 	function loadUsersFromStorage() {
 		/* Fill data from Local Storage. */
-		var users = userManager.getUserList();
-		self.usersList(users);
+	    var users = userManager.getUserList(function (items) {
+	        self.usersList(items);
+	    });
 	}
 
 	var viewDialog = initViewDialog();
@@ -233,22 +256,23 @@ function UserViewModel() {
 		self.updateUser(); 
 	});
 
-
 	var self = this;
 	self.usersList = ko.observableArray();
 	self.user = ko.observable();
 
 	loadUsersFromStorage();
-	
-	self.editUser = function(user) {
+
+	self.editUser = function (user) {
 		console.log(user);
 		self.user(user);
 		editDialog.dialog("open");
+		initUploadComponent();
 	};
 	self.viewUser = function(user) {
 		console.log(user);
 		self.user(user);
 		viewDialog.dialog("open");
+		initUploadComponent();
 	};
 	self.updateUser = function() {
 		var user = self.user();
@@ -275,4 +299,5 @@ function UserViewModel() {
 	};
 }
 
-ko.applyBindings(new UserViewModel());
+var viewModel = new UserViewModel();
+ko.applyBindings(viewModel);

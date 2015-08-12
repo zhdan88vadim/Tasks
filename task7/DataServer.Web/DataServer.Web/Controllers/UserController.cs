@@ -8,38 +8,41 @@ using System.Web.Http;
 
 namespace DataServer.Web.Controllers
 {
-    public class UserApiController : ApiController
+    public class UserController : ApiController
     {
 
         UserRepository userRepository = new UserRepository();
 
         // GET api/userapi
-        public IEnumerable<string> Get()
+        public IEnumerable<User> Get()
         {
-            data.Users.
-
-            return new string[] { "value1", "value2" };
+            return userRepository.GetAll().ToArray();
+            
+            //return new string[] { "value1", "value2" };
         }
 
         // GET api/userapi/5
-        public string Get(int id)
+        public User Get(int id)
         {
-            return "value";
+            return userRepository.Get(id);
         }
 
         // POST api/userapi
-        public void Post([FromBody]string value)
+        public bool Post([FromBody]User value)
         {
+            return userRepository.Update(value);
         }
 
         // PUT api/userapi/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]User value)
         {
+            userRepository.Add(value);
         }
 
         // DELETE api/userapi/5
         public void Delete(int id)
         {
+            userRepository.Delete(id);
         }
     }
 }
