@@ -88,8 +88,8 @@ UserManager.prototype = {
 			return error.message;
 		}
 	},
-	updateUser: function(user) {
-		this.userService.updateUser(user);
+	updateUser: function (user, callback) {
+	    this.userService.updateUser(user, callback);
 	},
 	deleteUser: function (user, callback) {
 	    this.userService.deleteUser(user, callback);
@@ -120,11 +120,14 @@ UserServerService.prototype = {
         $.ajax("/api/user/" + user.id, {
             data: JSON.stringify(user),
             type: "POST", contentType: "application/json",
-            success: function (result) { alert(result) }
+            success: function (result) { alert(result) },
+            error: function () {
+                alert("Error!");
+            }
         });
         return true;
     },
-    updateUser: function (user) {
+    updateUser: function (user, callback) {
         if (!(user.name && user.email && user.password && user.phone)) {
             throw Error("All fields must be filled!");
         }
@@ -145,7 +148,10 @@ UserServerService.prototype = {
             processData: false,
             cache: false,
             contentType: false,
-            success: function (result) {}
+            success: function (result) { callback(); },
+            error: function () {
+                alert("Error!");
+            }
         });
         return true;
     },
@@ -155,14 +161,17 @@ UserServerService.prototype = {
             processData: false,
             cache: false,
             contentType: false,
-            success: function (result) { callback(); }
+            success: function (result) { callback(); },
+            error: function () {
+                alert("Error!");
+            }
         });
     },
     getUserList: function (callback) {
         $.getJSON("/api/user" + "?time=" + Date.now(), function (allData) {
             var mappedUser = $.map(allData, function (item) { return new User(item.ID, item.Name, item.Email, item.Phone, item.Password, item.Image) });
             callback(mappedUser);
-        });
+        }).fail(function (jqXHR, textStatus, errorThrown) { alert("Error!"); });
     }
 }
 
@@ -183,7 +192,7 @@ function fillTestData(){
 function initEditDialog(editFunction) {
 	var dialog = $("#edit-user-dialog").dialog({
 		autoOpen: false,
-		height: 550,
+		height: 680,
 		width: 400,
 		modal: true,
 		buttons: {
@@ -239,6 +248,13 @@ function initDeleteDialog(deleteFunction){
 }
 
 function initUploadComponent(target) {
+
+    cleanImageHolder();
+
+    function cleanImageHolder() {
+        $(".image-holder").empty();
+    }
+
     $("#fileUpload").off('change').change(function () {
         var countFiles = $(this)[0].files.length;
         if (countFiles == 0) return false;
@@ -297,9 +313,10 @@ function UserViewModel() {
 	};
 	self.updateUser = function() {
 		var user = self.user();
-		userManager.updateUser(user);
-		loadUsersFromStorage();
-		self.user(null);
+		userManager.updateUser(user, function () {
+		    loadUsersFromStorage();
+		    self.user(null);
+		});
 	};
 	self.deleteUser = function(user) {
 		console.log(user);
