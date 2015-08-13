@@ -125,9 +125,21 @@ UserServerService.prototype = {
         if (!(user.name && user.email && user.password && user.phone)) {
             throw Error("All fields must be filled!");
         }
+        var data = new FormData();
+        var files = $("#fileUpload").get(0).files;
+        if (files.length > 0) {
+            data.append("uploadFile", files[0]);
+        }
+        data.append("Name", "user name");
+
         $.ajax("/api/user/" + user.id, {
-            data: JSON.stringify(user),
-            type: "POST", contentType: "application/json",
+            //data: JSON.stringify(user),
+            data: data,
+            type: "POST",
+            processData: false,
+            cache: false,
+            //contentType: "application/json",
+            contentType: false,
             success: function (result) {}
         });
         return true;
