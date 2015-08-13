@@ -328,11 +328,12 @@ function UserViewModel() {
 		deleteDialog.dialog("open");
 	};
 
-	self.themes = [{"name": "default", "url": "default.css"},
-	 {"name": "dark", "url": "dark.css"},
-	 {"name": "light", "url": "light.css"}];
+	self.themes = [
+     { "name": "orange", "url": "Content/themes_task/orange.css" },
+	 { "name": "dark", "url": "Content/themes_task/dark.css" },
+	 { "name": "light", "url": "Content/themes_task/light.css" }];
 
-	self.chosenTheme = ko.observable(self.themes[0]);
+	self.chosenTheme = ko.observable(self.themes[2]);
 	self.selectTheme = function(theme){
 		self.chosenTheme(theme);
 	};
