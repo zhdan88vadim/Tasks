@@ -44,7 +44,8 @@
 	    table.users td {
             vertical-align: middle !important;
         }
-	    .image-holder img {
+	    .view-image-holder img, 
+        .image-holder img {
             height: 150px;
         }
 	</style>
@@ -143,7 +144,7 @@
       <label for="password">Password</label>
       <input type="text" name="password" data-bind="value: user().password" class="text ui-widget-content ui-corner-all" readonly>
 
-      <div class="image-holder">
+      <div class="view-image-holder">
             <img data-bind="attr: { src: user().image }" src="#" alt="User Photo"/>
       </div>
     </fieldset>
