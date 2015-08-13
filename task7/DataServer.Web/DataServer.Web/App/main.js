@@ -26,16 +26,17 @@ Types.User = User;
 
 /* User */
 
-function User(id, name, email, phone, password) {
+function User(id, name, email, phone, password, image) {
     this.id = id;
 	this.name = name;
 	this.email = email;
 	this.phone = phone;
 	this.password = password;
+	this.image = image;
 }
 /* Static functions. */
 User.revive = function(data){
-    return new User(data.id, data.name, data.email, data.phone, data.password);
+    return new User(data.id, data.name, data.email, data.phone, data.password, data.image);
 };
 /* Dynamic functions. */
 User.prototype = {
@@ -50,7 +51,8 @@ User.prototype = {
 			"name": this.name,
 			"email": this.email,
 			"phone": this.phone,
-			"password": this.password
+			"password": this.password,
+            "image": this.image
         }
 	},
 	toTableRow: function(){
@@ -58,7 +60,8 @@ User.prototype = {
         + "</td><td>" + this.id
 		+ "</td><td>" + this.email 
 		+ "</td><td>" + this.phone 
-		+ "</td><td>" + this.password + "</td></tr>";
+		+ "</td><td>" + this.password
+		+ "</td><td>" + this.image + "</td></tr>";
 	}
 }
 
@@ -88,8 +91,8 @@ UserManager.prototype = {
 	updateUser: function(user) {
 		this.userService.updateUser(user);
 	},
-	deleteUser: function(email) {
-		this.userService.deleteUser(email);	
+	deleteUser: function (user, callback) {
+	    this.userService.deleteUser(user, callback);
 	},
 	getUserList: function (callback) {
 	    return this.userService.getUserList(callback);
@@ -106,7 +109,7 @@ UserServerService.prototype = {
     constructor: UserServerService,
     loadUserById: function (id, callback) {
         $.getJSON("/api/user/" + id + "?time=" + Date.now(), function (item) {
-            var user = new User(item.ID, item.Name, item.Email, item.Phone, item.Password);
+            var user = new User(item.ID, item.Name, item.Email, item.Phone, item.Password, item.Image);
             callback(user);
         });
     },
@@ -130,27 +133,34 @@ UserServerService.prototype = {
         if (files.length > 0) {
             data.append("uploadFile", files[0]);
         }
-        data.append("Name", "user name");
+        data.append("ID", user.id);
+        data.append("Name", user.name);
+        data.append("Email", user.email);
+        data.append("Phone", user.phone);
+        data.append("Password", user.password);
 
         $.ajax("/api/user/" + user.id, {
-            //data: JSON.stringify(user),
             data: data,
             type: "POST",
             processData: false,
             cache: false,
-            //contentType: "application/json",
             contentType: false,
             success: function (result) {}
         });
         return true;
     },
-    deleteUser: function (email) {
-        /* Always return undefined. */
-        localStorage.removeItem(email);
+    deleteUser: function (user, callback) {
+        $.ajax("/api/user/" + user.id, {
+            type: "DELETE",
+            processData: false,
+            cache: false,
+            contentType: false,
+            success: function (result) { callback(); }
+        });
     },
     getUserList: function (callback) {
         $.getJSON("/api/user" + "?time=" + Date.now(), function (allData) {
-            var mappedUser = $.map(allData, function (item) { return new User(item.ID, item.Name, item.Email, item.Phone, item.Password) });
+            var mappedUser = $.map(allData, function (item) { return new User(item.ID, item.Name, item.Email, item.Phone, item.Password, item.Image) });
             callback(mappedUser);
         });
     }
@@ -173,8 +183,8 @@ function fillTestData(){
 function initEditDialog(editFunction) {
 	var dialog = $("#edit-user-dialog").dialog({
 		autoOpen: false,
-		height: 400,
-		width: 350,
+		height: 550,
+		width: 400,
 		modal: true,
 		buttons: {
 			"Save": function(){ 
@@ -196,8 +206,8 @@ function initEditDialog(editFunction) {
 function initViewDialog() {
 	var dialog = $("#view-user-dialog").dialog({
 		autoOpen: false,
-		height: 400,
-		width: 350,
+		height: 620,
+		width: 400,
 		modal: true,
 		buttons: {
 			Cancel: function(){
@@ -213,7 +223,7 @@ function initViewDialog() {
 function initDeleteDialog(deleteFunction){
 	var dialog = $("#delete-user-dialog").dialog({
 		resizable: false,
-		height:200,
+		height:250,
 		modal: true,
 		buttons: {
 		"Delete user": function() {
@@ -228,23 +238,23 @@ function initDeleteDialog(deleteFunction){
     return dialog;
 }
 
-function initUploadComponent() {
+function initUploadComponent(target) {
     $("#fileUpload").off('change').change(function () {
         var countFiles = $(this)[0].files.length;
         if (countFiles == 0) return false;
 
         if (typeof (FileReader) != "undefined") {
 
-            var image_holder = $("#image-holder");
+            var image_holder = target.find(".image-holder");
             image_holder.empty();
 
             var reader = new FileReader();
             reader.onload = function (e) {
+
                 $("<img />", {
                     "src": e.target.result,
                     "class": "thumb-image"
                 }).appendTo(image_holder);
-
             }
             image_holder.show();
             reader.readAsDataURL($(this)[0].files[0]);
@@ -257,7 +267,7 @@ function initUploadComponent() {
 function UserViewModel() {
 	
 	function loadUsersFromStorage() {
-		/* Fill data from Local Storage. */
+		/* Fill data from Storage. */
 	    var users = userManager.getUserList(function (items) {
 	        self.usersList(items);
 	    });
@@ -278,13 +288,12 @@ function UserViewModel() {
 		console.log(user);
 		self.user(user);
 		editDialog.dialog("open");
-		initUploadComponent();
+		initUploadComponent($('#edit-user-dialog'));
 	};
 	self.viewUser = function(user) {
 		console.log(user);
 		self.user(user);
 		viewDialog.dialog("open");
-		initUploadComponent();
 	};
 	self.updateUser = function() {
 		var user = self.user();
@@ -295,8 +304,9 @@ function UserViewModel() {
 	self.deleteUser = function(user) {
 		console.log(user);
 		var deleteDialog = initDeleteDialog(function(){
-			userManager.deleteUser(user.email);
-			self.usersList.remove(user);
+		    userManager.deleteUser(user, function () {
+		        self.usersList.remove(user);
+		    });
 		});
 		deleteDialog.dialog("open");
 	};

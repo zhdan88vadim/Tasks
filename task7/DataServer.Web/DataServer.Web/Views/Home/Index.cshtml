@@ -10,9 +10,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Document</title>
 
-@*	<link rel="stylesheet" href="../bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
-	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">*@
-
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/themes/smoothness/jquery-ui.css" rel="stylesheet" />
 
@@ -37,7 +34,19 @@
 		}
 		.user-dialog {
 			display: none;
-		}		
+		}
+	    .user-photo {
+	        height: 60px;
+	    }
+	    table.users {
+	        margin-top: 45px;
+        }
+	    table.users td {
+            vertical-align: middle !important;
+        }
+	    .image-holder img {
+            height: 150px;
+        }
 	</style>
 
 </head>
@@ -63,20 +72,29 @@
 			<table class="users table">
 			    <thead>
 			    	<tr>
+                        <th>User Photo</th>
                         <th>ID</th>
 			    		<th>Name</th>
 			    		<th>Email</th>
 			    		<th>Phone</th>
 			    		<th>Password</th>
+               @*         <th>Image</th>*@
+                        <th></th>
+                        <th></th>
+                        <th></th>
 			    	</tr>
 			    </thead>
 			    <tbody data-bind="foreach: usersList">
 			        <tr>
+                        <td>
+                            <img data-bind="attr: {src: image}" src="#" alt="User Photo" class="user-photo"/>
+                        </td>
                         <td data-bind="text: id"></td>
 			            <td data-bind="text: name"></td>
 			            <td data-bind="text: email"></td>
 			            <td data-bind="text: phone"></td>
 			            <td data-bind="text: password"></td>
+                  @*      <td data-bind="text: image"></td>*@
 			            <td><button data-bind="click: $root.editUser" class="btn btn-default" type="submit">Edit</button></td>
 			        	<td><button data-bind="click: $root.viewUser" class="btn btn-default" type="submit">View</button></td>
 						<td><button data-bind="click: $root.deleteUser" class="btn btn-default" type="submit">Delete</button></td>
@@ -98,11 +116,14 @@
       <label for="email">Email</label>
       <input type="text" name="email" data-bind="value: user().email" class="text ui-widget-content ui-corner-all">
      
+      <label for="phone">Phone</label>
+      <input type="text" name="phone" data-bind="value: user().phone" class="text ui-widget-content ui-corner-all">
+
       <label for="password">Password</label>
       <input type="text" name="password" data-bind="value: user().password" class="text ui-widget-content ui-corner-all">
-   
+                  
       <input id="fileUpload" type="file" /><br>
-      <div id="image-holder"></div>
+      <div class="image-holder"></div>
     </fieldset>
   </form>
 </div>
@@ -115,9 +136,16 @@
 
       <label for="email">Email</label>
       <input type="text" name="email" data-bind="value: user().email" class="text ui-widget-content ui-corner-all" readonly>
-     
+
+      <label for="phone">Phone</label>
+      <input type="text" name="phone" data-bind="value: user().phone" class="text ui-widget-content ui-corner-all" readonly>
+        
       <label for="password">Password</label>
       <input type="text" name="password" data-bind="value: user().password" class="text ui-widget-content ui-corner-all" readonly>
+
+      <div class="image-holder">
+            <img data-bind="attr: { src: user().image }" src="#" alt="User Photo"/>
+      </div>
     </fieldset>
   </form>
 </div>
@@ -127,17 +155,10 @@
   	Are you sure you want to delete a user?</p>
 </div>
 
-@*<script src="../bower_components/jquery/dist/jquery.min.js"></script>
-<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
-<script src="../bower_components/knockout/dist/knockout.js"></script>
-<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>*@
-
 <script src="~/Scripts/jquery-2.1.4.js"></script>
 <script src="~/Scripts/jquery-ui-1.11.4.js"></script>
 <script src="~/Scripts/knockout-3.3.0.debug.js"></script>
 <script src="~/Scripts/bootstrap.js"></script>
-
-@*<script src="index-task6.js"></script>*@
 
 <script src="~/App/main.js"></script>
 

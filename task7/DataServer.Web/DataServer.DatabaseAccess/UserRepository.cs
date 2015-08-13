@@ -8,34 +8,37 @@ namespace DataServer.DatabaseAccess
 {
     public class UserRepository
     {
-        private static DataServerEntities _dataServerDb;
-        private static DataServerEntities DataServerDb
+        private readonly DataServerEntities _dbContext;
+
+        public UserRepository(DataServerEntities context)
         {
-            get { return _dataServerDb ?? (_dataServerDb = new DataServerEntities()); }
+            _dbContext = context;
         }
 
         public IEnumerable<User> GetAll()
         {
-            var query = DataServerDb.Users;
+            var query = _dbContext.Users;
             return query.ToList();
         }
 
         public User Get(int id)
         {
-            return DataServerDb.Users.FirstOrDefault(x => x.ID == id);
+            return _dbContext.Users.FirstOrDefault(x => x.ID == id);
         }
 
         public bool Update(User user)
         {
-            var item = DataServerDb.Users.FirstOrDefault(x => x.ID == user.ID);
+            var item = _dbContext.Users.FirstOrDefault(x => x.ID == user.ID);
             if (item != null)
             {
                 item.Name = user.Name;
                 item.Email = user.Email;
                 item.Phone = user.Phone;
                 item.Password = user.Password;
-                DataServerDb.SaveChanges();
+                item.Image = string.IsNullOrWhiteSpace(user.Image) ? item.Image : user.Image;
 
+                _dbContext.SaveChanges();
+                
                 return true;
             }
             return false;
@@ -43,17 +46,17 @@ namespace DataServer.DatabaseAccess
 
         public void Add(User user)
         {
-            DataServerDb.Users.Add(user);
-            DataServerDb.SaveChanges();
+            _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            var item = DataServerDb.Users.FirstOrDefault(x => x.ID == id);
+            var item = _dbContext.Users.FirstOrDefault(x => x.ID == id);
             if (item != null)
             {
-                DataServerDb.Users.Remove(item);
-                DataServerDb.SaveChanges();
+                _dbContext.Users.Remove(item);
+                _dbContext.SaveChanges();
             }
         }
 
