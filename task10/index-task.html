@@ -36,54 +36,53 @@
 		}	
 
 
+.dropdown-submenu {
+    position: relative;
+}
 
-		.dropdown-submenu {
-		  position: relative;
-		}
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
 
-		.dropdown-submenu>.dropdown-menu {
-		  top: 0;
-		  left: 100%;
-		  margin-top: -6px;
-		  margin-left: -1px;
-		  -webkit-border-radius: 0 6px 6px 6px;
-		  -moz-border-radius: 0 6px 6px;
-		  border-radius: 0 6px 6px 6px;
-		}
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
 
-		.dropdown-submenu:hover>.dropdown-menu {
-		  display: block;
-		}
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
 
-		.dropdown-submenu>a:after {
-		  display: block;
-		  content: " ";
-		  float: right;
-		  width: 0;
-		  height: 0;
-		  border-color: transparent;
-		  border-style: solid;
-		  border-width: 5px 0 5px 5px;
-		  border-left-color: #ccc;
-		  margin-top: 5px;
-		  margin-right: -10px;
-		}
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
 
-		.dropdown-submenu:hover>a:after {
-		  border-left-color: #fff;
-		}
+.dropdown-submenu.pull-left {
+    float: none;
+}
 
-		.dropdown-submenu.pull-left {
-		  float: none;
-		}
-
-		.dropdown-submenu.pull-left>.dropdown-menu {
-		  left: -100%;
-		  margin-left: 10px;
-		  -webkit-border-radius: 6px 0 6px 6px;
-		  -moz-border-radius: 6px 0 6px 6px;
-		  border-radius: 6px 0 6px 6px;
-		}
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
 
 
 	</style>
@@ -91,7 +90,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -100,7 +99,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Project name</a>
+      <a class="navbar-brand" href="#">ISSOFT Test Project</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
@@ -111,10 +110,37 @@
 	        <span class="caret"></span>
 	      </a>
 	      <ul class="dropdown-menu" aria-labelledby="drop2">
-			  <li><a href="#">Action</a></li>
-			  <li><a href="#">Something else here</a></li>
+			  <li><a href="#">Action 1</a></li>
+
+
+			<li class="dropdown-submenu">
+		      <a id="drop2" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+		        Dropdown
+		      </a>
+		      <ul class="dropdown-menu" aria-labelledby="drop2">
+				  <li><a href="#">Action 2</a></li>
+				  <li><a href="#">Something else here 2</a></li>
+
+					<li class="dropdown-submenu">
+				      <a id="drop2" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				        Dropdown
+				      </a>
+				      <ul class="dropdown-menu" aria-labelledby="drop2">
+						  <li><a href="#">Action 3</a></li>
+						  <li><a href="#">Something else here 3</a></li>
+						  <li><a href="#">Separated link 3</a></li>
+					  </ul>
+					</li>
+
+				  <li><a href="#">Separated link 2</a></li>
+			  </ul>
+			</li>
+
+
+
+			  <li><a href="#">Something else here 1</a></li>
 			  <li role="separator" class="divider"></li>
-			  <li><a href="#">Separated link</a></li>
+			  <li><a href="#">Separated link 1</a></li>
 		  </ul>
 		</li>
         <li><a href="#">Settings</a></li>
@@ -131,16 +157,65 @@
 <div class="container">
 
 	<div class="row">
-		<div class="col-md-4">
-			<ul class="nav nav-pills nav-stacked">
-                <li class="active"><a href="#">Vaccinations</a></li>
-                <li><a href="#">Checkups</a></li>
-                <li><a href="#">Senior Pets</a></li>
-                <li><a href="#">Diet Plans</a></li>
-            </ul>
+		
+
+		<div class="col-md-2">
+
+
+		 <div>
+		      <ul class="nav">
+		     
+				<li class="dropdown">
+			      <a id="drop2" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+			        Dropdown
+			        <span class="caret"></span>
+			      </a>
+			      <ul class="dropdown-menu" aria-labelledby="drop2">
+					  <li><a href="#">Action</a></li>
+
+
+					<li class="dropdown-submenu">
+				      <a id="drop2" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				        Dropdown
+				      </a>
+				      <ul class="dropdown-menu" aria-labelledby="drop2">
+						  <li><a href="#">Action</a></li>
+						  <li><a href="#">Something else here</a></li>
+
+							<li class="dropdown-submenu">
+						      <a id="drop2" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						        Dropdown
+						      </a>
+						      <ul class="dropdown-menu" aria-labelledby="drop2">
+								  <li><a href="#">Action</a></li>
+								  <li><a href="#">Something else here</a></li>
+								  <li><a href="#">Separated link</a></li>
+							  </ul>
+							</li>
+
+						  
+						  <li><a href="#">Separated link</a></li>
+					  </ul>
+					</li>
+
+
+
+					  <li><a href="#">Something else here</a></li>
+					  <li role="separator" class="divider"></li>
+					  <li><a href="#">Separated link</a></li>
+				  </ul>
+				</li>
+		        <li><a href="#">Settings</a></li>
+		        <li><a href="#">Profile</a></li>
+		        <li><a href="#">Help</a></li>
+		      </ul>
+		  </div>
+
 		</div>	
 
-		<div class="col-md-8">
+
+
+		<div class="col-md-10">
 		
 		</div>	
 
