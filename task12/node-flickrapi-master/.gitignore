@@ -1,0 +1,10 @@
+.DS_Store
+.env
+data
+userdata
+node_modules
+.npmignore
+simpletest.js
+test2.js
+test3.js
+test4.js

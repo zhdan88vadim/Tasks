@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Document</title>
+	<link rel="stylesheet" href="../bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
+	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+
+	<style>
+		body {
+	/*		padding-top: 50px;*/
+		}
+
+  .dialog label,
+  .dialog input {
+    display: block;
+    width: 100%;
+  }
+  .dialog input.text {
+      margin-bottom: 12px;
+      width: 95%;
+      padding: .4em;
+  }
+  .dialog fieldset {
+      padding: 0;
+      border: 0;
+      margin-top: 25px;
+  }
+
+    .gallery-photos .gallery-item {
+        float:left;
+        width: 240px;
+        height: 160px;        
+        margin-right: 4px;
+        margin-bottom: 4px;
+     
+    }
+    .gallery-photos .gallery-item .photo-container {  
+        overflow: hidden;
+        height: 130px;   
+    }
+    .gallery-photos .gallery-item img {
+        width: 240px;
+    }
+    .gallery-photos .photo-container {
+    }
+    .gallery-photos .photo-info {
+        font-size: 12px;
+        height: 32px;
+        overflow: hidden;   
+    }
+    .photoset-list {
+        margin-bottom: 16px;
+    }
+	</style>
+
+</head>
+<body>
+
+<nav class="navbar navbar-default"> <!--  navbar-fixed-top -->
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Photo Gallery</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right"> 
+        <li><a href="#">Settings</a></li>
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+	<div class="row">
+    <div class="col-md-3">
+  
+    <ul data-bind="foreach: photosets" class="nav nav-pills photoset-list" role="tablist">
+      <li data-bind="click: $root.viewPhotoset, css: { active: $data.id == $root.photoset().id }" role="presentation">
+        <a href="#">
+          <span data-bind="text: id"></span>
+          <span data-bind="text: photos" class="badge">10500</span>
+        </a>
+      </li>
+    </ul>
+    <button data-bind="click: $root.uploadPhoto" type="button" class="btn btn-warning">Upload Photo</button>
+    </div>
+
+		<div class="col-md-9">
+      <div class="gallery-photos">
+
+        <ul data-bind="foreach: photos">
+           
+            <li class="gallery-item">
+              <div class="photo-container">
+                <img data-bind="attr: {src: 'http://farm' + farm + '.static.flickr.com/' +
+                server + '/' + id + '_' + secret + '_n.jpg' }" src="" alt="">
+  
+              </div>   
+              <div class="photo-info">
+                <span data-bind="text: title"></span>
+              </div> 
+            </li> 
+
+        </ul>
+
+    </div>
+		</div> <!-- end column -->	
+	
+
+<!-- https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg -->
+<!-- 'http://farm' + photo.farm + '.static.flickr.com/' +
+            photo.server + '/' + photo.id + '_' + photo.secret; -->
+	</div>
+</div>
+
+
+
+<div id="upload-dialog" class="upload-dialog dialog" title="Upload Photo">
+    <form>
+        <fieldset>
+            <label for="title">Title</label>
+            <input type="text" name="name" class="text ui-widget-content ui-corner-all">
+
+            <label for="description">Description</label>
+            <input type="text" name="description" class="text ui-widget-content ui-corner-all">
+
+            <input id="fileUpload" type="file" /><br>
+            <div class="image-holder"></div>
+        </fieldset>
+    </form>
+</div>
+
+
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+<script src="../bower_components/knockout/dist/knockout.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<!-- <script src="../bower_components/flickr-api/flickr.js"></script>
+ -->
+<script src="flicker.js"></script>
+
+<script src="index-task.js"></script>
+
+
+</body>
+</html>
