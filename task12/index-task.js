@@ -60,7 +60,7 @@ function initUploadDialog(callback){
 
   
 var flickr = new Flickr({
-	api_key: "21aa3fc8dec27c7e63d5e76b455f28d8"
+	api_key: "xxx"
 });
 
 function uploadPhoto(){
@@ -90,7 +90,7 @@ function uploadPhoto(){
 }
 
 function PhotoGalleryViewModel() {
-	var gallery_user_id = "115719100@N03";
+	var gallery_user_id = "xxx";
 	loadPhotosetsList();
 
 	var uploadDialog = initUploadDialog();
