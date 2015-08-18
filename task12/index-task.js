@@ -88,19 +88,6 @@ var flickr = new Flickr({
 	secret: "43512cb4f8044f69"
 });
 
-function authGetToken(frob, callback){
-	flickr.authGetToken({
-		'frob': frob,
-		'callback': function(result){
-			
-			debugger;
-
-			if (!result) return; /* BAG */
-			callback(result);
-		}
-	});
-}
-
 function uploadPhoto(){
         var data = new FormData();
         var files = $("#fileUpload").get(0).files;
@@ -160,20 +147,18 @@ function PhotoGalleryViewModel() {
 		});
 	}	
 
-
-
 	var frob = QueryString.frob;
-	authGetToken(frob, function(data) {
-
-		debugger;
-
-		var user = {
-			'fullname': data.auth.user.fullname
-		};
-
-		self.user(user);	
+	
+	flickr.authGetToken({
+		'frob': frob,
+		'callback': function(result){
+			if (!result) return; /* BAG */
+			var user = {
+				'fullname': result.auth.user.fullname
+			};
+			self.user(user);
+		}
 	});
-
 
 
 

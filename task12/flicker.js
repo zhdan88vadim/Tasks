@@ -8,7 +8,7 @@
 	"use strict";
 
 	function generateUrlSign(url){
-		var query = url.substring(url.lastIndexOf("?") + 1);
+		var query = url.substring(url.indexOf("?") + 1);
 		var obj = parseQueryParametrs(query);
 		var sortKey = Object.keys(obj).sort();
 		var tempStr = '';
@@ -168,10 +168,21 @@
 			callback(data);
 		});
 	};
-	Flickr.prototype.requestUrl = function(url, callback) {
-		$.getJSON(url, function(data) {
-			debugger;
+	Flickr.prototype.requestUrl = function(url, options, callback) {
+        // $.ajax(url, {
+        //     type: "GET",
+        //     dataType: "json",
+        //     success: function (result) { 
+        //     	debugger; 
+        //     	callback(result);
+        //     },
+        //     error: function (err) {
+        //     	debugger;
+        //         alert("Error!");
+        //     }
+        // });
 
+		$.getJSON(url, function(data) {
 			callback(data);
 		});
 	};
@@ -212,11 +223,11 @@
 		var method = 'flickr.auth.getToken';
 		
 		var url ='https://api.flickr.com/services/rest/?method=' + method + '&format=json' + '&api_key=' 
-		+ this.api_key + '&frob=' + options.frob;
+		+ this.api_key + '&frob=' + options.frob + '&nojsoncallback=1'; // !! WARNING !!
 
 		var signUrl = generateUrlSign.call(this, url);
 
-		this.requestUrl(signUrl, function(data){
+		this.requestUrl(signUrl, options, function(data){
 			options.callback(data);
 		});
 	}
