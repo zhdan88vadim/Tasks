@@ -7,6 +7,18 @@
 (function(window){
 	"use strict";
 
+	function generateUrlSign(url){
+		var query = url.substring(url.lastIndexOf("?") + 1);
+		var obj = parseQueryParametrs(query);
+		var sortKey = Object.keys(obj).sort();
+		var tempStr = '';
+
+		for (var i = 0, len = sortKey.length; i < len; i++) {
+			tempStr = tempStr + sortKey[i] + obj[sortKey[i]];
+		}
+		return url + '&api_sig=' + md5(this.secret + tempStr);
+	}
+
 	function Initclass(j){
 		if(typeof j !== 'object'){
 			throw new Error('j was expected to be an object, '+(typeof j+' was received.'));
@@ -44,6 +56,7 @@
 	var Flickr = function(j){
 		var defaults = {
 			api_key: 'YOUR API KEY',
+			secret: 'YOUR SECRET CODE',
 			thumbnail_size: 'sq',
 			element: {}, // this must be a valid DOM object
 			callback: function(){}
@@ -58,7 +71,6 @@
 		if(Object.keys(params).length > 0){
 			params_t = '&' + $.param(params);
 		}
-
 		return 'https://api.flickr.com/services/rest/?method=' + method + '&format=json' + '&api_key=' + this.api_key + params_t + '&jsoncallback=?';
 	};
 
@@ -156,7 +168,13 @@
 			callback(data);
 		});
 	};
+	Flickr.prototype.requestUrl = function(url, callback) {
+		$.getJSON(url, function(data) {
+			debugger;
 
+			callback(data);
+		});
+	};
 	Flickr.prototype.append = function() {
 		this.element.appendChild(this.list);
 	};
@@ -190,7 +208,18 @@
 			//t.preProcess(photosets, options);
 		});
 	};
+	Flickr.prototype.authGetToken = function(options) {
+		var method = 'flickr.auth.getToken';
+		
+		var url ='https://api.flickr.com/services/rest/?method=' + method + '&format=json' + '&api_key=' 
+		+ this.api_key + '&frob=' + options.frob;
 
+		var signUrl = generateUrlSign.call(this, url);
+
+		this.requestUrl(signUrl, function(data){
+			options.callback(data);
+		});
+	}
 	// http://www.flickr.com/services/api/flickr.photos.getRecent.html
 	Flickr.prototype.photosGetRecent = function(options) {
 		this.photos('flickr.photos.getRecent', options);

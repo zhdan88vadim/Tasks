@@ -1,3 +1,29 @@
+function parseQueryParametrs(query) {
+  var query_string = {};
+  //var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+        // If first entry with this name
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = decodeURIComponent(pair[1]);
+        // If second entry with this name
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
+      query_string[pair[0]] = arr;
+        // If third or later entry with this name
+    } else {
+      query_string[pair[0]].push(decodeURIComponent(pair[1]));
+    }
+  }
+  return query_string;
+}
+
+var QueryString = function () {
+  var query = window.location.search.substring(1);
+  return parseQueryParametrs(query);
+}();
+
 function initEditDialog(editFunction) {
 	var dialog = $("#edit-user-dialog").dialog({
 		autoOpen: false,
@@ -14,8 +40,6 @@ function initEditDialog(editFunction) {
 			}
 		},
 		close: function() {
-		//form[0].reset();
-		//allFields.removeClass( "ui-state-error" );
 		}
 	});
 	return dialog;	
@@ -60,28 +84,40 @@ function initUploadDialog(callback){
 
   
 var flickr = new Flickr({
-	api_key: "xxx"
+	api_key: "3a2429a5539e3b00718f6193b783b2ca",
+	secret: "43512cb4f8044f69"
 });
+
+function authGetToken(frob, callback){
+	flickr.authGetToken({
+		'frob': frob,
+		'callback': function(result){
+			
+			debugger;
+
+			if (!result) return; /* BAG */
+			callback(result);
+		}
+	});
+}
 
 function uploadPhoto(){
         var data = new FormData();
         var files = $("#fileUpload").get(0).files;
         if (files.length > 0) {
-            data.append("uploadFile", files[0]);
+            data.append("photo", files[0]);
         }
-        data.append("ID", user.id);
-        data.append("Name", user.name);
-        data.append("Email", user.email);
-        data.append("Phone", user.phone);
-        data.append("Password", user.password);
+        data.append("title", "title");
+        data.append("description", "description");
+        data.append("api_key", "3a2429a5539e3b00718f6193b783b2ca");
 
-        $.ajax("/api/user/" + user.id, {
+        $.ajax("https://up.flickr.com/services/upload/", {
             data: data,
             type: "POST",
             processData: false,
             cache: false,
             contentType: false,
-            success: function (result) { callback(); },
+            success: function (result) { debugger; },
             error: function () {
                 alert("Error!");
             }
@@ -90,10 +126,10 @@ function uploadPhoto(){
 }
 
 function PhotoGalleryViewModel() {
-	var gallery_user_id = "xxx";
+	var gallery_user_id = "134818206@N02";
 	loadPhotosetsList();
 
-	var uploadDialog = initUploadDialog();
+	var uploadDialog = initUploadDialog(function() { uploadPhoto(); });
 	
 	function loadPhotosetsList() {
 		flickr.photosetsGetList({
@@ -124,10 +160,30 @@ function PhotoGalleryViewModel() {
 		});
 	}	
 
+
+
+	var frob = QueryString.frob;
+	authGetToken(frob, function(data) {
+
+		debugger;
+
+		var user = {
+			'fullname': data.auth.user.fullname
+		};
+
+		self.user(user);	
+	});
+
+
+
+
 	var self = this;
+
+	self.user = ko.observable();
 	self.photosets = ko.observableArray();
 	self.photoset = ko.observable({id:0});
 	self.photos = ko.observableArray();
+	self.authUrl = 'http://flickr.com/services/auth/?api_key=3a2429a5539e3b00718f6193b783b2ca&perms=delete&api_sig=d0e5bfcf2f23a946e91604634284166b';
 
 	self.viewPhotoset = function(photoset) {
 		console.log(photoset);
@@ -138,7 +194,7 @@ function PhotoGalleryViewModel() {
 	self.uploadPhoto = function() {
 		uploadDialog.dialog('open');
 	};
-
 }
 
-ko.applyBindings(new PhotoGalleryViewModel());
+var viewModel = new PhotoGalleryViewModel();
+ko.applyBindings(viewModel);
