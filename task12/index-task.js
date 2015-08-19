@@ -1,3 +1,7 @@
+app = {};
+app.api_key = '3a2429a5539e3b00718f6193b783b2ca';
+app.secret = '43512cb4f8044f69';
+
 function parseQueryParametrs(query) {
 	var query_string = {};
   //var query = window.location.search.substring(1);
@@ -36,44 +40,6 @@ function generateUrlSign(secret, url){
 	return md5(secret + tempStr);
 }
 
-function initEditDialog(editFunction) {
-	var dialog = $("#edit-user-dialog").dialog({
-		autoOpen: false,
-		height: 400,
-		width: 350,
-		modal: true,
-		buttons: {
-			"Save": function(){ 
-				editFunction();
-				dialog.dialog("close");
-			},
-			Cancel: function(){
-				dialog.dialog("close");
-			}
-		},
-		close: function() {
-		}
-	});
-	return dialog;	
-}
-
-function initViewDialog() {
-	var dialog = $("#view-user-dialog").dialog({
-		autoOpen: false,
-		height: 400,
-		width: 350,
-		modal: true,
-		buttons: {
-			Cancel: function(){
-				dialog.dialog("close");
-			}
-		},
-		close: function() {
-		}
-	});
-	return dialog;
-}
-
 function initUploadDialog(callback){
 	var dialog = $("#upload-dialog").dialog({
 		resizable: false,
@@ -94,27 +60,20 @@ function initUploadDialog(callback){
 	return dialog;
 }
 
-
-var flickr = new Flickr({
-	api_key: "3a2429a5539e3b00718f6193b783b2ca",
-	secret: "43512cb4f8044f69"
-});
-
-
-function sendPhoto(user, application, callback) {
+function sendPhoto(user, photoInfo, application, callback) {
 	var data = new FormData();
 	var files = $("#fileUpload").get(0).files;
 	if (files.length > 0) {
 		data.append("photo", files[0]);
 	}
 	var tempUrl = 'https://up.flickr.com/services/upload/?' 
-	+ 'title=title&description=description'
-	+'&api_key=' 
-	+ application.api_key 
+	+ 'title=' + photoInfo.title
+	+ '&description=' + photoInfo.description
+	+ '&api_key=' + application.api_key 
 	+ '&auth_token=' + user.token;
 
-	data.append("title", "title");
-	data.append("description", "description");
+	data.append("title", photoInfo.title);
+	data.append("description", photoInfo.description);
 	data.append("api_key", application.api_key);
 	data.append("auth_token", user.token);
 	data.append("api_sig", generateUrlSign(application.secret, tempUrl));
@@ -134,6 +93,11 @@ function sendPhoto(user, application, callback) {
 	});
 	return true;
 }
+
+var flickr = new Flickr({
+	api_key: app.api_key,
+	secret: app.secret
+});
 
 function authGetToken(callback) {
 	flickr.authGetToken({
@@ -180,10 +144,7 @@ function addPhotoToPhotoset(photo_id, photoset_id, auth_token, callback) {
 }
 
 function PhotoGalleryViewModel() {
-	
-	var application = {};
-	application.api_key = '3a2429a5539e3b00718f6193b783b2ca';
-	application.secret = '43512cb4f8044f69';
+	var self = this;
 
 	authGetToken(function(data) {
 		console.log(data);
@@ -200,7 +161,7 @@ function PhotoGalleryViewModel() {
 	});	
 
 	var uploadDialog = initUploadDialog(function() { 
-		sendPhoto(self.user(), application, function(data) {
+		sendPhoto(self.user(), self.uploadPhotoInfo(), app, function(data) {
 			var photoId = data.getElementsByTagName('photoid').item(0).textContent;
 			console.log('photoId:' + photoId);
 
@@ -211,15 +172,17 @@ function PhotoGalleryViewModel() {
 		}); 
 	});
 
-	var self = this;
-
 	self.user = ko.observable();
 	self.photosets = ko.observableArray();
-	self.photoset = ko.observable({id:0});
+	self.photoset = ko.observable({id:0}); // Set default value for photoset.
 	self.photos = ko.observableArray();
 	self.messageInfo = ko.observableArray();
-	
-	self.authUrl = 'http://flickr.com/services/auth/?api_key=3a2429a5539e3b00718f6193b783b2ca&perms=delete&api_sig=d0e5bfcf2f23a946e91604634284166b';
+	self.uploadPhotoInfo = ko.observable();
+
+	var authUrl = 'http://flickr.com/services/auth/?';
+	authUrl += 'api_key=' + app.api_key;
+	authUrl += '&perms=' + 'delete';
+	self.authUrl =  authUrl + '&api_sig=' + generateUrlSign(app.secret, authUrl);
 
 	self.viewPhotoset = function(photoset) {
 		self.photoset(photoset);
@@ -229,9 +192,14 @@ function PhotoGalleryViewModel() {
 		});
 	};
 	self.uploadPhoto = function() {
+		uploadPhotoInfoSetDefault(); // Once at the opening.
 		uploadDialog.dialog('open');
 		self.messageInfo.push('This is test message.');
 	};
+
+	function uploadPhotoInfoSetDefault(){
+		self.uploadPhotoInfo({title:'Photo title', description: 'Photo description'});	
+	}
 }
 
 var viewModel = new PhotoGalleryViewModel();

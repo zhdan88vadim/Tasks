@@ -137,13 +137,13 @@
 
 
 <div id="upload-dialog" class="upload-dialog dialog" title="Upload Photo">
-  <form>
+  <form data-bind="if: uploadPhotoInfo()">
     <fieldset>
       <label for="title">Title</label>
-      <input type="text" name="name" class="text ui-widget-content ui-corner-all">
+      <input data-bind="value: uploadPhotoInfo().title" type="text" name="name" class="text ui-widget-content ui-corner-all">
 
       <label for="description">Description</label>
-      <input type="text" name="description" class="text ui-widget-content ui-corner-all">
+      <input data-bind="value: uploadPhotoInfo().description" type="text" name="description" class="text ui-widget-content ui-corner-all">
 
       <input id="fileUpload" type="file" /><br>
       <div class="image-holder"></div>
