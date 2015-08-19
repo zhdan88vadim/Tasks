@@ -1,28 +1,40 @@
 function parseQueryParametrs(query) {
-  var query_string = {};
+	var query_string = {};
   //var query = window.location.search.substring(1);
   var vars = query.split("&");
   for (var i=0;i<vars.length;i++) {
-    var pair = vars[i].split("=");
+  	var pair = vars[i].split("=");
         // If first entry with this name
-    if (typeof query_string[pair[0]] === "undefined") {
-      query_string[pair[0]] = decodeURIComponent(pair[1]);
+        if (typeof query_string[pair[0]] === "undefined") {
+        	query_string[pair[0]] = decodeURIComponent(pair[1]);
         // If second entry with this name
     } else if (typeof query_string[pair[0]] === "string") {
-      var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
-      query_string[pair[0]] = arr;
+    	var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
+    	query_string[pair[0]] = arr;
         // If third or later entry with this name
     } else {
-      query_string[pair[0]].push(decodeURIComponent(pair[1]));
+    	query_string[pair[0]].push(decodeURIComponent(pair[1]));
     }
-  }
-  return query_string;
+}
+return query_string;
 }
 
 var QueryString = function () {
-  var query = window.location.search.substring(1);
-  return parseQueryParametrs(query);
+	var query = window.location.search.substring(1);
+	return parseQueryParametrs(query);
 }();
+
+function generateUrlSign(secret, url){
+	var query = url.substring(url.indexOf("?") + 1);
+	var obj = parseQueryParametrs(query);
+	var sortKey = Object.keys(obj).sort();
+	var tempStr = '';
+
+	for (var i = 0, len = sortKey.length; i < len; i++) {
+		tempStr = tempStr + sortKey[i] + obj[sortKey[i]];
+	}
+	return md5(secret + tempStr);
+}
 
 function initEditDialog(editFunction) {
 	var dialog = $("#edit-user-dialog").dialog({
@@ -70,97 +82,134 @@ function initUploadDialog(callback){
 		widht: 250,
 		modal: true,
 		buttons: {
-		"Upload": function() {
-			callback();
-			$(this).dialog("close");
-		},
-		Cancel: function() {
+			"Upload": function() {
+				callback();
+				$(this).dialog("close");
+			},
+			Cancel: function() {
 				$(this).dialog("close");
 			}
 		}
-    });
-    return dialog;
+	});
+	return dialog;
 }
 
-  
+
 var flickr = new Flickr({
 	api_key: "3a2429a5539e3b00718f6193b783b2ca",
 	secret: "43512cb4f8044f69"
 });
 
-function uploadPhoto(){
-        var data = new FormData();
-        var files = $("#fileUpload").get(0).files;
-        if (files.length > 0) {
-            data.append("photo", files[0]);
-        }
-        data.append("title", "title");
-        data.append("description", "description");
-        data.append("api_key", "3a2429a5539e3b00718f6193b783b2ca");
 
-        $.ajax("https://up.flickr.com/services/upload/", {
-            data: data,
-            type: "POST",
-            processData: false,
-            cache: false,
-            contentType: false,
-            success: function (result) { debugger; },
-            error: function () {
-                alert("Error!");
-            }
-        });
-        return true;
+function sendPhoto(user, application, callback) {
+	var data = new FormData();
+	var files = $("#fileUpload").get(0).files;
+	if (files.length > 0) {
+		data.append("photo", files[0]);
+	}
+	var tempUrl = 'https://up.flickr.com/services/upload/?' 
+	+ 'title=title&description=description'
+	+'&api_key=' 
+	+ application.api_key 
+	+ '&auth_token=' + user.token;
+
+	data.append("title", "title");
+	data.append("description", "description");
+	data.append("api_key", application.api_key);
+	data.append("auth_token", user.token);
+	data.append("api_sig", generateUrlSign(application.secret, tempUrl));
+
+	$.ajax("https://up.flickr.com/services/upload/", {
+		data: data,
+		type: "POST",
+		processData: false,
+		cache: false,
+		contentType: false,
+		success: function (result) { 
+			callback(result);
+		},
+		error: function () {
+			alert("Error!");
+		}
+	});
+	return true;
+}
+
+function authGetToken(callback) {
+	flickr.authGetToken({
+		'frob': QueryString.frob,
+		'callback': function(result){
+			if (result.stat !== "ok") return;
+			callback(result);
+		}
+	});
+}
+
+function loadPhotosetsList(user, callback) {
+	flickr.photosetsGetList({
+		user_id: user.nsid,			
+		callback: function(result){
+			if(!result) return; /* WHY ?? */
+			if (result.stat !== "ok") return;			
+			callback(result);
+		}
+	});
+}
+
+function loadPhotosetPhotos(user, photoset_id, callback) {
+	flickr.photosetsGetPhotos({
+		user_id: user.nsid,
+		photoset_id: photoset_id,
+		callback: function(result){
+			if (!result) return; /* BAG */
+			callback(result);
+		}
+	});
+}
+
+function addPhotoToPhotoset(photo_id, photoset_id, auth_token, callback) {
+	flickr.addPhotoToPhotosets({
+		photo_id:photo_id,
+		photoset_id: photoset_id,
+		auth_token: auth_token,
+		callback: function(result){
+			if (!result) return; /* BAG */
+			callback(result);
+		}
+	});	
 }
 
 function PhotoGalleryViewModel() {
-	var gallery_user_id = "134818206@N02";
-	loadPhotosetsList();
-
-	var uploadDialog = initUploadDialog(function() { uploadPhoto(); });
 	
-	function loadPhotosetsList() {
-		flickr.photosetsGetList({
-			user_id: gallery_user_id,			
-			callback: function(result){
-				console.log('== loadPhotosetsList ==');
-				console.log(result);
+	var application = {};
+	application.api_key = '3a2429a5539e3b00718f6193b783b2ca';
+	application.secret = '43512cb4f8044f69';
 
-				if (!result) return; /* BAG */
-				var photosets = result.photosets.photoset;
-				self.photosets(photosets);
-			}
-		});
-	}
+	authGetToken(function(data) {
+		console.log(data);
+		var user = {
+			'fullname': data.auth.user.fullname,
+			'token': data.auth.token._content,
+			'nsid': data.auth.user.nsid
+		};
+		self.user(user);
 
-	function loadPhotosetPhotos(photoset_id) {
-		flickr.photosetsGetPhotos({
-			user_id: gallery_user_id,
-			photoset_id: photoset_id,
-			callback: function(result){
-				console.log('== loadPhotosetsPhotos ==');
-				console.log(result);
-				if (!result) return; /* BAG */
+		loadPhotosetsList(self.user(), function(data) {
+			self.photosets(data.photosets.photoset);
+		});	
+	});	
 
-				var photos = result.photoset.photo;
-				self.photos(photos);
-			}
-		});
-	}	
+	var uploadDialog = initUploadDialog(function() { 
+		sendPhoto(self.user(), application, function(data) {
+			var photoId = data.getElementsByTagName('photoid').item(0).textContent;
+			console.log('photoId:' + photoId);
 
-	var frob = QueryString.frob;
-	
-	flickr.authGetToken({
-		'frob': frob,
-		'callback': function(result){
-			if (!result) return; /* BAG */
-			var user = {
-				'fullname': result.auth.user.fullname
-			};
-			self.user(user);
-		}
+			addPhotoToPhotoset(photoId, self.photoset().id, self.user().token, function(data) {
+				if (data.stat === "ok")
+					self.messageInfo.push('Photo:' + photoId + 'add to photoset:' + self.photoset().id);
+			});
+		}); 
 	});
-
-
 
 	var self = this;
 
@@ -168,16 +217,20 @@ function PhotoGalleryViewModel() {
 	self.photosets = ko.observableArray();
 	self.photoset = ko.observable({id:0});
 	self.photos = ko.observableArray();
+	self.messageInfo = ko.observableArray();
+	
 	self.authUrl = 'http://flickr.com/services/auth/?api_key=3a2429a5539e3b00718f6193b783b2ca&perms=delete&api_sig=d0e5bfcf2f23a946e91604634284166b';
 
 	self.viewPhotoset = function(photoset) {
-		console.log(photoset);
 		self.photoset(photoset);
 
-		loadPhotosetPhotos(photoset.id)
+		loadPhotosetPhotos(self.user(), photoset.id, function(data) {
+			self.photos(data.photoset.photo);
+		});
 	};
 	self.uploadPhoto = function() {
 		uploadDialog.dialog('open');
+		self.messageInfo.push('This is test message.');
 	};
 }
 

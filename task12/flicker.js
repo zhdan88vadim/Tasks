@@ -7,18 +7,6 @@
 (function(window){
 	"use strict";
 
-	function generateUrlSign(url){
-		var query = url.substring(url.indexOf("?") + 1);
-		var obj = parseQueryParametrs(query);
-		var sortKey = Object.keys(obj).sort();
-		var tempStr = '';
-
-		for (var i = 0, len = sortKey.length; i < len; i++) {
-			tempStr = tempStr + sortKey[i] + obj[sortKey[i]];
-		}
-		return url + '&api_sig=' + md5(this.secret + tempStr);
-	}
-
 	function Initclass(j){
 		if(typeof j !== 'object'){
 			throw new Error('j was expected to be an object, '+(typeof j+' was received.'));
@@ -169,19 +157,6 @@
 		});
 	};
 	Flickr.prototype.requestUrl = function(url, options, callback) {
-        // $.ajax(url, {
-        //     type: "GET",
-        //     dataType: "json",
-        //     success: function (result) { 
-        //     	debugger; 
-        //     	callback(result);
-        //     },
-        //     error: function (err) {
-        //     	debugger;
-        //         alert("Error!");
-        //     }
-        // });
-
 		$.getJSON(url, function(data) {
 			callback(data);
 		});
@@ -222,15 +197,35 @@
 	Flickr.prototype.authGetToken = function(options) {
 		var method = 'flickr.auth.getToken';
 		
-		var url ='https://api.flickr.com/services/rest/?method=' + method + '&format=json' + '&api_key=' 
-		+ this.api_key + '&frob=' + options.frob + '&nojsoncallback=1'; // !! WARNING !!
+		var url ='https://api.flickr.com/services/rest/?method=' + method 
+		+ '&format=json' 
+		+ '&api_key=' + this.api_key
+		+ '&frob=' + options.frob
+		+ '&nojsoncallback=1'; // !! WARNING !!
 
-		var signUrl = generateUrlSign.call(this, url);
+		var signUrl = url + '&api_sig=' + generateUrlSign(this.secret, url);
 
 		this.requestUrl(signUrl, options, function(data){
 			options.callback(data);
 		});
 	}
+	Flickr.prototype.addPhotoToPhotosets = function(options) {
+		var method = 'flickr.photosets.addPhoto';
+		
+		var url ='https://api.flickr.com/services/rest/?method=' + method 
+		+ '&format=json' 
+		+ '&api_key=' + this.api_key 
+		+ '&photoset_id=' + options.photoset_id 
+		+ '&photo_id=' + options.photo_id 
+		+ '&auth_token=' + options.auth_token
+		+ '&nojsoncallback=1'; // !! WARNING !!
+
+		var signUrl = url + '&api_sig=' + generateUrlSign(this.secret, url);
+
+		this.requestUrl(signUrl, options, function(data){
+			options.callback(data);
+		});
+	}	
 	// http://www.flickr.com/services/api/flickr.photos.getRecent.html
 	Flickr.prototype.photosGetRecent = function(options) {
 		this.photos('flickr.photos.getRecent', options);
