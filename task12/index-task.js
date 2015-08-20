@@ -125,7 +125,7 @@ function loadPhotosetPhotos(user, photoset_id, callback) {
 		user_id: user.nsid,
 		photoset_id: photoset_id,
 		callback: function(result){
-			if (!result) return; /* BAG */
+			if (!result) return; /* WHY ?? */
 			callback(result);
 		}
 	});
@@ -137,7 +137,18 @@ function addPhotoToPhotoset(photo_id, photoset_id, auth_token, callback) {
 		photoset_id: photoset_id,
 		auth_token: auth_token,
 		callback: function(result){
-			if (!result) return; /* BAG */
+			if (!result) return; /* WHY ?? */
+			callback(result);
+		}
+	});	
+}
+
+function deletePhoto(photo_id, auth_token, callback) {
+	flickr.deletePhoto({
+		photo_id:photo_id,
+		auth_token: auth_token,
+		callback: function(result){
+			if (!result) return; /* WHY ?? */
 			callback(result);
 		}
 	});	
@@ -163,11 +174,9 @@ function PhotoGalleryViewModel() {
 	var uploadDialog = initUploadDialog(function() { 
 		sendPhoto(self.user(), self.uploadPhotoInfo(), app, function(data) {
 			var photoId = data.getElementsByTagName('photoid').item(0).textContent;
-			console.log('photoId:' + photoId);
-
 			addPhotoToPhotoset(photoId, self.photoset().id, self.user().token, function(data) {
 				if (data.stat === "ok")
-					self.messageInfo.push('Photo:' + photoId + 'add to photoset:' + self.photoset().id);
+					self.messageInfo.push('The photo: ' + photoId + ' was added to photoset: ' + self.photoset().id);
 			});
 		}); 
 	});
@@ -194,9 +203,14 @@ function PhotoGalleryViewModel() {
 	self.uploadPhoto = function() {
 		uploadPhotoInfoSetDefault(); // Once at the opening.
 		uploadDialog.dialog('open');
-		self.messageInfo.push('This is test message.');
 	};
-
+	self.deletePhoto = function(item) {
+		if(confirm('Are you sure you want to delete the photo?')) {
+			deletePhoto(item.id, self.user().token, function() {
+				self.messageInfo.push('The photo: ' + item.id + ' was deleted.');
+			});
+		}
+	};
 	function uploadPhotoInfoSetDefault(){
 		self.uploadPhotoInfo({title:'Photo title', description: 'Photo description'});	
 	}

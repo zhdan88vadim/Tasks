@@ -45,14 +45,30 @@
   width: 240px;
 }
 .gallery-photos .photo-container {
+  position: relative;
+}
+.gallery-photos .photo-container:hover .btn-delete-photo {
+  display: block;
 }
 .gallery-photos .photo-info {
   font-size: 12px;
   height: 32px;
   overflow: hidden;   
 }
-.photoset-list {
-  margin-bottom: 16px;
+.gallery-photos .btn-delete-photo {
+  display:none;
+  position: absolute;
+  right: 6px;
+  top: 6px;
+}
+.gallery-controll .photoset-list {
+  margin-bottom: 20px;
+}
+.gallery-controll .message-info {
+  margin-top: 40px;
+}
+.message-info .list-group-item {
+  padding: 2px 15px;
 }
 </style>
 
@@ -98,8 +114,9 @@
         </ul>
         <button data-bind="click: $root.uploadPhoto" type="button" class="btn btn-warning">Upload Photo</button>
         <div class="message-info">
-          <ul data-bind="foreach: $root.messageInfo">
-            <li data-bind="text: $data"></li>
+          <h4>Log</h4>
+          <ul data-bind="foreach: $root.messageInfo" class="list-group">
+            <li data-bind="text: $data" class="list-group-item"></li>
           </ul>
         </div>
 
@@ -113,6 +130,9 @@
 
           <li class="gallery-item">
             <div class="photo-container">
+              <button data-bind="click: $root.deletePhoto" type="button" class="btn btn-default btn-delete-photo">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+              </button>
               <img data-bind="attr: {src: 'http://farm' + farm + '.static.flickr.com/' +
               server + '/' + id + '_' + secret + '_n.jpg' }" src="" alt="">
 

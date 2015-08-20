@@ -4,48 +4,48 @@
  * ----------------------------------------------------
  */
 
-(function(window){
-	"use strict";
+ (function(window){
+ 	"use strict";
 
-	function Initclass(j){
-		if(typeof j !== 'object'){
-			throw new Error('j was expected to be an object, '+(typeof j+' was received.'));
-		}
+ 	function Initclass(j){
+ 		if(typeof j !== 'object'){
+ 			throw new Error('j was expected to be an object, '+(typeof j+' was received.'));
+ 		}
 
-		var data = (j.data !== undefined) ? j.data : {};
-		var defaults = (j.defaults !== undefined) ? j.defaults : {};
-		var synonyms = (j.synonyms !== undefined) ? j.synonyms : {};
+ 		var data = (j.data !== undefined) ? j.data : {};
+ 		var defaults = (j.defaults !== undefined) ? j.defaults : {};
+ 		var synonyms = (j.synonyms !== undefined) ? j.synonyms : {};
 
-		for(var k in synonyms){
-			if(data[k] !== undefined){
-				data[ synonyms[k] ] = data[k];
-			}
-		}
+ 		for(var k in synonyms){
+ 			if(data[k] !== undefined){
+ 				data[ synonyms[k] ] = data[k];
+ 			}
+ 		}
 
-		var types = {};
-		for (var llave in defaults){
-			types[llave] = typeof defaults[llave];
-		}
+ 		var types = {};
+ 		for (var llave in defaults){
+ 			types[llave] = typeof defaults[llave];
+ 		}
 
-		for(var key in defaults){
-			data[key] = (typeof data[key] === 'undefined') ? defaults[key] : data[key];
-		}
+ 		for(var key in defaults){
+ 			data[key] = (typeof data[key] === 'undefined') ? defaults[key] : data[key];
+ 		}
 
-		for(var key in data){
-			var t = typeof data[key];
-			if(t !== types[key] && types[k] !== undefined){
-				throw new Error ('Error : '+key+' was expected to be '+types[key]+', but was received: '+t);
-			}else{
-				this[key] = data[key];
-			}
-		}
-	}
+ 		for(var key in data){
+ 			var t = typeof data[key];
+ 			if(t !== types[key] && types[k] !== undefined){
+ 				throw new Error ('Error : '+key+' was expected to be '+types[key]+', but was received: '+t);
+ 			}else{
+ 				this[key] = data[key];
+ 			}
+ 		}
+ 	}
 
-	var Flickr = function(j){
-		var defaults = {
-			api_key: 'YOUR API KEY',
-			secret: 'YOUR SECRET CODE',
-			thumbnail_size: 'sq',
+ 	var Flickr = function(j){
+ 		var defaults = {
+ 			api_key: 'YOUR API KEY',
+ 			secret: 'YOUR SECRET CODE',
+ 			thumbnail_size: 'sq',
 			element: {}, // this must be a valid DOM object
 			callback: function(){}
 		}
@@ -177,11 +177,11 @@
 		var t = this;
 		this.request(method, options, function(data){
 
-		options.callback(data);		
-		
+			options.callback(data);		
+
 		// var photos = (data.photos === undefined ? data.photoset.photo : data.photos);
 		// t.preProcess(photos, options);
-		});
+	});
 	};
 
 	Flickr.prototype.photosets = function(method, options) {
@@ -226,6 +226,22 @@
 			options.callback(data);
 		});
 	}	
+	Flickr.prototype.deletePhoto = function(options) {
+		var method = 'flickr.photos.delete';
+		
+		var url ='https://api.flickr.com/services/rest/?method=' + method 
+		+ '&format=json'
+		+ '&api_key=' + this.api_key
+		+ '&photo_id=' + options.photo_id
+		+ '&auth_token=' + options.auth_token
+		+ '&nojsoncallback=1'; // !! WARNING !!
+
+		var signUrl = url + '&api_sig=' + generateUrlSign(this.secret, url);
+
+		this.requestUrl(signUrl, options, function(data){
+			options.callback(data);
+		});
+	};
 	// http://www.flickr.com/services/api/flickr.photos.getRecent.html
 	Flickr.prototype.photosGetRecent = function(options) {
 		this.photos('flickr.photos.getRecent', options);
