@@ -16,6 +16,12 @@
     "jquery": "~2.1.4",
     "jquery-ui": "~1.11.4",
     "knockout": "~3.3.0",
-    "bootstrap": "~3.3.5"
+    "bootstrap": "~3.3.5",
+    "angular": "~1.4.4",
+    "angular-mocks": "1.4.x",
+    "angular-route": "1.4.x",
+    "angular-resource": "1.4.x",
+    "angular-animate": "1.4.x",
+    "protractor": "~2.1.0"
   }
 }
