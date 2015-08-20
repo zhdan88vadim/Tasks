@@ -65,6 +65,8 @@ function sendPhoto(user, photoInfo, application, callback) {
 	var files = $("#fileUpload").get(0).files;
 	if (files.length > 0) {
 		data.append("photo", files[0]);
+	} else {
+		return false; // If photo not selected exit.
 	}
 	var tempUrl = 'https://up.flickr.com/services/upload/?' 
 	+ 'title=' + photoInfo.title
@@ -99,19 +101,23 @@ var flickr = new Flickr({
 	secret: app.secret
 });
 
-function authGetToken(callback) {
+function authGetToken(okCallback, failCallback) {
 	flickr.authGetToken({
-		'frob': QueryString.frob,
+		params: {
+			frob: QueryString.frob
+		},
 		'callback': function(result){
-			if (result.stat !== "ok") return;
-			callback(result);
+			if (result.stat !== "ok")
+				failCallback(result);
+			else
+				okCallback(result);
 		}
 	});
 }
 
 function loadPhotosetsList(user, callback) {
 	flickr.photosetsGetList({
-		user_id: user.nsid,			
+		user_id: user.nsid,
 		callback: function(result){
 			if(!result) return; /* WHY ?? */
 			if (result.stat !== "ok") return;			
@@ -123,7 +129,7 @@ function loadPhotosetsList(user, callback) {
 function loadPhotosetPhotos(user, photoset_id, callback) {
 	flickr.photosetsGetPhotos({
 		user_id: user.nsid,
-		photoset_id: photoset_id,
+		photoset_id: photoset_id,	
 		callback: function(result){
 			if (!result) return; /* WHY ?? */
 			callback(result);
@@ -133,9 +139,11 @@ function loadPhotosetPhotos(user, photoset_id, callback) {
 
 function addPhotoToPhotoset(photo_id, photoset_id, auth_token, callback) {
 	flickr.addPhotoToPhotosets({
-		photo_id:photo_id,
-		photoset_id: photoset_id,
-		auth_token: auth_token,
+		params: {
+			photo_id: photo_id,
+			photoset_id: photoset_id,
+			auth_token: auth_token
+		},
 		callback: function(result){
 			if (!result) return; /* WHY ?? */
 			callback(result);
@@ -145,8 +153,10 @@ function addPhotoToPhotoset(photo_id, photoset_id, auth_token, callback) {
 
 function deletePhoto(photo_id, auth_token, callback) {
 	flickr.deletePhoto({
-		photo_id:photo_id,
-		auth_token: auth_token,
+		params: {
+			photo_id: photo_id,
+			auth_token: auth_token
+		},		
 		callback: function(result){
 			if (!result) return; /* WHY ?? */
 			callback(result);
@@ -157,8 +167,8 @@ function deletePhoto(photo_id, auth_token, callback) {
 function PhotoGalleryViewModel() {
 	var self = this;
 
-	authGetToken(function(data) {
-		console.log(data);
+	authGetToken(
+		function(data) {
 		var user = {
 			'fullname': data.auth.user.fullname,
 			'token': data.auth.token._content,
@@ -166,9 +176,14 @@ function PhotoGalleryViewModel() {
 		};
 		self.user(user);
 
+		self.isLoading(true);
 		loadPhotosetsList(self.user(), function(data) {
 			self.photosets(data.photosets.photoset);
-		});	
+			self.isLoading(false);
+		});
+	},
+	function(data) {
+		self.isLoading(false);
 	});	
 
 	var uploadDialog = initUploadDialog(function() { 
@@ -181,6 +196,7 @@ function PhotoGalleryViewModel() {
 		}); 
 	});
 
+	self.isLoading = ko.observable(true);
 	self.user = ko.observable();
 	self.photosets = ko.observableArray();
 	self.photoset = ko.observable({id:0}); // Set default value for photoset.

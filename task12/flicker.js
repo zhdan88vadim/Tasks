@@ -54,14 +54,6 @@
 		Initclass.call(this, js);
 	}
 
-	Flickr.prototype.build_url = function(method, params) {
-		var params_t = '';
-		if(Object.keys(params).length > 0){
-			params_t = '&' + $.param(params);
-		}
-		return 'https://api.flickr.com/services/rest/?method=' + method + '&format=json' + '&api_key=' + this.api_key + params_t + '&jsoncallback=?';
-	};
-
 	Flickr.prototype.translate = function(size) {
 		switch(size){
 			case 'sq' : return '_s'; // squre
@@ -177,11 +169,11 @@
 		var t = this;
 		this.request(method, options, function(data){
 
-			options.callback(data);		
+			options.callback(data);
 
-		// var photos = (data.photos === undefined ? data.photoset.photo : data.photos);
-		// t.preProcess(photos, options);
-	});
+			// var photos = (data.photos === undefined ? data.photoset.photo : data.photos);
+			// t.preProcess(photos, options);
+		});
 	};
 
 	Flickr.prototype.photosets = function(method, options) {
@@ -194,49 +186,63 @@
 			//t.preProcess(photosets, options);
 		});
 	};
+
+	Flickr.prototype.build_url = function(method, params) {
+		var params_t = '';
+		if(Object.keys(params).length > 0){
+			params_t = '&' + $.param(params);
+		}
+		return 'https://api.flickr.com/services/rest/?method=' + method + '&format=json' + '&api_key=' + this.api_key + params_t + '&jsoncallback=?';
+	};
+
+	Flickr.prototype.build_sign_url = function(method, params) {
+		var params_t = '';
+		if(Object.keys(params).length > 0){
+			params_t = '&' + $.param(params);
+		}
+		var url = 'https://api.flickr.com/services/rest/?method=' + method + '&format=json' + '&api_key=' + this.api_key + params_t + '&nojsoncallback=1';
+		return url + '&api_sig=' + generateUrlSign(this.secret, url);
+	};
+
 	Flickr.prototype.authGetToken = function(options) {
-		var method = 'flickr.auth.getToken';
-		
-		var url ='https://api.flickr.com/services/rest/?method=' + method 
-		+ '&format=json' 
-		+ '&api_key=' + this.api_key
-		+ '&frob=' + options.frob
-		+ '&nojsoncallback=1'; // !! WARNING !!
-
-		var signUrl = url + '&api_sig=' + generateUrlSign(this.secret, url);
-
+		var signUrl = this.build_sign_url('flickr.auth.getToken', options.params)
 		this.requestUrl(signUrl, options, function(data){
 			options.callback(data);
 		});
 	}
+	
 	Flickr.prototype.addPhotoToPhotosets = function(options) {
-		var method = 'flickr.photosets.addPhoto';
+		// var method = 'flickr.photosets.addPhoto';
 		
-		var url ='https://api.flickr.com/services/rest/?method=' + method 
-		+ '&format=json' 
-		+ '&api_key=' + this.api_key 
-		+ '&photoset_id=' + options.photoset_id 
-		+ '&photo_id=' + options.photo_id 
-		+ '&auth_token=' + options.auth_token
-		+ '&nojsoncallback=1'; // !! WARNING !!
+		// var url ='https://api.flickr.com/services/rest/?method=' + method 
+		// + '&format=json' 
+		// + '&api_key=' + this.api_key 
+		// + '&photoset_id=' + options.photoset_id 
+		// + '&photo_id=' + options.photo_id 
+		// + '&auth_token=' + options.auth_token
+		// + '&nojsoncallback=1'; // !! WARNING !!
 
-		var signUrl = url + '&api_sig=' + generateUrlSign(this.secret, url);
+		// var signUrl = url + '&api_sig=' + generateUrlSign(this.secret, url);
+
+		var signUrl = this.build_sign_url('flickr.photosets.addPhoto', options.params)
 
 		this.requestUrl(signUrl, options, function(data){
 			options.callback(data);
 		});
 	}	
 	Flickr.prototype.deletePhoto = function(options) {
-		var method = 'flickr.photos.delete';
+		// var method = 'flickr.photos.delete';
 		
-		var url ='https://api.flickr.com/services/rest/?method=' + method 
-		+ '&format=json'
-		+ '&api_key=' + this.api_key
-		+ '&photo_id=' + options.photo_id
-		+ '&auth_token=' + options.auth_token
-		+ '&nojsoncallback=1'; // !! WARNING !!
+		// var url ='https://api.flickr.com/services/rest/?method=' + method 
+		// + '&format=json'
+		// + '&api_key=' + this.api_key
+		// + '&photo_id=' + options.photo_id
+		// + '&auth_token=' + options.auth_token
+		// + '&nojsoncallback=1'; // !! WARNING !!
 
-		var signUrl = url + '&api_sig=' + generateUrlSign(this.secret, url);
+		// var signUrl = url + '&api_sig=' + generateUrlSign(this.secret, url);
+
+		var signUrl = this.build_sign_url('flickr.photos.delete', options.params)
 
 		this.requestUrl(signUrl, options, function(data){
 			options.callback(data);
