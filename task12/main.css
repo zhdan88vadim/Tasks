@@ -19,7 +19,9 @@ body {
     border: 0;
     margin-top: 25px;
 }
-
+.gallery-photos ul {
+  list-style-type: none;
+}
 .gallery-photos .gallery-item {
     float: left;
     width: 240px;
