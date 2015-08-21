@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="flickrGallery">
+<head>
+	<meta charset="UTF-8">
+	<title>flickrGallery</title>
+	<link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="../bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
+	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="css/spinner.css">
+	<link rel="stylesheet" href="css/main.css">
+
+</head>
+<body ng-controller="GalleryListCtrl">
+
+	<div style="display: block;" class="page">
+		
+		<nav class="navbar navbar-default">
+			<!--  navbar-fixed-top -->
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">Photo Gallery</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#">{{ user.fullname }}</a></li>
+						<li><a ng-show="!user" href="#">Not authorized</a></li>
+						<li><a ng-href="{{ authUrl }}">Sign In</a></li>
+						<li><a href="#">Profile</a></li>
+						<li><a href="#">Help</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container">
+
+			<div class="row">
+				<div class="col-md-3">
+
+					<div class="gallery-controll">
+						<ul ng-repeat="photoset in photosets" class="nav nav-pills photoset-list" role="tablist">
+							<li ng-click="setPhotoset(photoset.id)" ng-class="{active: curPhotosetId == photoset.id}" role="presentation">
+								<a href="#">
+									<span>{{ photoset.id }}</span>
+									<span class="badge">{{ photoset.photos }}</span>
+								</a>
+							</li>
+						</ul>
+						<button ng-disabled="curPhotosetId == 0" type="button" class="btn btn-warning">Upload Photo</button>
+						<div class="message-info">
+							<h4>Log</h4>
+							<ul class="list-group">
+								<li ng-repeat-start="message in messagesInfo" ng-repeat-end class="list-group-item">{{ message }}</li>
+							</ul>
+						</div>
+
+					</div>
+
+				</div>
+				<div class="col-md-9">
+					<div class="gallery-photos">
+
+						<ul ng-repeat="photo in photos">
+							<li class="gallery-item">
+								<div class="photo-container">
+									<button ng-click="deletePhoto(photo.id)" type="button" class="btn btn-default btn-delete-photo">
+										<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+									</button>
+									<img ng-src="http://farm{{photo.farm}}.static.flickr.com/{{photo.server}}/{{photo.id}}_{{photo.secret}}_n.jpg" src="" alt="">
+								</div>
+								<div class="photo-info">
+									<span data-bind="text: title"></span>
+								</div>
+							</li>
+						</ul>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+	<script src="../../bower_components/jquery/dist/jquery.js"></script>
+	<script src="../../bower_components/angular/angular.js"></script>
+	<script src="../../bower_components/angular-animate/angular-animate.js"></script>
+	<script src="../../bower_components/angular-route/angular-route.js"></script>
+	<script src="../../bower_components/angular-resource/angular-resource.js"></script>
+	
+	<script src="js/md5.js"></script>
+	<script src="js/flicker.js"></script>
+	<script src="js/utils.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/services.js"></script>
+	<script src="js/controllers.js"></script>
+</body>
+</html>
