@@ -3,19 +3,34 @@
 var flickrServices = angular.module('flickrServices', []);
 
 
+// /* QueryService */
+
+// flickrServices.factory('$queryService', ['$q', '$http', '$location', function ($q, $http, $location) {
+
+// 		var queryService = {};
+
+// 		queryService.getFrob = function() {
+// 			return $location.search().frob;
+// 		};
+// 		return queryService;
+// 	}]);
+
+
 /* AuthService */
 
-flickrServices.factory('$authService', ['$q', function ($q) {
+flickrServices.factory('$authService', ['$q', '$http', function ($q, $http) {
 
 		var authService = {};
 
-		authService.authGetToken = function() {
+		authService.authGetToken = function(frob) {
 			var deferred = $q.defer();
+		
 			flickr.authGetToken({
 				params: {
-					frob: QueryString.frob
+					frob: frob
 				},
-				'callback': function(result){
+				callback: function(result){
+					console.log(result);
 					if (result.stat !== "ok")
 						deferred.reject(result);
 					else
@@ -29,7 +44,31 @@ flickrServices.factory('$authService', ['$q', function ($q) {
 			var authUrl = 'http://flickr.com/services/auth/?';
 			authUrl += 'api_key=' + app.api_key;
 			authUrl += '&perms=' + 'delete';
+			authUrl + '&callback=JSON_CALLBACK';
 			return authUrl + '&api_sig=' + generateUrlSign(app.secret, authUrl);
+		};
+
+		authService.getFrob = function(url) {
+			var deferred = $q.defer();
+			
+			//$http.get(url)
+			
+			// $http({ 
+			// 	method: 'JSONP',
+			// 	url: url
+			//  })
+
+			$http.jsonp(url)
+			.then(function(result) {
+				debugger;
+				deferred.resolve(result);
+			})
+			// .error(function(result) {
+			// 	debugger;				
+			// 	deferred.reject(result);
+			// });
+
+			return deferred.promise;
 		};
 
 		return authService;

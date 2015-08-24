@@ -2,7 +2,7 @@
 
 var flickrControllers = angular.module('flickrControllers', []);
 
-flickrControllers.controller('GalleryListCtrl', ['$scope', '$q', '$authService', '$galleryService', galleryListCtrl]);
+flickrControllers.controller('GalleryListCtrl', ['$scope', '$q', '$authService', '$location', '$galleryService', galleryListCtrl]);
 
 
 function galleryListCtrl ($scope, $q, $authService, $galleryService) {
@@ -25,17 +25,27 @@ function galleryListCtrl ($scope, $q, $authService, $galleryService) {
 	$scope.authUrl = $authService.authUrl();
 	$scope.curPhotosetId = 0;
 	$scope.messagesInfo = [];
+	
+	//var paramFrob = $location.search().frob;
 
 
-	var promiseAuth = $authService.authGetToken();
-	promiseAuth.then(function(data) {
-		$scope.user = {
-			'fullname': data.auth.user.fullname,
-			'token': data.auth.token._content,
-			'nsid': data.auth.user.nsid
-		};
-		loadPhotosetsList();
+	var promiseFrob = $authService.getFrob($scope.authUrl);
+	promiseFrob.then(function(data) {
+		
+		debugger;
+		
+		var promiseAuth = $authService.authGetToken(frob);
+		promiseAuth.then(function(data) {
+			$scope.user = {
+				'fullname': data.auth.user.fullname,
+				'token': data.auth.token._content,
+				'nsid': data.auth.user.nsid
+			};
+			loadPhotosetsList();
+		});
+
 	});
+
 
 	$scope.setPhotoset = function(id) {
 		$scope.curPhotosetId = id;

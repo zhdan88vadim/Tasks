@@ -29,10 +29,10 @@ function parseQueryParametrs(query) {
 return query_string;
 }
 
-var QueryString = function () {
-	var query = window.location.search.substring(1);
-	return parseQueryParametrs(query);
-}();
+// var QueryString = function () {
+// 	var query = window.location.search.substring(1);
+// 	return parseQueryParametrs(query);
+// }();
 
 function generateUrlSign(secret, url){
 	var query = url.substring(url.indexOf("?") + 1);

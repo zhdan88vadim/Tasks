@@ -2,13 +2,13 @@
 <html lang="en" ng-app="flickrGallery">
 <head>
 	<meta charset="UTF-8">
-	<title>flickrGallery</title>
+	<title>Flickr Gallery</title>
 	<link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css">
 	<link rel="stylesheet" href="../bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
 	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
 	<link rel="stylesheet" href="css/spinner.css">
 	<link rel="stylesheet" href="css/main.css">
-
+	<base href="/">
 </head>
 <body ng-controller="GalleryListCtrl">
 
@@ -75,7 +75,7 @@
 									<img ng-src="http://farm{{photo.farm}}.static.flickr.com/{{photo.server}}/{{photo.id}}_{{photo.secret}}_n.jpg" src="" alt="">
 								</div>
 								<div class="photo-info">
-									<span data-bind="text: title"></span>
+									<span>{{ photo.title }}</span>
 								</div>
 							</li>
 						</ul>
@@ -97,8 +97,9 @@
 	<script src="js/md5.js"></script>
 	<script src="js/flicker.js"></script>
 	<script src="js/utils.js"></script>
-	<script src="js/app.js"></script>
 	<script src="js/services.js"></script>
 	<script src="js/controllers.js"></script>
+	<script src="js/app.js"></script>
+
 </body>
 </html>
