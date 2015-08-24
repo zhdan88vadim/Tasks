@@ -2,10 +2,17 @@
 
 var flickrControllers = angular.module('flickrControllers', []);
 
-flickrControllers.controller('GalleryListCtrl', ['$scope', '$q', '$authService', '$location', '$galleryService', galleryListCtrl]);
+flickrControllers.controller('GalleryListCtrl', ['$scope', '$q', '$authService', '$location', '$galleryService', '$queryService', galleryListCtrl]);
 
 
-function galleryListCtrl ($scope, $q, $authService, $galleryService) {
+function galleryListCtrl ($scope, $q, $authService, $location, $galleryService, $queryService) {
+
+	function loadPhotosetsList() {
+		var promiseLoadList = $galleryService.loadPhotosetsList($scope.user.nsid);
+		promiseLoadList.then(function(data) {
+			$scope.photosets = data.photosets.photoset;
+		});
+	}
 
 	function loadPhotosetPhotos(id) {
 		var promiseloadPhotos = $galleryService.loadPhotosetPhotos($scope.user.nsid, id);
@@ -14,27 +21,12 @@ function galleryListCtrl ($scope, $q, $authService, $galleryService) {
 		});
 	}
 
-	function loadPhotosetsList(){
-		var promiseLoadList = $galleryService.loadPhotosetsList($scope.user.nsid);
-		promiseLoadList.then(function(data) {
-			$scope.photosets = data.photosets.photoset;
-		});
-	}
-
-
-	$scope.authUrl = $authService.authUrl();
-	$scope.curPhotosetId = 0;
-	$scope.messagesInfo = [];
-	
-	//var paramFrob = $location.search().frob;
-
-
-	var promiseFrob = $authService.getFrob($scope.authUrl);
-	promiseFrob.then(function(data) {
+	function run() {
 		
-		debugger;
-		
-		var promiseAuth = $authService.authGetToken(frob);
+		//var paramFrob = $location.search().frob;
+		var paramFrob = $queryService.getFrob();
+		if (!paramFrob) return; 
+		var promiseAuth = $authService.authGetToken(paramFrob);
 		promiseAuth.then(function(data) {
 			$scope.user = {
 				'fullname': data.auth.user.fullname,
@@ -43,9 +35,7 @@ function galleryListCtrl ($scope, $q, $authService, $galleryService) {
 			};
 			loadPhotosetsList();
 		});
-
-	});
-
+	}
 
 	$scope.setPhotoset = function(id) {
 		$scope.curPhotosetId = id;
@@ -60,5 +50,12 @@ function galleryListCtrl ($scope, $q, $authService, $galleryService) {
 			});
 		}
 	};
+
+
+	$scope.authUrl = $authService.authUrl();
+	$scope.curPhotosetId = 0;
+	$scope.messagesInfo = [];
+
+	run();
 
 }

@@ -3,26 +3,26 @@
 var flickrServices = angular.module('flickrServices', []);
 
 
-// /* QueryService */
+/* QueryService */
 
-// flickrServices.factory('$queryService', ['$q', '$http', '$location', function ($q, $http, $location) {
-
-// 		var queryService = {};
-
-// 		queryService.getFrob = function() {
-// 			return $location.search().frob;
-// 		};
-// 		return queryService;
-// 	}]);
+flickrServices.factory('$queryService', ['$q', '$location', function ($q, $location) {
+		var queryService = {};
+		queryService.getFrob = function() {
+			return $location.search().frob;
+		};
+		return queryService;
+	}]);
 
 
 /* AuthService */
 
-flickrServices.factory('$authService', ['$q', '$http', function ($q, $http) {
+flickrServices.factory('$authService', ['$q', '$http', '$rootScope', function ($q, $http, $rootScope) {
 
 		var authService = {};
 
 		authService.authGetToken = function(frob) {
+			if (!frob) throw new Error('Error! Frob parameter is not specified!');
+
 			var deferred = $q.defer();
 		
 			flickr.authGetToken({
@@ -35,6 +35,8 @@ flickrServices.factory('$authService', ['$q', '$http', function ($q, $http) {
 						deferred.reject(result);
 					else
 						deferred.resolve(result);
+
+					$rootScope.$apply(); // Warning! Karma tests don't work without it!
 				}
 			});
 			return deferred.promise;
@@ -50,18 +52,11 @@ flickrServices.factory('$authService', ['$q', '$http', function ($q, $http) {
 
 		authService.getFrob = function(url) {
 			var deferred = $q.defer();
-			
-			//$http.get(url)
-			
-			// $http({ 
-			// 	method: 'JSONP',
-			// 	url: url
-			//  })
-
 			$http.jsonp(url)
 			.then(function(result) {
 				debugger;
 				deferred.resolve(result);
+				$rootScope.$apply(); // Warning! Karma tests don't work without it!				
 			})
 			// .error(function(result) {
 			// 	debugger;				
@@ -77,11 +72,12 @@ flickrServices.factory('$authService', ['$q', '$http', function ($q, $http) {
 
 /* GalleryService */
 
-flickrServices.factory('$galleryService', ['$q', function ($q) {
+flickrServices.factory('$galleryService', ['$q', '$rootScope', function ($q, $rootScope) {
 
 		var galleryService = {};
 
 		galleryService.loadPhotosetsList = function(user_nsid) {
+			if (!user_nsid) throw new Error('Error! Input parameter is not specified!');			
 			var deferred = $q.defer();
 
 			flickr.photosetsGetList({
@@ -90,16 +86,17 @@ flickrServices.factory('$galleryService', ['$q', function ($q) {
 					console.log(result);
 					
 					if(!result) return; /* WHY ?? */
-					if (result.stat !== "ok") 
-						deferred.reject(status);
+					result.stat !== "ok" ? deferred.reject(result) : deferred.resolve(result);
 
-					deferred.resolve(result);
+					$rootScope.$apply(); // Warning! Karma tests don't work without it!
 				}
 			});
 			return deferred.promise;
 		}
 
 		galleryService.loadPhotosetPhotos = function(user_nsid, photosetId) {
+			if (!user_nsid && !photosetId) throw new Error('Error! Input parameters are not specified!');
+			
 			var deferred = $q.defer();
 
 			flickr.photosetsGetPhotos({
@@ -109,16 +106,15 @@ flickrServices.factory('$galleryService', ['$q', function ($q) {
 					console.log(result);
 					
 					if(!result) return; /* WHY ?? */
-					if (result.stat !== "ok") 
-						deferred.reject(status);
-
-					deferred.resolve(result);
+					result.stat !== "ok" ? deferred.reject(result) : deferred.resolve(result);
 				}
 			});
 			return deferred.promise;
 		}
 
 		galleryService.deletePhoto = function(photo_id, auth_token) {
+			if (!photo_id && !auth_token) throw new Error('Error! Input parameters are not specified!');
+			
 			var deferred = $q.defer();
 
 			flickr.deletePhoto({
@@ -130,10 +126,7 @@ flickrServices.factory('$galleryService', ['$q', function ($q) {
 					console.log(result);
 					
 					if(!result) return; /* WHY ?? */
-					if (result.stat !== "ok") 
-						deferred.reject(status);
-
-					deferred.resolve(result);
+					result.stat !== "ok" ? deferred.reject(result) : deferred.resolve(result);
 				}
 			});
 			return deferred.promise;
