@@ -22,6 +22,7 @@
     "angular-route": "1.4.x",
     "angular-resource": "1.4.x",
     "angular-animate": "1.4.x",
-    "protractor": "~2.1.0"
+    "protractor": "~2.1.0",
+    "angular-file-model": "~0.3.1"
   }
 }

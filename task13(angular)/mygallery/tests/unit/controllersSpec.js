@@ -1,7 +1,15 @@
 ﻿	describe('GalleryListCtrl', function(){
 		var $galleryService, $authService, $rootScope, $location; //, createController;
-		var frob = "72157657674012972-ee9af09f035f3349-134797858";
-		var user, photosets;
+		var frob = "72157657311331639-5e53294798e9e494-134797858";
+		var userPhotosetId = "72157657002842319";
+		var user = {}, photosets, photos;
+
+
+		if(localStorage.getItem('test_user_token')) {
+			user.token = localStorage.getItem('test_user_token');
+			user.nsid = localStorage.getItem('test_user_nsid');
+		}
+
 
 		beforeEach(function(){
 			module('flickrGallery')
@@ -39,7 +47,17 @@
 		// });
 
 		it('should get auth token by frob', function(done) {
-			var promise = $authService.authGetToken(frob);
+			
+			if(localStorage.getItem('test_user_token')) {
+				expect('Skip this test!').toBe('Skip this test!');
+				done();
+
+				return;
+			}
+
+
+
+			var promise = $authService.getToken(frob);
 			promise.then(function(data) {
 				user = {
 					'fullname': data.auth.user.fullname,
@@ -47,6 +65,9 @@
 					'nsid': data.auth.user.nsid
 				};
 				
+				localStorage.setItem('test_user_token', user.token);
+				localStorage.setItem('test_user_nsid', user.nsid);
+
 				expect(data.stat).toBe('ok');
 				done();
 			},
@@ -56,14 +77,13 @@
 			});
 		});
 
-		it('should load photosets list from server', function(done) {
+		it('should load photosets from server', function(done) {
 			var promise = $galleryService.loadPhotosetsList(user.nsid);
 			promise.then(function(data) {
 				photosets = data.photosets.photoset;
 
 				expect(data.stat).toBe('ok');
 				expect(photosets.length).toBe(3);
-				expect(photosets).toContain(3);
 				done();
 			},
 			function(data) {
@@ -72,21 +92,13 @@
 			});
 		});
 
-		it('test toContain', function(done) {
-			var objects = [ {id:234234, length: 67} ];
-
-			expect(objects).toContain({ id: 234234, length: 67 });
-			done();
-		});
-
-
-		it('should load photos list for photoset ', function(done) {
-			var promise = $galleryService.loadPhotosetPhotos(user.nsid, id);
+		it('should load photos from photoset 72157657002842319', function(done) {
+			var promise = $galleryService.loadPhotosetPhotos(user.nsid, userPhotosetId);
 			promise.then(function(data) {
-				photosets = data.photosets.photoset;
+				photos = data.photoset.photo;
 
 				expect(data.stat).toBe('ok');
-				expect(photosets.length).toBe(3);
+				expect(photos.length).toBeGreaterThan(20);
 				done();
 			},
 			function(data) {

@@ -1,5 +1,6 @@
 
-var flickrGallery = angular.module('flickrGallery', ['ngRoute', 'flickrControllers', 'flickrServices'])
+var flickrGallery = angular.module('flickrGallery', 
+	['ngRoute', 'flickrControllers', 'flickrServices', 'dialogService', 'file-model'])
 .config(['$locationProvider', function AppConfig($locationProvider) {
 	$locationProvider.html5Mode(true);
 }]);
