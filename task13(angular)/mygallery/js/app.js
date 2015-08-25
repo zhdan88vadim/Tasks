@@ -29,15 +29,3 @@ flickrGallery.config(['$routeProvider',
 			redirectTo: '/gallery'
 		});
 	}]);
-
-
-// var flickrGallery = angular.module('flickrGallery', ['flickrControllers', 'flickrServices']);
-
-// flickrGallery.config(['$locationProvider', 
-// 	function AppConfig($locationProvider) {
-
-// 	// enable html5Mode for pushstate ('#'-less URLs)
-// 	$locationProvider.html5Mode(true);
-// 	//$locationProvider.hashPrefix('!');
-
-// }]);

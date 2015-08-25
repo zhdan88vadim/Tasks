@@ -159,18 +159,18 @@ flickrServices.factory('$galleryService', ['$q', '$rootScope', '$authService', f
 			processData: false,
 			cache: false,
 			contentType: false,
-			success: function (result) { 
+			success: function (result) {
 				if(!result) return; /* WHY ?? */
 				var statItem = result.getElementsByTagName('rsp').item(0);
 				var resultStat = statItem.attributes.getNamedItem('stat').textContent;
 
 				var photoId = result.getElementsByTagName('photoid').item(0).textContent;
 
-				resultStat !== "ok" ? deferred.reject(-1) : deferred.resolve({ photoId: photoId });
+				resultStat !== "ok" ? deferred.reject(0) : deferred.resolve({ photoId: photoId });
 					$rootScope.$apply(); // Warning! Karma tests don't work without it!	
 				},
 				error: function () {
-					alert("Error!");
+					deferred.reject(-1);
 				}
 			});
 

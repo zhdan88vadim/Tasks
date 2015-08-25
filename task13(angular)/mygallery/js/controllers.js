@@ -27,6 +27,14 @@ function galleryListCtrl ($scope, $q, $authService, $location, $galleryService, 
 		});
 	}
 
+	function addPhoto(photoId) {
+		var promiseAddPhotoToPhotoset = $galleryService.addPhotoToPhotoset(photoId, $scope.curPhotosetId);
+		promiseAddPhotoToPhotoset.then(function(data) {
+			if (data.stat === "ok")
+				$scope.messagesInfo.push('The photo: ' + photoId + ' was added to photoset: ' + $scope.curPhotosetId);
+		});
+	}
+
 	function run() {
 		
 		//var paramFrob = $location.search().frob;
@@ -55,14 +63,6 @@ function galleryListCtrl ($scope, $q, $authService, $location, $galleryService, 
 			});
 		}
 	};
-
-	function addPhoto(photoId) {
-		var promiseAddPhotoToPhotoset = $galleryService.addPhotoToPhotoset(photoId, $scope.curPhotosetId);
-		promiseAddPhotoToPhotoset.then(function(data) {
-			if (data.stat === "ok")
-				$scope.messagesInfo.push('The photo: ' + photoId + ' was added to photoset: ' + $scope.curPhotosetId);
-		});
-	}
 
 	$scope.openUploadDialog = function() {
 		// The data for the dialog
@@ -113,7 +113,7 @@ function galleryListCtrl ($scope, $q, $authService, $location, $galleryService, 
 	$scope.curPhotosetId = 0;
 	$scope.messagesInfo = [];
 
-	run();
+	//run();
 
 }
 
