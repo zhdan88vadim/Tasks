@@ -1,30 +1,17 @@
 ﻿	describe('GalleryListCtrl', function() {
 		var $galleryService, $authService, $rootScope, $location; //, createController;
 		
-		var frob = "72157657753508402-9930d1a15656ace7-134797858";
+		var frob = "72157657711426336-8595a1a82ca46723-134797858";
+		
 		var userPhotosetId = "72157657002842319";
-		var uploadPhotoId;
 
-		var user = {}, photosets, photos;
-
-
-		if(localStorage.getItem('test_user_token')) {
-			user.token = localStorage.getItem('test_user_token');
-			user.nsid = localStorage.getItem('test_user_nsid');
-		}
+		var uploadPhotoId, photosets, photos, user;
 
 		beforeEach(function(){
 			module('flickrGallery');
 		});
 
 		beforeEach(inject(function($injector) {
-			
-			$queryServiceFake = {
-				getFrob: function() {
-					return frob;
-				}
-			};
-
 			$location = $injector.get('$location');
 			$rootScope = $injector.get('$rootScope');
 			var $controller = $injector.get('$controller');
@@ -37,47 +24,29 @@
 			// 	});
 			// };
 
-			$galleryService = $injector.get('$galleryService');
-			$authService = $injector.get('$authService');
+			if (!$authService)
+				$authService = $injector.get('$authService');
+			
+			if (!$galleryService)
+				$galleryService = $injector.get('$galleryService', {
+					$authService : $authService
+			});
 
-			if(localStorage.getItem('test_user_token')) {
-				
-				$authService.setUser(
-					'User Name',
-					localStorage.getItem('test_user_token'),
-					localStorage.getItem('test_user_nsid'),
-					true);
-			}
 
+			
 		}));
 
-	// it('should set the auth url from $authService', function() {
-	// 	var controller = createController();
-	// 	expect($rootScope.authUrl)
-	// 	.toBe('http://flickr.com/services/auth/?api_key=30aa04e510115263def50e2092c99255&perms=delete&api_sig=84400919cd2e826bdb3b6a50a2824035');
-	// });
-
 	it('should get auth token by frob', function(done) {
-
-		if(localStorage.getItem('test_user_token')) {
-			expect('Skip this test!').toBe('Skip this test!');
-			done();
-			return;
-		}
-
 		var promise = $authService.getToken(frob);
 		promise.then(function() {
-
+			
 			user = $authService.getUser();
-
-			localStorage.setItem('test_user_token', user.token);
-			localStorage.setItem('test_user_nsid', user.nsid);
 
 			expect(user.isAuthorized).toBe(true);
 			done();
 		},
 		function() {
-			expect('The token has not been received.').toBe('The token has not been received.');
+			expect('Error').toBe('The token has not been received.');
 			done();
 		});
 	});
@@ -129,9 +98,9 @@
 			expect(data.photoId).toBeGreaterThan(0);
 			done();
 		},
-		function(error) {
+		function(data) {
+			expect('server return message: ' + data.message).toBe('ok');
 			done();
-			console.log("Cancelled");
 		});
 	});
 
@@ -144,27 +113,25 @@
 		});
 	});
 
+	it('should delete upload photo from photoset 72157657002842319', function(done) {
 
-	it('should add upload photo to photoset 72157657002842319', function(done) {
-
-		var promise = $galleryService.addPhotoToPhotoset(uploadPhotoId, userPhotosetId);
+		var promise = $galleryService.deletePhoto(uploadPhotoId);
 		promise.then(function(data) {
 			expect(data.stat).toBe("ok");
 			done();
 		});
 	});
-
 
 });
 
 
 
-	// describe('Test to print out jasmine version', function() {
-	// 	it('prints jasmine version', function() {
-	// 		console.log('jasmine-version:');
-	// 		console.log(jasmine.version || (jasmine.getEnv().versionString && jasmine.getEnv().versionString()));
-	// 	});
-	// });
+// describe('Test to print out jasmine version', function() {
+// 	it('prints jasmine version', function() {
+// 		console.log('jasmine-version:');
+// 		console.log(jasmine.version || (jasmine.getEnv().versionString && jasmine.getEnv().versionString()));
+// 	});
+// });
 
 
 

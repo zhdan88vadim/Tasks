@@ -48,7 +48,6 @@ flickrServices.service('$authService', ['$q', '$http', '$rootScope', function ($
 				frob: frob
 			},
 			callback: function(result){
-				console.log(result);
 				if (result.stat == "ok") {
 
 					authService.setUser(
@@ -105,8 +104,6 @@ flickrServices.factory('$galleryService', ['$q', '$rootScope', '$authService', f
 		flickr.photosetsGetList({
 			user_id: user_nsid,
 			callback: function(result){
-				console.log(result);
-
 				if(!result) return; /* WHY ?? */
 				result.stat !== "ok" ? deferred.reject(result) : deferred.resolve(result);
 					$rootScope.$apply(); // Warning! Karma tests don't work without it!
@@ -124,8 +121,6 @@ flickrServices.factory('$galleryService', ['$q', '$rootScope', '$authService', f
 			user_id: user_nsid,
 			photoset_id: photosetId,
 			callback: function(result){
-				console.log(result);
-
 				if(!result) return; /* WHY ?? */
 				result.stat !== "ok" ? deferred.reject(result) : deferred.resolve(result);
 					$rootScope.$apply(); // Warning! Karma tests don't work without it!					
@@ -201,8 +196,6 @@ flickrServices.factory('$galleryService', ['$q', '$rootScope', '$authService', f
 				auth_token: user.token
 			},
 			callback: function(result) {
-				console.log(result);
-
 				if(!result) return; /* WHY ?? */
 				result.stat !== "ok" ? deferred.reject(result) : deferred.resolve(result);
 					$rootScope.$apply(); // Warning! Karma tests don't work without it!					
@@ -225,8 +218,6 @@ flickrServices.factory('$galleryService', ['$q', '$rootScope', '$authService', f
 				auth_token: user.token
 			},
 			callback: function(result){
-				console.log(result);
-
 				if(!result) return; /* WHY ?? */
 				result.stat !== "ok" ? deferred.reject(result) : deferred.resolve(result);
 					$rootScope.$apply(); // Warning! Karma tests don't work without it!					

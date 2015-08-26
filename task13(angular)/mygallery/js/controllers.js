@@ -85,12 +85,13 @@ function galleryListCtrl ($scope, $q, $authService, $location, $galleryService, 
 			}
 		};
 
-		// Open the dialog
 		dialogService.open("myDialog","dialogTemplate.html", model, options)
 		.then(function(result) {
 
 			console.log("Close");
 			console.log(result);
+
+			if (!result.file) return; // Exit  if the file is not selected.
 
 			var photoInfo = {};
 			photoInfo.file = result.file;
