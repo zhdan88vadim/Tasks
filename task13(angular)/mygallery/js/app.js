@@ -3,12 +3,16 @@ var flickrGallery = angular.module('flickrGallery',
 	['ngRoute', 'flickrControllers', 'flickrServices', 'dialogService', 'file-model'])
 .config(['$locationProvider', function AppConfig($locationProvider) {
 	$locationProvider.html5Mode(true);
-}]);
+}])
+.constant("appConfig", {
+	"api_key": "30aa04e510115263def50e2092c99255",
+	"secret": "d89088c4ba7489d6"
+});
 
 flickrGallery.config(['$routeProvider',
 	function($routeProvider) {
 		$routeProvider
-		.when('/gallery', {
+		.when('/', {
 			//templateUrl: '',
 			controller: 'GalleryListCtrl',
 			// I would like to simply pass the string to the
@@ -26,6 +30,6 @@ flickrGallery.config(['$routeProvider',
 			// }
 		})
 		.otherwise({
-			redirectTo: '/gallery'
+			redirectTo: '/'
 		});
 	}]);

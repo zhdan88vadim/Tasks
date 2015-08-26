@@ -1,13 +1,4 @@
 
-var app = {};
-app.api_key = '30aa04e510115263def50e2092c99255';
-app.secret = 'd89088c4ba7489d6';
-
-var flickr = new Flickr({
-	api_key: app.api_key,
-	secret: app.secret
-});
-
 function parseQueryParametrs(query) {
 	var query_string = {};
 	//var query = window.location.search.substring(1);

@@ -3,6 +3,22 @@
 var flickrServices = angular.module('flickrServices', []);
 
 
+/* FlickrService */
+
+flickrServices.service('$flickrService', ['$q', 'appConfig', function ($q, appConfig) {
+	var flickrService = {};
+	var flickr = new Flickr({
+		api_key: appConfig.api_key,
+		secret: appConfig.secret
+	});	
+
+	flickrService.getFlickr = function() {
+		return flickr;
+	};
+	return flickrService;
+}]);
+
+
 /* QueryService */
 
 flickrServices.factory('$queryService', ['$q', '$location', function ($q, $location) {
@@ -16,127 +32,129 @@ flickrServices.factory('$queryService', ['$q', '$location', function ($q, $locat
 
 /* AuthService */
 
-flickrServices.service('$authService', ['$q', '$http', '$rootScope', function ($q, $http, $rootScope) {
+flickrServices.service('$authService', ['$q', '$http', '$rootScope', 'appConfig', '$flickrService',
+	function ($q, $http, $rootScope, appConfig, $flickrService) {
 
-	var authService = {};
-	
-	var user = {
-		fullname: '',
-		token: '',
-		nsid: '',
-		isAuthorized: false
-	};
+		var authService = {};
 
-	authService.getUser = function() {
-		return user;
-	};
+		var user = {
+			fullname: '',
+			token: '',
+			nsid: '',
+			isAuthorized: false
+		};
 
-	authService.setUser = function(fullname, token, nsid, isAuthorized) {
-		user.fullname = fullname;
-		user.token = token;
-		user.nsid = nsid;
-		user.isAuthorized = isAuthorized;
-	};
+		authService.getUser = function() {
+			return user;
+		};
 
-	authService.getToken = function(frob) {
-		if (!frob) throw new Error('Error! Frob parameter is not specified!');
+		authService.setUser = function(fullname, token, nsid, isAuthorized) {
+			user.fullname = fullname;
+			user.token = token;
+			user.nsid = nsid;
+			user.isAuthorized = isAuthorized;
+		};
 
-		var deferred = $q.defer();
-		
-		flickr.authGetToken({
-			params: {
-				frob: frob
-			},
-			callback: function(result){
-				if (result.stat == "ok") {
+		authService.getToken = function(frob) {
+			if (!frob) throw new Error('Error! Frob parameter is not specified!');
 
-					authService.setUser(
-						result.auth.user.fullname,
-						result.auth.token._content,
-						result.auth.user.nsid,
-						true);
+			var deferred = $q.defer();
 
-					deferred.resolve();
-				}
-				else {
-					deferred.reject();
-				}
+			$flickrService.getFlickr().authGetToken({
+				params: {
+					frob: frob
+				},
+				callback: function(result){
+					if (result.stat == "ok") {
+
+						authService.setUser(
+							result.auth.user.fullname,
+							result.auth.token._content,
+							result.auth.user.nsid,
+							true);
+
+						deferred.resolve();
+					}
+					else {
+						deferred.reject();
+					}
 
 				$rootScope.$apply(); // Warning! Karma tests don't work without it!
 			}
 		});
-		return deferred.promise;
-	};
+			return deferred.promise;
+		};
 
-	authService.authUrl = function() {
-		var authUrl = 'http://flickr.com/services/auth/?';
-		authUrl += 'api_key=' + app.api_key;
-		authUrl += '&perms=' + 'delete';
-		authUrl + '&callback=JSON_CALLBACK';
-		return authUrl + '&api_sig=' + generateUrlSign(app.secret, authUrl);
-	};
+		authService.authUrl = function() {
+			var authUrl = 'http://flickr.com/services/auth/?';
+			authUrl += 'api_key=' + appConfig.api_key;
+			authUrl += '&perms=' + 'delete';
+			authUrl + '&callback=JSON_CALLBACK';
+			return authUrl + '&api_sig=' + generateUrlSign(appConfig.secret, authUrl);
+		};
 
-	authService.getFrob = function(url) {
-		var deferred = $q.defer();
-		$http.jsonp(url)
-		.then(function(result) {
-			debugger;
-			deferred.resolve(result);
+		authService.getFrob = function(url) {
+			var deferred = $q.defer();
+			$http.jsonp(url)
+			.then(function(result) {
+				debugger;
+				deferred.resolve(result);
 				$rootScope.$apply(); // Warning! Karma tests don't work without it!				
 			});
-		return deferred.promise;
-	};
+			return deferred.promise;
+		};
 
-	return authService;
-}]);
+		return authService;
+	}]);
 
 
 /* GalleryService */
 
-flickrServices.factory('$galleryService', ['$q', '$rootScope', '$authService', function ($q, $rootScope, $authService) {
+flickrServices.factory('$galleryService', ['$q', '$rootScope', '$authService', 'appConfig', '$flickrService',
+	function ($q, $rootScope, $authService, appConfig, $flickrService) {
 
-	var galleryService = {};
+		var galleryService = {};
 
-	galleryService.loadPhotosetsList = function(user_nsid) {
-		if (!user_nsid) throw new Error('Error! Input parameter is not specified!');			
-		var deferred = $q.defer();
+		galleryService.loadPhotosetsList = function(user_nsid) {
+			if (!user_nsid) throw new Error('Error! Input parameter is not specified!');			
+			var deferred = $q.defer();
 
-		flickr.photosetsGetList({
-			user_id: user_nsid,
-			callback: function(result){
-				if(!result) return; /* WHY ?? */
-				result.stat !== "ok" ? deferred.reject(result) : deferred.resolve(result);
+			$flickrService.getFlickr().photosetsGetList({
+				user_id: user_nsid,
+				callback: function(result){
+					if(!result) return; /* WHY ?? */
+					result.stat !== "ok" ? deferred.reject(result) : deferred.resolve(result);
 					$rootScope.$apply(); // Warning! Karma tests don't work without it!
 				}
 			});
-		return deferred.promise;
-	}
+			return deferred.promise;
+		}
 
-	galleryService.loadPhotosetPhotos = function(user_nsid, photosetId) {
-		if (!user_nsid && !photosetId) throw new Error('Error! Input parameters are not specified!');
-		
-		var deferred = $q.defer();
+		galleryService.loadPhotosetPhotos = function(user_nsid, photosetId) {
+			if (!user_nsid && !photosetId) throw new Error('Error! Input parameters are not specified!');
 
-		flickr.photosetsGetPhotos({
-			user_id: user_nsid,
-			photoset_id: photosetId,
-			callback: function(result){
-				if(!result) return; /* WHY ?? */
-				result.stat !== "ok" ? deferred.reject(result) : deferred.resolve(result);
+			var deferred = $q.defer();
+
+			$flickrService.getFlickr().photosetsGetPhotos({
+				user_id: user_nsid,
+				photoset_id: photosetId,
+				callback: function(result){
+					if(!result) return; /* WHY ?? */
+					result.stat !== "ok" ? deferred.reject(result) : deferred.resolve(result);
 					$rootScope.$apply(); // Warning! Karma tests don't work without it!					
 				}
 			});
-		return deferred.promise;
-	}
+			return deferred.promise;
+		}
 
-	galleryService.uploadPhoto = function(photoInfo) {
-		if (!photoInfo) throw new Error('Error! Input parameters are not specified!');
-		var user = $authService.getUser();
-		if(!user.isAuthorized) throw new Error('Error! Is not authorized!');
+		galleryService.uploadPhoto = function(photoInfo) {
+			if (!photoInfo) throw new Error('Error! Input parameters are not specified!');
+			var user = $authService.getUser();
+			if(!user.isAuthorized) throw new Error('Error! Is not authorized!');
 
-		var deferred = $q.defer();
+			var deferred = $q.defer();
 
-		var data = new FormData();
+			var data = new FormData();
 
 		// var files = $(photoInfo.elementFile).get(0).files;
 		// if (files.length > 0) {
@@ -148,15 +166,15 @@ flickrServices.factory('$galleryService', ['$q', '$rootScope', '$authService', f
 		var tempUrl = 'https://up.flickr.com/services/upload/?' 
 		+ 'title=' + photoInfo.title
 		+ '&description=' + photoInfo.description
-		+ '&api_key=' + app.api_key 
+		+ '&api_key=' + appConfig.api_key 
 		+ '&auth_token=' + user.token;
 
 		data.append("photo", photoInfo.file);
 		data.append("title", photoInfo.title);
 		data.append("description", photoInfo.description);
-		data.append("api_key", app.api_key);
+		data.append("api_key", appConfig.api_key);
 		data.append("auth_token", user.token);
-		data.append("api_sig", generateUrlSign(app.secret, tempUrl));
+		data.append("api_sig", generateUrlSign(appConfig.secret, tempUrl));
 
 		$.ajax("https://up.flickr.com/services/upload/", {
 			data: data,
@@ -189,7 +207,7 @@ flickrServices.factory('$galleryService', ['$q', '$rootScope', '$authService', f
 
 		var deferred = $q.defer();
 
-		flickr.addPhotoToPhotosets({
+		$flickrService.getFlickr().addPhotoToPhotosets({
 			params: {
 				photo_id: photo_id,
 				photoset_id: photoset_id,
@@ -212,7 +230,7 @@ flickrServices.factory('$galleryService', ['$q', '$rootScope', '$authService', f
 
 		var deferred = $q.defer();
 
-		flickr.deletePhoto({
+		$flickrService.getFlickr().deletePhoto({
 			params: {
 				photo_id: photo_id,
 				auth_token: user.token

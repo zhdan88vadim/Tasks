@@ -45,7 +45,7 @@ function galleryListCtrl ($scope, $q, $authService, $location, $galleryService, 
 
 		promiseAuth.then(function() {
 			$scope.isAuthorized = true;
-			
+
 			var nsid = $authService.getUser().nsid;
 			loadPhotosetsList(nsid);
 		}, function() {
@@ -119,8 +119,9 @@ function galleryListCtrl ($scope, $q, $authService, $location, $galleryService, 
 	$scope.messagesInfo = [];
 	$scope.isAuthorized = false;
 
+	debugger;
+	
 	run();
-
 }
 
 
