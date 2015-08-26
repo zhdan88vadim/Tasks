@@ -29,7 +29,7 @@
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="#">{{ user.fullname }}</a></li>
-						<li><a ng-show="!user" href="#">Not authorized</a></li>
+						<li><a ng-show="!isAuthorized" href="#">Not authorized</a></li>
 						<li><a ng-href="{{ authUrl }}">Sign In</a></li>
 						<li><a href="#">Profile</a></li>
 						<li><a href="#">Help</a></li>
