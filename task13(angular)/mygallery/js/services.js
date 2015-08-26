@@ -20,11 +20,22 @@ flickrServices.service('$authService', ['$q', '$http', '$rootScope', function ($
 
 	var authService = {};
 	
-	authService.user = {
+	var user = {
 		fullname: '',
 		token: '',
 		nsid: '',
 		isAuthorized: false
+	};
+
+	authService.getUser = function() {
+		return user;
+	};
+
+	authService.setUser = function(fullname, token, nsid, isAuthorized) {
+		user.fullname = fullname;
+		user.token = token;
+		user.nsid = nsid;
+		user.isAuthorized = isAuthorized;
 	};
 
 	authService.getToken = function(frob) {
@@ -40,12 +51,11 @@ flickrServices.service('$authService', ['$q', '$http', '$rootScope', function ($
 				console.log(result);
 				if (result.stat == "ok") {
 
-					authService.user = {
-						'fullname': result.auth.user.fullname,
-						'token': result.auth.token._content,
-						'nsid': result.auth.user.nsid,
-						isAuthorized: true
-					};
+					authService.setUser(
+						result.auth.user.fullname,
+						result.auth.token._content,
+						result.auth.user.nsid,
+						true);
 
 					deferred.resolve();
 				}
@@ -126,7 +136,7 @@ flickrServices.factory('$galleryService', ['$q', '$rootScope', '$authService', f
 
 	galleryService.uploadPhoto = function(photoInfo) {
 		if (!photoInfo) throw new Error('Error! Input parameters are not specified!');
-		var user = $authService.user;
+		var user = $authService.getUser();
 		if(!user.isAuthorized) throw new Error('Error! Is not authorized!');
 
 		var deferred = $q.defer();
@@ -179,7 +189,7 @@ flickrServices.factory('$galleryService', ['$q', '$rootScope', '$authService', f
 
 	galleryService.addPhotoToPhotoset = function(photo_id, photoset_id) {
 		if (!photo_id) throw new Error('Error! Input parameters are not specified!');
-		var user = $authService.user;
+		var user = $authService.getUser();
 		if(!user.isAuthorized) throw new Error('Error! Is not authorized!');
 
 		var deferred = $q.defer();
@@ -204,7 +214,7 @@ flickrServices.factory('$galleryService', ['$q', '$rootScope', '$authService', f
 
 	galleryService.deletePhoto = function(photo_id) {
 		if (!photo_id) throw new Error('Error! Input parameters are not specified!');
-		var user = $authService.user;
+		var user = $authService.getUser();
 		if(!user.isAuthorized) throw new Error('Error! Is not authorized!');
 
 		var deferred = $q.defer();

@@ -44,14 +44,16 @@ function galleryListCtrl ($scope, $q, $authService, $location, $galleryService, 
 		var promiseAuth = $authService.getToken(paramFrob);
 
 		promiseAuth.then(function() {
-			var nsid = $authService.user.nsid;
+			var nsid = $authService.getUser().nsid;
 			loadPhotosetsList(nsid);
+		}, function() {
+			alert('The token has not been received.');
 		});
 	}
 
 	$scope.setPhotoset = function(id) {
 		$scope.curPhotosetId = id;
-		var nsid = $authService.user.nsid;
+		var nsid = $authService.getUser().nsid;
 		loadPhotosetPhotos(nsid, id);
 	};
 
@@ -67,8 +69,8 @@ function galleryListCtrl ($scope, $q, $authService, $location, $galleryService, 
 	$scope.openUploadDialog = function() {
 		// The data for the dialog
 		var model = {
-			title: "title",
-			description: "description"
+			title: 'title',
+			description: 'description'
 		};
 
 		// jQuery UI dialog options
@@ -92,8 +94,8 @@ function galleryListCtrl ($scope, $q, $authService, $location, $galleryService, 
 
 			var photoInfo = {};
 			photoInfo.file = result.file;
-			photoInfo.title = 'title';
-			photoInfo.description = 'description';
+			photoInfo.title = result.title;
+			photoInfo.description = result.description;
 
 			var promiseUloadPhoto = $galleryService.uploadPhoto(photoInfo);
 			promiseUloadPhoto.then(function(data) {
@@ -113,7 +115,7 @@ function galleryListCtrl ($scope, $q, $authService, $location, $galleryService, 
 	$scope.curPhotosetId = 0;
 	$scope.messagesInfo = [];
 
-	//run();
+	run();
 
 }
 
