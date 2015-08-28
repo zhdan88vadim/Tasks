@@ -39,7 +39,10 @@ function galleryListCtrl ($scope, $q, $authService, $location, $galleryService, 
 		
 		//var paramFrob = $location.search().frob;
 		var paramFrob = $queryService.getFrob();
+		//history.pushState({}, "Gallery", "/");
 		if (!paramFrob) return;
+		if ($authService.getUser().isAuthorized) return;
+
 
 		var promiseAuth = $authService.getToken(paramFrob);
 
@@ -59,7 +62,9 @@ function galleryListCtrl ($scope, $q, $authService, $location, $galleryService, 
 		loadPhotosetPhotos(nsid, id);
 	};
 
-	$scope.deletePhoto = function(id) {
+	$scope.deletePhoto = function(id, $event) {
+		$event.stopPropagation();
+
 		if(confirm('Are you sure you want to delete the photo?')) {
 			var promiseDeletePhoto = $galleryService.deletePhoto(id);
 			promiseDeletePhoto.then(function(data) {
@@ -119,8 +124,38 @@ function galleryListCtrl ($scope, $q, $authService, $location, $galleryService, 
 	$scope.messagesInfo = [];
 	$scope.isAuthorized = false;
 
+	$scope.loading = true;
+
+	$scope.setCurrentPhoto = function(id) {
+		var currentIndex = 0;
+		var currentPhoto = null
+		
+		angular.forEach($scope.photos, function(value, index) {
+			if (value.id == id) {
+				currentPhoto = value;
+				currentIndex = parseInt(index);
+				return;
+			}
+		});
+
+		$scope.currentPhoto = (currentPhoto)? currentPhoto : null;
+		$scope.currentPhotoSrc = (currentPhoto)?'http://farm' + $scope.currentPhoto.farm + '.static.flickr.com/' + $scope.currentPhoto.server + '/' + $scope.currentPhoto.id + '_' + $scope.currentPhoto.secret + '_z.jpg' : null;
+
+		$('#photoModal img').on('load', function() {
+			var width = $('#photoModal img')[0].naturalWidth;
+			$('#photoModal').modal();
+			$('#photoModal .modal-dialog').width(width + 15 * 2);
+		}).each(function() {
+			if(this.complete) 
+				$(this).load();
+		});
+	}
+
+
 	debugger;
 	
+	console.log('run');
+
 	run();
 }
 

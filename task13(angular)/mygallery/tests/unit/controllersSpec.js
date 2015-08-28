@@ -1,7 +1,7 @@
 ﻿	describe('GalleryListCtrl', function() {
 		var $galleryService, $authService, $rootScope, $location; //, createController;
 		
-		var frob = "72157657368174670-1fa1bd04b0c2228c-134797858";
+		var frob = "72157655538332713-f71b43f319b649b7-134797858";
 		
 		var userPhotosetId = "72157657002842319";
 

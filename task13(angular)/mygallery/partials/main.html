@@ -1,0 +1,94 @@
+	<div style="display: block;" class="page">
+		
+		<nav class="navbar navbar-default">
+			<!--  navbar-fixed-top -->
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">Photo Gallery</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#">{{ user.fullname }}</a></li>
+						<li><a ng-show="!isAuthorized" href="#">Not authorized</a></li>
+						<li><a ng-href="{{ authUrl }}">Sign In</a></li>
+						<li><a href="#">Profile</a></li>
+						<li><a href="#">Help</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container">
+
+			<div class="row">
+				<div class="col-md-3">
+
+					<div class="gallery-controll">
+						<ul ng-repeat="photoset in photosets" class="nav nav-pills photoset-list" role="tablist">
+							<li ng-click="setPhotoset(photoset.id)" ng-class="{active: curPhotosetId == photoset.id}" role="presentation">
+								<a href="#">
+									<span>{{ photoset.id }}</span>
+									<span class="badge">{{ photoset.photos }}</span>
+								</a>
+							</li>
+						</ul>
+						<button ng-click="openUploadDialog()" ng-disabled="curPhotosetId == 0" type="button" class="btn btn-warning">Upload Photo</button>
+						<div class="message-info">
+							<h4>Log</h4>
+							<ul class="list-group">
+								<li ng-repeat-start="message in messagesInfo" ng-repeat-end class="list-group-item">{{ message }}</li>
+							</ul>
+						</div>
+					</div>
+
+				</div>
+				<div class="col-md-9">
+					<div class="gallery-photos">
+
+						<ul ng-repeat="photo in photos">
+							<li class="gallery-item">
+								<div ng-click="setCurrentPhoto(photo.id)" class="photo-container">
+									<button ng-click="deletePhoto(photo.id, $event)" type="button" class="btn btn-default btn-delete-photo">
+										<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+									</button>
+									<img ng-src="{{ photo | toPhotoPath }}" src="" alt="{{ photo.title }}">
+								</div>
+								<div class="photo-info">
+									<span>{{ photo.title }}</span>
+								</div>
+							</li>
+						</ul>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+	<!-- Modal -->
+	<div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+				</div>
+				<div class="modal-body">
+					<img ng-src="{{currentPhotoSrc}}" alt="">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
