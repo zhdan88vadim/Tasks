@@ -1,0 +1,218 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+
+    <style>
+        .user-dialog label,
+        .user-dialog input {
+            display: block;
+        }
+
+            .user-dialog input.text {
+                margin-bottom: 12px;
+                width: 95%;
+                padding: .4em;
+            }
+
+        .user-dialog fieldset {
+            padding: 0;
+            border: 0;
+            margin-top: 25px;
+        }
+
+        .user-dialog h1 {
+            font-size: 1.2em;
+            margin: .6em 0;
+        }
+
+        .user-dialog {
+            display: none;
+        }
+
+        .user-photo {
+            height: 60px;
+        }
+
+        table.users {
+            margin-top: 45px;
+        }
+
+            table.users td {
+                vertical-align: middle !important;
+            }
+
+        .view-image-holder img,
+        .image-holder img {
+            height: 150px;
+        }
+
+        .social-button {
+            display: inline-block;
+            margin-right: 16px;
+        }
+
+        .wrapper-social-button {
+            margin-bottom: 20px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <link rel="stylesheet" href="" data-bind="attr: { href: $root.chosenTheme().url }">
+
+
+    <div id="users-view"></div>
+
+    <div class="container">
+        <div class="row wrapper-social-button">
+            <div class="col-md-12">
+                <h3>Buttons</h3>
+
+                <!-- Button 0 -->
+                <div class="social-button">
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-via="zhdan88vadim" data-size="large">Tweet</a>
+                    <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
+
+                </div>
+
+                <!-- Button 1 -->
+                <div class="social-button">
+                    <a href="https://twitter.com/intent/tweet?screen_name=zhdan88vadim" class="twitter-mention-button" data-size="large" data-related="zhdan88vadim">Tweet to @@zhdan88vadim</a>
+                    <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
+                </div>
+
+                <!-- Button 2 -->
+                <div class="social-button">
+                    <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
+                    <script type="IN/Share" data-counter="right"></script>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-12">
+                <h3>Users List</h3>
+
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Change Theme
+			    <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" data-bind="foreach: themes">
+                        <li><a href="#" data-bind="text: name, click: $root.selectTheme">Text</a></li>
+                    </ul>
+                </div>
+
+                <table class="users table">
+                    <thead>
+                        <tr>
+                            <th>User Photo</th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Password</th>
+                            @*         <th>Image</th>*@
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: usersList">
+                        <tr>
+                            <td>
+                                <img data-bind="attr: { src: image }" src="#" alt="User Photo" class="user-photo" />
+                            </td>
+                            <td data-bind="text: id"></td>
+                            <td data-bind="text: name"></td>
+                            <td data-bind="text: email"></td>
+                            <td data-bind="text: phone"></td>
+                            <td data-bind="text: password"></td>
+                            @*      <td data-bind="text: image"></td>*@
+                            <td>
+                                <button data-bind="click: $root.editUser" class="btn btn-default" type="submit">Edit</button></td>
+                            <td>
+                                <button data-bind="click: $root.viewUser" class="btn btn-default" type="submit">View</button></td>
+                            <td>
+                                <button data-bind="click: $root.deleteUser" class="btn btn-default" type="submit">Delete</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="edit-user-dialog" class="user-dialog" title="Edit User Form" data-bind="if: user">
+        <p class="validateTips">All form fields are required.</p>
+        <form>
+            <fieldset>
+                <label for="name">Name</label>
+                <input type="text" name="name" data-bind="value: user().name" class="text ui-widget-content ui-corner-all">
+
+                <label for="email">Email</label>
+                <input type="text" name="email" data-bind="value: user().email" class="text ui-widget-content ui-corner-all">
+
+                <label for="phone">Phone</label>
+                <input type="text" name="phone" data-bind="value: user().phone" class="text ui-widget-content ui-corner-all">
+
+                <label for="password">Password</label>
+                <input type="text" name="password" data-bind="value: user().password" class="text ui-widget-content ui-corner-all">
+
+                <input id="fileUpload" type="file" /><br>
+                <div class="image-holder"></div>
+            </fieldset>
+        </form>
+    </div>
+
+    <div id="view-user-dialog" class="user-dialog" title="View User Form" data-bind="if: user">
+        <form>
+            <fieldset>
+                <label for="name">Name</label>
+                <input type="text" name="name" data-bind="value: user().name" class="text ui-widget-content ui-corner-all" readonly>
+
+                <label for="email">Email</label>
+                <input type="text" name="email" data-bind="value: user().email" class="text ui-widget-content ui-corner-all" readonly>
+
+                <label for="phone">Phone</label>
+                <input type="text" name="phone" data-bind="value: user().phone" class="text ui-widget-content ui-corner-all" readonly>
+
+                <label for="password">Password</label>
+                <input type="text" name="password" data-bind="value: user().password" class="text ui-widget-content ui-corner-all" readonly>
+
+                <div class="view-image-holder">
+                    <img data-bind="attr: { src: user().image }" src="#" alt="User Photo" />
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <div id="delete-user-dialog" class="user-dialog" title="Delete user">
+        <p>
+            <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+            Are you sure you want to delete a user?
+        </p>
+    </div>
+
+    <script src="~/Scripts/jquery-2.1.4.js"></script>
+    <script src="~/Scripts/jquery-ui-1.11.4.js"></script>
+    <script src="~/Scripts/knockout-3.3.0.debug.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+
+    <script src="~/App/Knockout/main.js"></script>
+</body>
+</html>

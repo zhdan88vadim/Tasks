@@ -1,0 +1,106 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+
+    <style>
+        .user-dialog label,
+        .user-dialog input {
+            display: block;
+        }
+
+            .user-dialog input.text {
+                margin-bottom: 12px;
+                width: 95%;
+                padding: .4em;
+            }
+
+        .user-dialog fieldset {
+            padding: 0;
+            border: 0;
+            margin-top: 25px;
+        }
+
+        .user-dialog h1 {
+            font-size: 1.2em;
+            margin: .6em 0;
+        }
+
+        .user-dialog {
+            display: none;
+        }
+
+        .user-photo {
+            height: 60px;
+        }
+
+        table.users {
+            margin-top: 45px;
+        }
+
+            table.users td {
+                vertical-align: middle !important;
+            }
+
+        .view-image-holder img,
+        .image-holder img {
+            height: 150px;
+        }
+
+        .social-button {
+            display: inline-block;
+            margin-right: 16px;
+        }
+
+        .wrapper-social-button {
+            margin-bottom: 20px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <link rel="stylesheet" href="" data-bind="attr: { href: $root.chosenTheme().url }">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-12">
+                <h3>Users List</h3>
+
+                <div id="userapp">
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <script src="~/Scripts/jquery-2.1.4.js"></script>
+    <script src="~/Scripts/jquery-ui-1.11.4.js"></script>
+    <script src="~/Scripts/underscore.js"></script>
+    <script src="~/Scripts/backbone.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+
+    <script src="~/App/Backbone/models/user.js"></script>
+    <script src="~/App/Backbone/views/userview.js"></script>
+    <script src="~/App/Backbone/collections/users.js"></script>    
+    
+    <script src="~/App/Backbone/app.js"></script>
+
+</body>
+</html>
