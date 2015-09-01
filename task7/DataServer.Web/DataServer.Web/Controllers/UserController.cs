@@ -96,7 +96,11 @@ namespace DataServer.Web.Controllers
         {
             try
             {
-                _userRepository.Add(value);
+                if (id > 0)
+                    _userRepository.Update(value);
+                else
+                    _userRepository.Add(value);
+
                 return Request.CreateResponse(HttpStatusCode.OK, value);
             }
             catch (Exception exc)

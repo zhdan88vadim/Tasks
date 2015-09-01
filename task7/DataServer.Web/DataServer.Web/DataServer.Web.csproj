@@ -129,7 +129,7 @@
     <Content Include="App\Backbone\collections\users.js" />
     <Content Include="App\Backbone\models\user.js" />
     <Content Include="App\Backbone\templates\users.html" />
-    <Content Include="App\Backbone\views\userview.js" />
+    <Content Include="App\Backbone\views\user.js" />
     <Content Include="App\Knockout\main.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
