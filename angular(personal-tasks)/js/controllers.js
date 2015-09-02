@@ -24,6 +24,10 @@ function managerListCtrl ($scope, $q, $location, $userService) {
 		$scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
 		$scope.predicate = predicate;
 	}
+	$scope.toogleShowContent = function() {
+		$scope.isShowContent = !$scope.isShowContent;
+	}
+	$scope.isShowContent = true;
 
 	$scope.predicate = 'name';
 	$scope.reverse = false;
