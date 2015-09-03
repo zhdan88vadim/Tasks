@@ -24,7 +24,7 @@ function managerListCtrl ($scope, $q, $location, $userService) {
 		$scope.isShowContent = !$scope.isShowContent;
 	}
 
-	$scope.isShowContent = true;
+	$scope.isShowContent = false;
 	$scope.predicate = 'name';
 	$scope.reverse = false;
 
