@@ -12,12 +12,8 @@ managerControllers.controller('ManagerListCtrl',
 
 function managerListCtrl ($scope, $q, $location, $userService) {
 
-	$scope.deletePhoto = function(id, $event) {
+	$scope.editPerson = function(id, $event) {
 		$event.stopPropagation();
-
-		if(confirm('Are you sure you want to delete the photo?')) {
-
-		}
 	};
 
 	$scope.order = function(predicate) {
@@ -27,8 +23,8 @@ function managerListCtrl ($scope, $q, $location, $userService) {
 	$scope.toogleShowContent = function() {
 		$scope.isShowContent = !$scope.isShowContent;
 	}
-	$scope.isShowContent = true;
 
+	$scope.isShowContent = true;
 	$scope.predicate = 'name';
 	$scope.reverse = false;
 
@@ -130,8 +126,5 @@ function managerListCtrl ($scope, $q, $location, $userService) {
 			"number": "602-919-4211"
 		}
 		]
-	}
-	];
-
-	console.log('run');
+	}];
 }

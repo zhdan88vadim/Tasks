@@ -27,7 +27,7 @@ managerFilters.filter('personFilter', function($filter) {
 
 			if ((item.firstName.toUpperCase().indexOf(search) > -1)
 			|| (item.lastName.toUpperCase().indexOf(search) > -1)
-			|| (item.age.toString().indexOf(search) > -1) 
+			|| (item.age.toString().toUpperCase().indexOf(search) > -1) 
 			|| (item.address.city.toUpperCase().indexOf(search) > -1)
 			|| (phone.toUpperCase().indexOf(search) > -1)) {
 				filtered.push(item);
