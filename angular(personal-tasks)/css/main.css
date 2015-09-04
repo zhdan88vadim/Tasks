@@ -22,3 +22,6 @@ body {
 	color: #A12727;
 	font-weight: 600;
 }
+.person-form .form-group {
+	margin-bottom: 0px;
+}
