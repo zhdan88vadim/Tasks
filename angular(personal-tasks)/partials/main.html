@@ -27,60 +27,101 @@
 					ng-click="toogleShowContent()"
 					ng-class="{ 'btn-primary': isShowContent, 'btn-default': !isShowContent }" 
 					class="btn">
-						{{ isShowContent ? "Hide Lesson Content" : "Show Lesson Content" }}
-					</button>
+					{{ isShowContent ? "Hide Lesson Content" : "Show Lesson Content" }}
+				</button>
+				<div class="separator"></div>
+				<div ng-show="isShowContent" class="main-content">
+					<div class="form-group">
+						<input ng-model="searchText" class="form-control search-text" type="text" placeholder="Enter text to filter persons">
+					</div>
 					<div class="separator"></div>
-					<div ng-show="isShowContent" class="main-content">
-						<div class="form-group">
-							<input ng-model="searchText" class="form-control search-text" type="text" placeholder="Enter text to filter persons">
-						</div>
-						<div class="separator"></div>
-						<table class="table table-striped">
-							<thead>
-								<tr>
-									<th class="col-sm-2">
-										<a ng-click="order('name')" href="">First Name</a>
-										<span class="sortorder" ng-show="predicate === 'name'" ng-class="{reverse:reverse}"></span>
-									</th>
-									<th class="col-sm-2">
-										<a ng-click="order('lastname')" href="">Last Name</a>
-										<span class="sortorder" ng-show="predicate === 'lastname'" ng-class="{reverse:reverse}"></span>
-									</th>
-									<th class="col-sm-2">
-										<a ng-click="order('age')" href="">Age</a>
-										<span class="sortorder" ng-show="predicate === 'age'" ng-class="{reverse:reverse}"></span>
-									</th>
-									<th class="col-sm-2">
-										<a ng-click="order('city')" href="">City</a>
-										<span class="sortorder" ng-show="predicate === 'city'" ng-class="{reverse:reverse}"></span>
-									</th>
-									<th class="col-sm-4"><select ng-model="selectPhoneType" ng-options="type.label for type in phoneTypes" class="form-control"></select></th>
-									<th>Actions</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr ng-repeat="person in persons 
-								| personFilter:searchText:selectPhoneType 
-								| orderBy:predicate:reverse">
-								<td>{{ person.firstName }}</td>
-								<td>{{ person.lastName }}</td>
-								<td>{{ person.age }}</td>
-								<td>{{ person.address.city }}</td>
-								<td>{{ person.phoneNumber | phoneNumber:selectPhoneType }}</td>
-								<td>
-									<button ng-click="editPerson(person, $event)" type="button" class="btn btn-default">
-										<span class="glyphicon glyphicon-pencil" aria-hidden="true">
-										</span>
-									</button>
-								</td>
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th class="col-sm-2">
+									<a ng-click="order('name')" href="">First Name</a>
+									<span class="sortorder" ng-show="predicate === 'name'" ng-class="{reverse:reverse}"></span>
+								</th>
+								<th class="col-sm-2">
+									<a ng-click="order('lastname')" href="">Last Name</a>
+									<span class="sortorder" ng-show="predicate === 'lastname'" ng-class="{reverse:reverse}"></span>
+								</th>
+								<th class="col-sm-2">
+									<a ng-click="order('age')" href="">Age</a>
+									<span class="sortorder" ng-show="predicate === 'age'" ng-class="{reverse:reverse}"></span>
+								</th>
+								<th class="col-sm-2">
+									<a ng-click="order('city')" href="">City</a>
+									<span class="sortorder" ng-show="predicate === 'city'" ng-class="{reverse:reverse}"></span>
+								</th>
+								<th class="col-sm-4"><select ng-model="selectPhoneType" ng-options="type.label for type in phoneTypes" class="form-control"></select></th>
+								<th>Actions</th>
 							</tr>
-						</tbody>
-					</table>
-				</div>
+						</thead>
+						<tbody>
+							<tr ng-repeat="person in persons 
+							| personFilter:searchText:selectPhoneType 
+							| orderBy:predicate:reverse">
+							<td>{{ person.firstName }}</td>
+							<td>{{ person.lastName }}</td>
+							<td>{{ person.age }}</td>
+							<td>{{ person.address.city }}</td>
+							<td>{{ person.phoneNumber | phoneNumber:selectPhoneType }}</td>
+							<td>
+								<button ng-click="editPerson(person, $event)" type="button" class="btn btn-default">
+									<span class="glyphicon glyphicon-pencil" aria-hidden="true">
+									</span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>
 </div>
+</div>
 
 
-<custom-modal header="some custom string or HTML header" show="any expression to evaluate dynamic show / hide of the window based on Boolean flag" ok-text="any string to show on default submit button" cancel-text="any string to show on cancel button" oncancel="bind any outer scope function here" onsubmit="bind any outer scope function here">any string or HTML content</custom-modal>
+<custom-modal
+header="some custom string or <b>HTML</b> header" 
+show="any expression to evaluate dynamic show / hide of the window based on Boolean flag" 
+ok-text="any string to show on default submit button" 
+cancel-text="any string to show on cancel button" 
+oncancel="bind any outer scope function here" 
+onsubmit="bind any outer scope function here" 
+visible="showModal">
+
+<form role="form">
+	<div class="form-group">
+		<label>Age:</label>
+		{{ age }}
+		<span>{{ dialog.age }}</span>
+	</div>
+	<div class="form-group">
+		<label>Street:</label>
+		<span>{{ dialog.street }}</span>
+	</div>
+	<div class="form-group">
+		<label>City:</label>
+		<span>{{ dialog.city }}</span>
+	</div>
+	<div class="form-group">
+		<label>State:</label>
+		<span>{{ dialog.state }}</span>
+	</div>
+	<div class="form-group">
+		<label>State:</label>
+		<span>{{ dialog.postalCode }}</span>
+	</div>
+	<div class="form-group">
+		<label>Home Number:</label>
+		<span>{{ dialog.homeNumber }}</span>
+	</div>
+	<div class="form-group">
+		<label>Fax Number:</label>
+		<span>{{ dialog.faxNumber }}</span>
+	</div>
+</form>
+
+</custom-modal>

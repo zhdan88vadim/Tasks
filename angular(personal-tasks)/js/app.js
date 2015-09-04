@@ -1,7 +1,7 @@
 'use strict';
 
 var userManager = angular.module('personManager', 
-	['ngRoute', 'managerControllers', 'managerServices', 'managerFilters', 'managerDirectives']);
+	['ngRoute', 'managerControllers', 'managerServices', 'managerFilters', 'managerDirectives', 'ngSanitize']);
 
 userManager.config(['$routeProvider', '$locationProvider',
 	function($routeProvider, $locationProvider) {

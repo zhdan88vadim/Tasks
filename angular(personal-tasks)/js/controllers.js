@@ -12,10 +12,6 @@ managerControllers.controller('ManagerListCtrl',
 
 function managerListCtrl ($scope, $q, $location, $userService) {
 
-	$scope.editPerson = function(id, $event) {
-		$event.stopPropagation();
-	};
-
 	$scope.order = function(predicate) {
 		$scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
 		$scope.predicate = predicate;
@@ -24,7 +20,29 @@ function managerListCtrl ($scope, $q, $location, $userService) {
 		$scope.isShowContent = !$scope.isShowContent;
 	}
 
-	$scope.isShowContent = false;
+	$scope.showModal = false;
+	$scope.dialog = {};
+
+	$scope.editPerson = function(curPerson, $event) {
+		$event.stopPropagation();
+		console.log(curPerson);
+
+		$scope.dialog.age = curPerson.age;
+		$scope.dialog.street = curPerson.address.streetAddress;
+		$scope.dialog.city = curPerson.address.city;
+		$scope.dialog.state = curPerson.address.state;
+		$scope.dialog.postalCode = curPerson.address.postalCode;
+		$scope.dialog.homeNumber = 234;
+		$scope.dialog.faxNumber = 123;
+
+		//$scope.showModal = !$scope.showModal;
+		$scope.showModal = true;
+		
+	};
+
+
+
+	$scope.isShowContent = true; // ------- warning! default -> false
 	$scope.predicate = 'name';
 	$scope.reverse = false;
 
