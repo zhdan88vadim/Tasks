@@ -25,6 +25,7 @@
     "protractor": "~2.1.0",
     "angular-file-model": "~0.3.1",
     "backbone": "~1.2.2",
-    "angular-sanitize": "~1.4.5"
+    "angular-sanitize": "~1.4.5",
+    "angular-ui-grid": "~3.0.5"
   }
 }
