@@ -3,7 +3,6 @@
 var managerControllers = angular.module('managerControllers', []);
 
 
-
 /* Controller - ManagerListCtrl */
 
 managerControllers.controller('ManagerListCtrl', 
@@ -25,8 +24,8 @@ function managerListCtrl ($scope, $q, $location, $userService, $filter) {
 
 	$scope.editPerson = function(person, $event) {
 		$event.stopPropagation();
-		console.log(person);
 
+		var personFullName = person.firstName + ' ' + person.lastName;
 		var phoneHome = $filter('phoneNumber')(person.phoneNumber, { name: 'home' });
 		var phoneFax = $filter('phoneNumber')(person.phoneNumber, { name: 'fax' });
 
@@ -37,7 +36,8 @@ function managerListCtrl ($scope, $q, $location, $userService, $filter) {
 		$scope.dialog.postalCode = person.address.postalCode;
 		$scope.dialog.homeNumber = phoneHome;
 		$scope.dialog.faxNumber = phoneFax;
-		$scope.dialog.header = person.firstName + ' ' + person.lastName;
+		$scope.dialog.header = personFullName;
+		$scope.personFullName = personFullName;
 
 		$scope.showModal = true;
 		
@@ -45,6 +45,10 @@ function managerListCtrl ($scope, $q, $location, $userService, $filter) {
 
 	$scope.testFunct = function(param) {
 		console.log('testFunct with param: ' + param);
+	};
+	$scope.updateLastViewed = function() {
+		$scope.lastViewedPerson = 'Last viewed: ' + $scope.personFullName;
+		$scope.showModal = false;
 	};
 
 	$scope.isShowContent = true; // ------- warning! default -> false

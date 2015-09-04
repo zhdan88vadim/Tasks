@@ -18,3 +18,7 @@ body {
 .search-text {
 	width: 30%;
 }
+.last-viewed {
+	color: #A12727;
+	font-weight: 600;
+}

@@ -6,23 +6,7 @@ managerDirectives.directive('customModal', function($parse) {
 		replace: true, // Replace with the template below
 		transclude: true, // we want to insert custom content inside the directive
 		scope: true,
-		// scope: {
-		// },
-		template: '<div class="modal fade">' + 
-		'<div class="modal-dialog">' + 
-		'<div class="modal-content">' + 
-		'<div class="modal-header">' + 
-		'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' + 
-		'<h4 ng-bind-html="dialog.header" class="modal-title"></h4>' + 
-		'</div>' + 
-		'<div class="modal-body" ng-transclude></div>' + 
-		'<div class="modal-footer">'+
-		'<button ng-click="dialog.clickCancel()" type="button" class="btn btn-default" data-dismiss="modal">{{ dialog.cancelText }}</button>' +
-		'<button ng-click="dialog.clickOk()" type="button" class="btn btn-primary">{{ dialog.okText }}</button>' +
-		'</div>' +
-		'</div>' + 
-		'</div>' + 
-		'</div>',
+		template: $('#dialog-template').html(),
 		link: function($scope, element, attrs, ctrl, transclude) {
 
 			$scope.dialog.header = attrs.header;
@@ -69,6 +53,6 @@ managerDirectives.directive('customModal', function($parse) {
 			// 	element.append(clone);
 			// });
 
-}
-}
+		}
+	}
 });

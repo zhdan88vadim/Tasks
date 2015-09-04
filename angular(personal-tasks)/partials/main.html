@@ -76,6 +76,7 @@
 						</tr>
 					</tbody>
 				</table>
+				<div class="last-viewed">{{ lastViewedPerson }}</div>
 			</div>
 		</div>
 	</div>
@@ -89,7 +90,7 @@ show="showModal"
 ok-text="Submit" 
 cancel-text="Close window" 
 oncancel="testFunct('oncancel')" 
-onsubmit="testFunct('onsubmit')">
+onsubmit="updateLastViewed()">
 
 <form role="form">
 	<div class="form-group">
