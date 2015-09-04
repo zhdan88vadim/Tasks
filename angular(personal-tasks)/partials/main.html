@@ -85,12 +85,11 @@
 
 <custom-modal
 header="some custom string or <b>HTML</b> header" 
-show="any expression to evaluate dynamic show / hide of the window based on Boolean flag" 
-ok-text="any string to show on default submit button" 
-cancel-text="any string to show on cancel button" 
-oncancel="bind any outer scope function here" 
-onsubmit="bind any outer scope function here" 
-visible="showModal">
+show="showModal" 
+ok-text="Submit" 
+cancel-text="Close window" 
+oncancel="testFunct('oncancel')" 
+onsubmit="testFunct('onsubmit')">
 
 <form role="form">
 	<div class="form-group">

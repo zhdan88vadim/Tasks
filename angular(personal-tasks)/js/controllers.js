@@ -7,10 +7,10 @@ var managerControllers = angular.module('managerControllers', []);
 /* Controller - ManagerListCtrl */
 
 managerControllers.controller('ManagerListCtrl', 
-	['$scope', '$q', '$location', '$userService', managerListCtrl]);
+	['$scope', '$q', '$location', '$userService', '$filter', managerListCtrl]);
 
 
-function managerListCtrl ($scope, $q, $location, $userService) {
+function managerListCtrl ($scope, $q, $location, $userService, $filter) {
 
 	$scope.order = function(predicate) {
 		$scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
@@ -23,24 +23,29 @@ function managerListCtrl ($scope, $q, $location, $userService) {
 	$scope.showModal = false;
 	$scope.dialog = {};
 
-	$scope.editPerson = function(curPerson, $event) {
+	$scope.editPerson = function(person, $event) {
 		$event.stopPropagation();
-		console.log(curPerson);
+		console.log(person);
 
-		$scope.dialog.age = curPerson.age;
-		$scope.dialog.street = curPerson.address.streetAddress;
-		$scope.dialog.city = curPerson.address.city;
-		$scope.dialog.state = curPerson.address.state;
-		$scope.dialog.postalCode = curPerson.address.postalCode;
-		$scope.dialog.homeNumber = 234;
-		$scope.dialog.faxNumber = 123;
+		var phoneHome = $filter('phoneNumber')(person.phoneNumber, { name: 'home' });
+		var phoneFax = $filter('phoneNumber')(person.phoneNumber, { name: 'fax' });
 
-		//$scope.showModal = !$scope.showModal;
+		$scope.dialog.age = person.age;
+		$scope.dialog.street = person.address.streetAddress;
+		$scope.dialog.city = person.address.city;
+		$scope.dialog.state = person.address.state;
+		$scope.dialog.postalCode = person.address.postalCode;
+		$scope.dialog.homeNumber = phoneHome;
+		$scope.dialog.faxNumber = phoneFax;
+		$scope.dialog.header = person.firstName + ' ' + person.lastName;
+
 		$scope.showModal = true;
 		
 	};
 
-
+	$scope.testFunct = function(param) {
+		console.log('testFunct with param: ' + param);
+	};
 
 	$scope.isShowContent = true; // ------- warning! default -> false
 	$scope.predicate = 'name';
