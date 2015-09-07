@@ -1,5 +1,6 @@
 var managerDirectives = angular.module('managerDirectives', []);
 
+
 managerDirectives.directive('customModal', function($parse) {
 	return {
 		restrict: 'E',

@@ -11,8 +11,21 @@ managerControllers.controller('ManagerListCtrl',
 
 function managerListCtrl ($scope, $q, $location, $userService, $filter, uiGridConstants) {
 
-	$scope.$watch('searchText', function(newValue, oldValue) {
+	function gridRefresh() {
 		$scope.gridApi.grid.refresh();
+	}
+
+	$scope.phoneTypes = [
+	{ name: 'home', label: 'Home Phone Number'}, 
+	{name: 'fax', label: 'Fax Number'}];
+
+	$scope.selectPhoneType = $scope.phoneTypes[0];
+
+	$scope.$watch('searchText', function(newValue, oldValue) {
+		gridRefresh();
+	});
+	$scope.$watch('selectPhoneType', function(newValue, oldValue) {
+		gridRefresh();
 	});
 
 	$scope.gridOptions = {
@@ -29,26 +42,18 @@ function managerListCtrl ($scope, $q, $location, $userService, $filter, uiGridCo
 		{field: 'age' },
 		{field: 'address.city', name: 'city'},
 		{
+			filterHeaderTemplate: '<div class="ui-grid-filter-container"><select ng-model="$parent.$parent.$parent.$parent.$parent.selectPhoneType" ng-options="type.label for type in $parent.$parent.$parent.$parent.$parent.phoneTypes" class="form-control"></select></div>',
 			field: 'phoneNumber', 
-			cellFilter: 'phoneNumber:this.$parent.$parent.$parent.$parent.$parent.$parent.$parent.selectPhoneType',
-			filter: {
-				type: uiGridConstants.filter.SELECT,
-				selectOptions: [
-				{ value: '1', label: 'home' },
-				{ value: '2', label: 'fax' }]
-			}
+			cellFilter: 'phoneNumber:$parent.$parent.$parent.$parent.$parent.$parent.$parent.selectPhoneType',
 		},
 		{
 			enableColumnMenus: false,
-			enableColumnMenus: false,
 			enableSorting: false,
-			enableFiltering: false,
 			name: 'edit',
 			displayName: '',
 			width: 50,
-			//cellTemplate: '<div><button ng-click="grid.appScope.editPerson(row.entity, $event)">doSomething</button></div>'
 			cellTemplate: '<div class="ui-grid-cell-contents"><button ng-click="grid.appScope.editPerson(row.entity, $event)" type="button" class="btn btn-default">'
-			+ '<span class="glyphicon glyphicon-pencil" aria-hidden="true">'
+			+ '<span class="glyphicon glyphicon-pencil">'
 			+ '</span></button></div>'
 		}]
 	};
@@ -57,6 +62,7 @@ function managerListCtrl ($scope, $q, $location, $userService, $filter, uiGridCo
 	$scope.gridOptions.columnDefs[1].enableFiltering = false;
 	$scope.gridOptions.columnDefs[2].enableFiltering = false;
 	$scope.gridOptions.columnDefs[3].enableFiltering = false;
+	$scope.gridOptions.columnDefs[5].enableFiltering = false;
 
 
 	$scope.singleFilter = function(renderableRows) {
@@ -81,10 +87,6 @@ function managerListCtrl ($scope, $q, $location, $userService, $filter, uiGridCo
 		});
 		return renderableRows;
 	};
-
-
-
-
 
 	$scope.order = function(predicate) {
 		$scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
@@ -115,7 +117,6 @@ function managerListCtrl ($scope, $q, $location, $userService, $filter, uiGridCo
 		$scope.personFullName = personFullName;
 
 		$scope.showModal = true;
-		
 	};
 
 	$scope.testFunct = function(param) {
@@ -129,12 +130,6 @@ function managerListCtrl ($scope, $q, $location, $userService, $filter, uiGridCo
 	$scope.isShowContent = true; // ------- warning! default -> false
 	$scope.predicate = 'name';
 	$scope.reverse = false;
-
-	$scope.phoneTypes = [
-	{ name: 'home', label: 'Home Phone Number'}, 
-	{name: 'fax', label: 'Fax Number'}];
-
-	$scope.selectPhoneType = $scope.phoneTypes[0];
 
 	$scope.persons = [
 	{
@@ -229,7 +224,6 @@ function managerListCtrl ($scope, $q, $location, $userService, $filter, uiGridCo
 		}
 		]
 	}];
-
 
 
 	$scope.gridOptions.data = $scope.persons;

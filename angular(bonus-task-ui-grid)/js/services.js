@@ -10,8 +10,6 @@ managerServices.service('$userService', ['$q', '$http', '$rootScope',
 
 		var userService = {};
 
-
-
 		return userService;
 	}]);
 
