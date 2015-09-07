@@ -1,0 +1,27 @@
+body {
+	/*    padding-top: 50px;*/
+}
+.sortorder {
+	color: #337AB7;
+}
+.sortorder:after {
+	content: '\25b2';
+}
+.sortorder.reverse:after {
+	content: '\25bc';
+}
+.separator {
+	margin-top: 20px;
+	padding-top: 20px;
+	border-top: 1px solid #F2EAEA;
+}
+.search-text {
+	width: 30%;
+}
+.last-viewed {
+	color: #A12727;
+	font-weight: 600;
+}
+.person-form .form-group {
+	margin-bottom: 0px;
+}
