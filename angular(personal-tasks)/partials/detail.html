@@ -1,13 +1,28 @@
 
 <h2>Edit person: {{ personfullName }}</h2>
 
-<form name="form" class="person-form" role="form">
+<form name="form" class="person-form" role="form" novalidate>
 	<div class="col-md-10 no-rpad no-lpad">
 		<div class="separator"></div>
 		<div class="col-md-6 no-lpad">
 			<div class="form-group">
 				<label>Age *</label>
-				<input ng-model="person.age" ng-value="person.age" type="text" class="form-control" id="age" required></input>
+				<input 
+				ng-model="person.age" 
+				ng-value="person.age" 
+				ng-min="2"
+				ng-max="199"
+				ng-required="true"
+				name="inAge" 
+				type="number" 
+				class="form-control" 
+				id="age">
+			</input>
+				<div ng-show="form.$submitted || form.inAge.$touched">
+					<small ng-show="form.inAge.$error.required">Age is required.</small>
+					<small ng-show="form.inAge.$error.min">Age should be more than 0.</small>
+					<small ng-show="form.inAge.$error.max">maxlength</small>
+				</div>
 			</div>
 			<div class="form-group">
 				<label>Street</label>
