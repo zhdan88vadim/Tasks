@@ -1,0 +1,50 @@
+
+<h2>Edit person: {{ personfullName }}</h2>
+
+<form name="form" class="person-form" role="form">
+	<div class="col-md-10 no-rpad no-lpad">
+		<div class="separator"></div>
+		<div class="col-md-6 no-lpad">
+			<div class="form-group">
+				<label>Age *</label>
+				<input ng-model="person.age" ng-value="person.age" type="text" class="form-control" id="age" required></input>
+			</div>
+			<div class="form-group">
+				<label>Street</label>
+				<input ng-model="person.address.streetAddress" ng-value="person.address.streetAddress" type="text" class="form-control" id="street"></input>
+			</div>
+			<div class="form-group">
+				<label>City *</label>
+				<input ng-model="person.address.city" ng-value="person.address.city" type="text" class="form-control" id="city"></input>
+			</div>
+			<div class="form-group">
+				<label>State</label>
+				<input ng-model="person.address.state" ng-value="person.address.state" type="text" class="form-control" id="state"></input>
+			</div>
+		</div>
+
+		<div class="col-md-6 no-rpad">
+			<div class="form-group">
+				<label>State</label>
+				<input ng-model="person.address.postalCode" ng-value="person.address.postalCode" type="text" class="form-control" id="postalCode"></input>
+			</div>
+			<div class="form-group">
+				<label>Home Number *</label>
+				<input ng-model="person.homePhone" ng-value="person.phoneNumber | phoneNumber:{'name': 'home'}" type="text" class="form-control" id="homeNumber"></input>
+			</div>
+			<div class="form-group">
+				<label>Fax Number *</label>
+				<input ng-model="person.faxPhone" ng-value="person.phoneNumber | phoneNumber:{'name': 'fax'}" type="text" class="form-control" id="faxNumber"></input>
+			</div>
+		</div>
+
+		<div class="separator"></div>
+
+		<div class="form-group text-right">
+			<button ng-click="back()" type="submit" class="btn btn-default">Cancel</button>
+			<button  type="submit" class="btn btn-primary">Update</button>
+			<!-- ng-click="update()" -->
+		</div>
+	</div>
+</form>
+

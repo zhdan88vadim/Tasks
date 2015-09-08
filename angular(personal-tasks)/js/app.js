@@ -6,15 +6,21 @@ var userManager = angular.module('personManager',
 userManager.config(['$routeProvider', '$locationProvider',
 	function($routeProvider, $locationProvider) {
 
-		$locationProvider.html5Mode(true);
+		// Routing dont work with this code..
+		//$locationProvider.html5Mode(true);
+		//$locationProvider.hashPrefix('#');
 
 		$routeProvider
-		.when('/', {
-			templateUrl: 'partials/main.html',
+		.when('/list', {
+			templateUrl: 'partials/list.html',
 			controller: 'ManagerListCtrl',
 		})
+		.when('/person/:personId', {
+			templateUrl: 'partials/detail.html',
+			controller: 'PersonDetailCtrl',
+		})
 		.otherwise({
-			redirectTo: '/'
+			redirectTo: '/list'
 		});
 
 	}]);

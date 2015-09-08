@@ -14,6 +14,7 @@ body {
 	margin-top: 20px;
 	padding-top: 20px;
 	border-top: 1px solid #F2EAEA;
+	clear: both;
 }
 .search-text {
 	width: 30%;
@@ -22,6 +23,12 @@ body {
 	color: #A12727;
 	font-weight: 600;
 }
-.person-form .form-group {
+/*.person-form .form-group {
 	margin-bottom: 0px;
+}*/
+.person-form .no-lpad {
+	padding-left: 0;
+}
+.person-form .no-rpad {
+	padding-right: 0;
 }
