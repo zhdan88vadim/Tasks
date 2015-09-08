@@ -42,9 +42,25 @@ function managerListCtrl ($scope, $q, $location, $userService, $filter, uiGridCo
 		{field: 'age' },
 		{field: 'address.city', name: 'city'},
 		{
-			filterHeaderTemplate: '<div class="ui-grid-filter-container"><select ng-model="$parent.$parent.$parent.$parent.$parent.selectPhoneType" ng-options="type.label for type in $parent.$parent.$parent.$parent.$parent.phoneTypes" class="form-control"></select></div>',
+			filterHeaderTemplate: '<div class="ui-grid-filter-container"><select ng-model="grid.appScope.selectPhoneType" ng-options="type.label for type in grid.appScope.phoneTypes" class="form-control"></select></div>',
 			field: 'phoneNumber', 
-			cellFilter: 'phoneNumber:$parent.$parent.$parent.$parent.$parent.$parent.$parent.selectPhoneType',
+			cellFilter: 'phoneNumber:grid.appScope.selectPhoneType',
+			
+			//version 1.
+			// filterHeaderTemplate: '<div class="ui-grid-filter-container"><select ng-model="$parent.$parent.$parent.$parent.$parent.selectPhoneType" ng-options="type.label for type in $parent.$parent.$parent.$parent.$parent.phoneTypes" class="form-control"></select></div>',
+			// field: 'phoneNumber', 
+			// cellFilter: 'phoneNumber:$parent.$parent.$parent.$parent.$parent.$parent.$parent.selectPhoneType',
+			
+			//version 2.
+			// filterHeaderTemplate: '<div class="ui-grid-filter-container" ng-repeat="colFilter in col.filters"><div my-custom-dropdown></div></div>', 
+			// filter: { 
+			// 	term: 'home',
+			// 	condition: function(searchTerm, cellValue) {
+			// 		//debugger;
+			// 		return true;
+			// 	},
+			// 	options: $scope.phoneTypes     // custom attribute that goes with custom directive above 
+			// }
 		},
 		{
 			enableColumnMenus: false,

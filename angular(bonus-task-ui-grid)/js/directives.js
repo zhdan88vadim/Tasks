@@ -1,5 +1,10 @@
 var managerDirectives = angular.module('managerDirectives', []);
 
+// managerDirectives.directive('myCustomDropdown', function() {
+// 	return {
+// 		template: '<select class="form-control" ng-model="colFilter.term" ng-options="option.name as option.label for option in colFilter.options"></select>'
+// 	};
+// });
 
 managerDirectives.directive('customModal', function($parse) {
 	return {
