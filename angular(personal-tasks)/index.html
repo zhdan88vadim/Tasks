@@ -38,50 +38,50 @@
 					ng-class="{ 'btn-success': isShowContent, 'btn-default': !isShowContent }" 
 					class="btn">
 					{{ isShowContent ? "Hide Content" : "Show Content" }}
-				</button>
+					</button>
+				</div>
 			</div>
-		</div>
 
-		<div ng-show="isShowContent" class="content-main">
-			<div ng-view></div>
-		</div>
+			<div ng-show="isShowContent" class="content-main">
+				<div ng-view></div>
+			</div>
 
+		</div>
 	</div>
-</div>
 
 
-<script type="text/ng-template" id="dialog-template">
-<div class="modal fade">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-<h4 ng-bind-html="dialog.header" class="modal-title"></h4>
-</div>
-<div class="modal-body" ng-transclude></div>
-<div class="modal-footer">
-<button ng-click="dialog.clickCancel()" type="button" class="btn btn-default" data-dismiss="modal">{{ dialog.cancelText }}</button><button ng-click="dialog.clickOk()" type="button" class="btn btn-primary">{{ dialog.okText }}</button>
-</div>
-</div>
-</div>
-</div>
-</script>
+	<script type="text/ng-template" id="dialog-template">
+	<div class="modal fade">
+	<div class="modal-dialog">
+	<div class="modal-content">
+	<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h4 ng-bind-html="dialog.header" class="modal-title"></h4>
+	</div>
+	<div class="modal-body" ng-transclude></div>
+	<div class="modal-footer">
+	<button ng-click="dialog.clickCancel()" type="button" class="btn btn-default" data-dismiss="modal">{{ dialog.cancelText }}</button><button ng-click="dialog.clickOk()" type="button" class="btn btn-primary">{{ dialog.okText }}</button>
+	</div>
+	</div>
+	</div>
+	</div>
+	</script>
 
-<script src="../bower_components/jquery/dist/jquery.js"></script>
-<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
-<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
-<script src="../bower_components/angular/angular.js"></script>
-<script src="../bower_components/angular-animate/angular-animate.js"></script>
-<script src="../bower_components/angular-route/angular-route.js"></script>
-<script src="../bower_components/angular-resource/angular-resource.js"></script>
-<script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+	<script src="../bower_components/jquery/dist/jquery.js"></script>
+	<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+	<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="../bower_components/angular/angular.js"></script>
+	<script src="../bower_components/angular-animate/angular-animate.js"></script>
+	<script src="../bower_components/angular-route/angular-route.js"></script>
+	<script src="../bower_components/angular-resource/angular-resource.js"></script>
+	<script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
 
 
-<script src="./js/services.js"></script>
-<script src="./js/filters.js"></script>	
-<script src="./js/directives.js"></script>
-<script src="./js/controllers.js"></script>
-<script src="./js/app.js"></script>
+	<script src="./js/services.js"></script>
+	<script src="./js/filters.js"></script>	
+	<script src="./js/directives.js"></script>
+	<script src="./js/controllers.js"></script>
+	<script src="./js/app.js"></script>
 
 </body>
 </html>

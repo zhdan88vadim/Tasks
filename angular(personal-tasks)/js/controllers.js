@@ -15,15 +15,21 @@ function getPhone(phones, type) {
 }
 
 function personDetailCtrl($scope, $q, $location, $userService, $filter, $routeParams) {
-	$scope.person = $userService.getById($routeParams.personId);
-	
-	$scope.personfullName = $scope.person.firstName + ' ' + $scope.person.lastName;
-	$scope.personHomePhone = $filter('phoneNumber')($scope.person.phoneNumber, { name: 'home' });
-	$scope.personFaxPhone = $filter('phoneNumber')($scope.person.phoneNumber, { name: 'fax' });
 
 	$scope.back = function() {
 		$location.path('/');
 	}
+
+	$scope.person = $userService.getById($routeParams.personId);
+	
+	if (!$scope.person) {
+		$scope.personfullName = 'Warning! User Not Found!';
+		return;
+	}
+
+	$scope.personfullName = $scope.person.firstName + ' ' + $scope.person.lastName;
+	$scope.personHomePhone = $filter('phoneNumber')($scope.person.phoneNumber, { name: 'home' });
+	$scope.personFaxPhone = $filter('phoneNumber')($scope.person.phoneNumber, { name: 'fax' });
 
 	$scope.personUpdate = function() {
 		var homePhone = getPhone($scope.person.phoneNumber, 'home');
@@ -49,7 +55,7 @@ function mainCtrl ($scope, $q, $location, $userService, $filter) {
 		$scope.isShowContent = !$scope.isShowContent;
 	}
 
-	$scope.isShowContent = false; // ------- warning! default -> false
+	$scope.isShowContent = true;
 }
 
 

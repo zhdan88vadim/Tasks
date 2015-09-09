@@ -23,7 +23,7 @@
 			</input>
 				<div ng-show="form.$submitted">
 					<small ng-show="form.age.$error.required" class="help-block error">Age is required.</small>
-					<small ng-show="form.age.$error.min" class="help-block error">Age should be more than 0.</small>
+					<small ng-show="form.age.$error.min || form.age.$error.ngMin" class="help-block error">Age should be more than 0.</small>
 					<small ng-show="form.age.$error.max" class="help-block error">Unfortunately 199 years is our current system limit. Please contact Laws of Nature in case of questions.</small>
 				</div>
 			</div>
@@ -68,7 +68,7 @@
 
 		<div class="col-md-6 no-rpad">
 			<div class="form-group">
-				<label>State</label>
+				<label>Postal Code</label>
 				<input 
 				ng-model="person.address.postalCode" 
 				ng-value="person.address.postalCode" 
