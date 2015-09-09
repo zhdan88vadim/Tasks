@@ -2,7 +2,10 @@
 <h2>Edit person: {{ personfullName }}</h2>
 
 <form name="form" class="person-form" role="form" novalidate>
-	<div class="col-md-10 no-rpad no-lpad">
+
+<div class="row">
+
+	<div class="col-md-10">
 		<div class="separator"></div>
 		<div class="col-md-6 no-lpad">
 			<div class="form-group" ng-class="{'has-error': form.$submitted && form.age.$invalid}">

@@ -23,21 +23,24 @@ body {
 	color: #A12727;
 	font-weight: 600;
 }
-/*.person-form .form-group {
-	margin-bottom: 0px;
-}*/
-
-/*.person-form .no-lpad {
-	padding-left: 0;
-}
-.person-form .no-rpad {
-	padding-right: 0;
-}
-
-*/
 .has-error label {
 	color: #a94442;
 }
 .summary-error {
 	margin-top: 16px;
 }
+.content-main {
+	margin-top: 30px;
+}
+
+@media (min-width: 992px) {
+	.person-form .no-lpad {
+		padding-left: 0;
+	}
+	.person-form .no-rpad {
+		padding-right: 0;
+	}
+}
+/*.person-form .form-group {
+	margin-bottom: 0px;
+}*/

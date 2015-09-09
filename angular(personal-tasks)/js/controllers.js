@@ -49,7 +49,7 @@ function mainCtrl ($scope, $q, $location, $userService, $filter) {
 		$scope.isShowContent = !$scope.isShowContent;
 	}
 
-	$scope.isShowContent = true; // ------- warning! default -> false
+	$scope.isShowContent = false; // ------- warning! default -> false
 }
 
 
@@ -97,7 +97,6 @@ function managerListCtrl ($scope, $q, $location, $userService, $filter) {
 		$scope.showModal = false;
 	};
 
-	$scope.isShowContent = true; // ------- warning! default -> false
 	$scope.predicate = 'name';
 	$scope.reverse = false;
 

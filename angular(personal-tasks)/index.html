@@ -39,14 +39,13 @@
 					class="btn">
 					{{ isShowContent ? "Hide Content" : "Show Content" }}
 				</button>
-
-				<div class="separator"></div>
-
-				<div ng-show="isShowContent" class="main-content">
-					<div ng-view></div>
-				</div>
 			</div>
 		</div>
+
+		<div ng-show="isShowContent" class="content-main">
+			<div ng-view></div>
+		</div>
+
 	</div>
 </div>
 
