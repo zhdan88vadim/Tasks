@@ -35,3 +35,9 @@ body {
 }
 
 */
+.has-error label {
+	color: #a94442;
+}
+.summary-error {
+	margin-top: 16px;
+}

@@ -6,15 +6,32 @@ var managerControllers = angular.module('managerControllers', []);
 managerControllers.controller('PersonDetailCtrl', 
 	['$scope', '$q', '$location', '$userService', '$filter', '$routeParams', personDetailCtrl]);
 
+function getPhone(phones, type) {
+	for (var i = 0; i < phones.length; ++i) {
+		if(phones[i].type === type) {
+			return phones[i];
+		}
+	}
+}
+
 function personDetailCtrl($scope, $q, $location, $userService, $filter, $routeParams) {
 	$scope.person = $userService.getById($routeParams.personId);
+	
 	$scope.personfullName = $scope.person.firstName + ' ' + $scope.person.lastName;
+	$scope.personHomePhone = $filter('phoneNumber')($scope.person.phoneNumber, { name: 'home' });
+	$scope.personFaxPhone = $filter('phoneNumber')($scope.person.phoneNumber, { name: 'fax' });
 
 	$scope.back = function() {
 		$location.path('/');
 	}
 
-	$scope.update = function() {
+	$scope.personUpdate = function() {
+		var homePhone = getPhone($scope.person.phoneNumber, 'home');
+		var faxPhone = getPhone($scope.person.phoneNumber, 'fax');
+	
+		homePhone.number = $scope.personHomePhone;
+		faxPhone.number = $scope.personFaxPhone;
+
 		$userService.update($scope.person);
 		$location.path('/');
 	}

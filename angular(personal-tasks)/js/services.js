@@ -19,15 +19,13 @@ managerServices.service('$userService', ['$q', '$http', '$rootScope', '$filter',
 			item.address.state = person.address.state;
 			item.address.postalCode = person.address.postalCode;
 			
-			// for (var index = 0; index < item.phoneNumber.length; ++index) {
-			// 	for (var i = 0; i < person.phoneNumber.length; ++i) {
-			// 		if(item.phoneNumber[index].type === person.phoneNumber[i].name) {
-			// 			item.phoneNumber[index].number = person.phoneNumber[i];
-			// 		}
-			// 	}
-			// }
-			// debugger;
-
+			for (var index = 0; index < item.phoneNumber.length; ++index) {
+				for (var i = 0; i < person.phoneNumber.length; ++i) {
+					if(item.phoneNumber[index].type === person.phoneNumber[i].name) {
+						item.phoneNumber[index].number = person.phoneNumber[i];
+					}
+				}
+			}
 		};
 
 		userService.getById = function(id) {

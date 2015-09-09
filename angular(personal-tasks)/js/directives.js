@@ -55,7 +55,6 @@ managerDirectives.directive('ngMax', function () {
 	};
 });
 
-
 managerDirectives.directive('customModal', function($parse) {
 	return {
 		restrict: 'E',
@@ -113,6 +112,6 @@ managerDirectives.directive('customModal', function($parse) {
 			// 	element.append(clone);
 			// });
 
-}
-}
+		}
+	}
 });
