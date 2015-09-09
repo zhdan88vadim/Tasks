@@ -28,8 +28,8 @@ function personDetailCtrl($scope, $q, $location, $userService, $filter, $routePa
 	}
 
 	$scope.personfullName = $scope.person.firstName + ' ' + $scope.person.lastName;
-	$scope.personHomePhone = $filter('phoneNumber')($scope.person.phoneNumber, { name: 'home' });
-	$scope.personFaxPhone = $filter('phoneNumber')($scope.person.phoneNumber, { name: 'fax' });
+	$scope.personHomePhone = $filter('phoneNumber')($scope.person.phoneNumber, { type: 'home' });
+	$scope.personFaxPhone = $filter('phoneNumber')($scope.person.phoneNumber, { type: 'fax' });
 
 	$scope.personUpdate = function() {
 		var homePhone = getPhone($scope.person.phoneNumber, 'home');
@@ -37,6 +37,8 @@ function personDetailCtrl($scope, $q, $location, $userService, $filter, $routePa
 	
 		homePhone.number = $scope.personHomePhone;
 		faxPhone.number = $scope.personFaxPhone;
+
+		debugger;
 
 		$userService.update($scope.person);
 		$location.path('/');
@@ -78,8 +80,8 @@ function managerListCtrl ($scope, $q, $location, $userService, $filter) {
 		$event.stopPropagation();
 
 		var personFullName = person.firstName + ' ' + person.lastName;
-		var phoneHome = $filter('phoneNumber')(person.phoneNumber, { name: 'home' });
-		var phoneFax = $filter('phoneNumber')(person.phoneNumber, { name: 'fax' });
+		var phoneHome = $filter('phoneNumber')(person.phoneNumber, { type: 'home' });
+		var phoneFax = $filter('phoneNumber')(person.phoneNumber, { type: 'fax' });
 
 		$scope.dialog.age = person.age;
 		$scope.dialog.street = person.address.streetAddress;
@@ -107,8 +109,8 @@ function managerListCtrl ($scope, $q, $location, $userService, $filter) {
 	$scope.reverse = false;
 
 	$scope.phoneTypes = [
-	{ name: 'home', label: 'Home Phone Number'}, 
-	{name: 'fax', label: 'Fax Number'}];
+	{ type: 'home', label: 'Home Phone Number'}, 
+	{ type: 'fax', label: 'Fax Number'}];
 
 	$scope.selectPhoneType = $scope.phoneTypes[0];
 

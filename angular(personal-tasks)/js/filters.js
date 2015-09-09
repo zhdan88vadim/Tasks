@@ -6,7 +6,7 @@ managerFilters.filter('phoneNumber', function() {
 	return function(phones, phoneType) {
 
 		for (var index = 0; index < phones.length; ++index) {
-			if(phones[index].type === phoneType.name) {
+			if(phones[index].type === phoneType.type) {
 				return phones[index].number;
 			}
 		}

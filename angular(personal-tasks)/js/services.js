@@ -8,10 +8,18 @@ var managerServices = angular.module('managerServices', []);
 managerServices.service('$userService', ['$q', '$http', '$rootScope', '$filter',
 	function ($q, $http, $rootScope, $filter) {
 
+		function getRawPersonById(id) {
+			for (var i = 0; i < data.length; i++) {
+				if (data[i].id === +id) {
+					return data[i];
+				}
+			}
+		}
+
 		var userService = {};
 
 		userService.update = function(person) {
-			var item = userService.getById(person.id);
+			var item = getRawPersonById(person.id);
 			
 			item.age = person.age;
 			item.address.streetAddress = person.address.streetAddress;
@@ -21,25 +29,20 @@ managerServices.service('$userService', ['$q', '$http', '$rootScope', '$filter',
 			
 			for (var index = 0; index < item.phoneNumber.length; ++index) {
 				for (var i = 0; i < person.phoneNumber.length; ++i) {
-					if(item.phoneNumber[index].type === person.phoneNumber[i].name) {
-						item.phoneNumber[index].number = person.phoneNumber[i];
+					if(item.phoneNumber[index].type === person.phoneNumber[i].type) {
+						item.phoneNumber[index].number = person.phoneNumber[i].number;
 					}
 				}
 			}
 		};
 
 		userService.getById = function(id) {
-			var persons = this.getUsers();
-
-			for (var i = 0; i < persons.length; i++) {
-				if (persons[i].id === +id) {
-					return persons[i];
-				}
-			}
+			var person = getRawPersonById(id);
+			return angular.copy(person);
 		};
 
 		userService.getUsers = function() {
-			return data;
+			return angular.copy(data);
 		}
 
 		var data = [{
