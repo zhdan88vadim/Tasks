@@ -6,8 +6,8 @@
 	<thead>
 		<tr>
 			<th class="col-sm-2">
-				<a ng-click="order('name')" href="">First Name</a>
-				<span class="sortorder" ng-show="predicate === 'name'" ng-class="{reverse:reverse}"></span>
+				<a ng-click="order('firstName')" href="">First Name</a>
+				<span class="sortorder" ng-show="predicate === 'firstName'" ng-class="{reverse:reverse}"></span>
 			</th>
 			<th class="col-sm-2">
 				<a ng-click="order('lastname')" href="">Last Name</a>
@@ -18,8 +18,8 @@
 				<span class="sortorder" ng-show="predicate === 'age'" ng-class="{reverse:reverse}"></span>
 			</th>
 			<th class="col-sm-2">
-				<a ng-click="order('city')" href="">City</a>
-				<span class="sortorder" ng-show="predicate === 'city'" ng-class="{reverse:reverse}"></span>
+				<a ng-click="order('address.city')" href="">City</a>
+				<span class="sortorder" ng-show="predicate === 'address.city'" ng-class="{reverse:reverse}"></span>
 			</th>
 			<th class="col-sm-4"><select ng-model="selectPhoneType" ng-options="type.label for type in phoneTypes" class="form-control"></select></th>
 			<th>Actions</th>
