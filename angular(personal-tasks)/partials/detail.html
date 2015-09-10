@@ -76,7 +76,8 @@
 				class="form-control" 
 				id="postalCode"></input>
 			</div>
-			<div class="form-group" ng-class="{'has-error': form.$submitted && form.homePhone.$invalid}">
+			
+<!-- 			<div class="form-group" ng-class="{'has-error': form.$submitted && form.homePhone.$invalid}">
 				<label>Home Number *</label>
 				<input 
 				ng-model="personHomePhone"
@@ -89,8 +90,8 @@
 					<small ng-show="form.homePhone.$error.required" class="help-block error">Phone is required.</small>
 					<small ng-show="form.homePhone.$error.pattern" class="help-block error">Please enter correct Phone (10 digits).</small>
 				</div>
-			</div>
-			<div class="form-group" ng-class="{'has-error': form.$submitted && form.faxPhone.$invalid}">
+			</div> -->
+<!-- 			<div class="form-group" ng-class="{'has-error': form.$submitted && form.faxPhone.$invalid}">
 				<label>Fax Number *</label>
 				<input 
 				ng-model="personFaxPhone" 
@@ -103,6 +104,15 @@
 					<small ng-show="form.faxPhone.$error.required" class="help-block error">Phone is required.</small>
 					<small ng-show="form.faxPhone.$error.pattern" class="help-block error">Please enter correct Phone (10 digits).</small>
 				</div>
+			</div> -->
+
+			<div class="form-group" ng-class="{'has-error': form.$submitted && form.homePhone.$invalid}">
+				<label>Home Number *</label>
+				<phone ng-model="personHomePhone" name="homePhone" form="form"></phone>
+			</div>
+			<div class="form-group" ng-class="{'has-error': form.$submitted && form.faxPhone.$invalid}">
+				<label>Fax Number *</label>
+				<phone ng-model="personFaxPhone" name="faxPhone" form="form"></phone>
 			</div>
 		</div>
 

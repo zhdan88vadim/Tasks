@@ -38,8 +38,6 @@ function personDetailCtrl($scope, $q, $location, $userService, $filter, $routePa
 		homePhone.number = $scope.personHomePhone;
 		faxPhone.number = $scope.personFaxPhone;
 
-		debugger;
-
 		$userService.update($scope.person);
 		$location.path('/');
 	}

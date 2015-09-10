@@ -5,6 +5,45 @@ function isEmpty(value) {
 	return angular.isUndefined(value) || value === '' || value === null || value !== value;
 }
 
+managerDirectives.directive('phone', function () {
+	return {
+		restrict: 'E',
+		replace: true,
+		templateUrl: 'templates/directive-phone.html',
+		require: ['ngModel', '^form'],
+		scope: {
+			bindModel: '=ngModel',
+			form: '='
+		},
+		link: function (scope, elem, attr, ctrl) {
+			scope.elName = attr.name;
+
+			scope.$watch(scope.form.$name + '.' + scope.elName + '.$valid', 
+				function(newValue, oldValue) {
+
+					var error = scope.form[scope.elName].$error;
+					scope.requiredError = error.required;
+					scope.patternError = error.pattern;
+				});
+
+
+
+			// С таким вариантом нельзя отследить больше одной ошибки,
+			// т.е. ошибка сменилась не другую ошибку, а состояние не переключалось.
+			//scope.$watch(scope.form.$name + '.' + scope.elName + '.$valid', 
+
+
+			// scope.$watch(scope.form.$name + '.' + scope.elName + '.$error', 
+			// 	function(newValue, oldValue) {
+			// 		var error = scope.form[scope.elName].$error;
+			// 		scope.requiredError = error.required;
+			// 		scope.patternError = error.pattern;
+			// 	});
+
+		}
+	};
+});
+
 managerDirectives.directive('ngMin', function () {
 	return {
 		restrict: 'A',
@@ -112,6 +151,6 @@ managerDirectives.directive('customModal', function($parse) {
 			// 	element.append(clone);
 			// });
 
-		}
-	}
+}
+}
 });
