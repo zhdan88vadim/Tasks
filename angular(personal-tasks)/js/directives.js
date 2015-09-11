@@ -18,15 +18,34 @@ managerDirectives.directive('phone', function () {
 		link: function (scope, elem, attr, ctrl) {
 			scope.elName = attr.name;
 
-			scope.$watch(scope.form.$name + '.' + scope.elName + '.$valid', 
+			scope.$watch(scope.form.$name + '.' + scope.elName + '.$error', 
 				function(newValue, oldValue) {
+					// Skip call initialization.
+					if ( newValue === oldValue ) return;
 
 					var error = scope.form[scope.elName].$error;
 					scope.requiredError = error.required;
 					scope.patternError = error.pattern;
-				});
+				}, true);
 
 
+
+			// Рабочий вариант
+			/*When objectEquality == true, inequality of the watchExpression is 
+			determined according to the angular.equals function. To save the 
+			value of the object for later comparison, the angular.copy function 
+			is used. This therefore means that watching complex objects will have 
+			adverse memory and performance implications.
+			*/
+
+			// scope.$watch(scope.form.$name + '.' + scope.elName + '.$error', 
+			// 	function(newValue, oldValue) {
+			// 		var error = scope.form[scope.elName].$error;
+			// 		scope.requiredError = error.required;
+			// 		scope.patternError = error.pattern;
+			// 	}, true);
+
+			//-----------------------------------------------------------------
 
 			// С таким вариантом нельзя отследить больше одной ошибки,
 			// т.е. ошибка сменилась не другую ошибку, а состояние не переключалось.
@@ -151,6 +170,6 @@ managerDirectives.directive('customModal', function($parse) {
 			// 	element.append(clone);
 			// });
 
-}
-}
+		}
+	}
 });
