@@ -1,0 +1,73 @@
+<form name="customForm" class="person-form" role="form" novalidate event-submit>
+	
+	<div class="form-group" ng-class="{'has-error': customForm.$submitted && customForm.age.$invalid}">
+		<label>Age *</label>
+		<input 
+		ng-model="person.age" 
+		ng-value="person.age" 
+		ng-min="1"
+		ng-max="199"
+		ng-required="true"
+		name="age" 
+		type="number" 
+		class="form-control" 
+		id="age">
+	</input>
+		<div ng-show="customForm.$submitted">
+			<small ng-show="customForm.age.$error.required" class="help-block error">Age is required.</small>
+			<small ng-show="customForm.age.$error.min || customForm.age.$error.ngMin" class="help-block error">Age should be more than 0.</small>
+			<small ng-show="customForm.age.$error.max" class="help-block error">Unfortunately 199 years is our current system limit. Please contact Laws of Nature in case of questions.</small>
+		</div>
+	</div>
+
+
+
+
+
+
+
+	<div class="form-group" ng-class="{'has-error': customForm.$submitted && customForm.homePhone.$invalid}">
+		<label>Home Number *</label>
+		
+		<phone ng-model="personHomePhone" name="homePhone"></phone>
+	
+	</div>
+
+
+
+	<div class="form-group" ng-class="{'has-error': customForm.$submitted && customForm.faxPhone.$invalid}">
+		<label>Fax Number *</label>
+		
+		<phone ng-model="personFaxPhone" name="faxPhone"></phone>
+	
+	</div>
+
+
+
+
+
+
+
+	<div class="separator"></div>
+
+	<div class="form-group text-right">
+		<button ng-click="back()" type="button" class="btn btn-default">Cancel</button>
+		<button 
+		ng-click="customForm.$valid && personUpdate()"
+		ng-disabled="customForm.$pristine"
+		type="submit"
+		class="btn btn-primary">Update</button>
+		
+		<!-- form.$pristine || form.$invalid -->
+
+		<div 
+		ng-show="customForm.$submitted" 
+		ng-class="{'has-error': !customForm.$valid}"
+		class="summary-error"
+		>
+			<small ng-show="!customForm.$valid" class="help-block"> Please correct errors in the form above.</small>
+		</div>
+		<!-- ng-click="update()" -->
+	</div>
+
+</form>

@@ -6,7 +6,7 @@
 	ng-pattern="/\d{3}[\s.-]\d{3}[\s.-]\d{4}$/"
 	name="{{elName}}"
 	class="form-control"></input>
-	<div ng-show="form.$submitted">
+	<div ng-show="formSubmitted">
 		<small ng-show="requiredError" class="help-block">Phone is required.</small>
 		<small ng-show="patternError" class="help-block">Please enter correct Phone (10 digits).</small>
 	</div>

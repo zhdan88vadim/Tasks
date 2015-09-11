@@ -19,6 +19,10 @@ userManager.config(['$routeProvider', '$locationProvider',
 			templateUrl: 'partials/detail.html',
 			controller: 'PersonDetailCtrl',
 		})
+		.when('/test', {
+			templateUrl: 'partials/test.html',
+			controller: 'TestPhoneDerectiveCtrl',
+		})
 		.otherwise({
 			redirectTo: '/list'
 		});

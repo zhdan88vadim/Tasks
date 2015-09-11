@@ -5,29 +5,77 @@ function isEmpty(value) {
 	return angular.isUndefined(value) || value === '' || value === null || value !== value;
 }
 
-managerDirectives.directive('phone', function () {
+
+managerDirectives.directive('eventSubmit', function() {
+	return {
+		require: 'form',
+		compile: function(elem, attr) {
+
+			elem.data('augmented', true);
+
+			return function(scope, elem, attr, form) {
+				elem.on('submit', function() {
+					scope.$broadcast('form:submit', form);
+				});
+			}
+		}
+	};
+})
+
+managerDirectives.directive('phone', ['$interpolate', function ($interpolate) {
 	return {
 		restrict: 'E',
 		replace: true,
 		templateUrl: 'templates/directive-phone.html',
-		require: ['ngModel', '^form'],
+		require: '^form', // Get parent form controller.
 		scope: {
-			bindModel: '=ngModel',
-			form: '='
+			bindModel: '=ngModel', // Access to directive ngModel.
+			//bindForm: '=form'
 		},
-		link: function (scope, elem, attr, ctrl) {
+		link: function (scope, elem, attr, formCtrl) {
+			if(!elem.inheritedData('augmented')) {
+				return;
+			}
+
 			scope.elName = attr.name;
+			scope.formSubmitted = false;
+			
+			scope.$on('form:submit', function(event, form) {
+				console.log('submit');
+				scope.formSubmitted = true;
+				scope.$apply();
+			});
 
-			scope.$watch(scope.form.$name + '.' + scope.elName + '.$error', 
-				function(newValue, oldValue) {
-					// Skip call initialization.
-					if ( newValue === oldValue ) return;
+			scope.$watch(function() {
+				return formCtrl[scope.elName].$error;
+			},
+			function(newValue, oldValue) {
+				// Skip call initialization.
+				//if ( newValue === oldValue ) return;
+				var error = formCtrl[scope.elName].$error;
+				scope.requiredError = error.required;
+				scope.patternError = error.pattern;
+			}, true);
 
-					var error = scope.form[scope.elName].$error;
-					scope.requiredError = error.required;
-					scope.patternError = error.pattern;
-				}, true);
 
+
+
+			// How get name elemetn from angular expression as {{ variable }}
+			// inputEl = elem[0].querySelector('.form-control[name]');
+			// inputNgEl = angular.element(inputEl);
+			// inputName = $interpolate(inputNgEl.attr('name') || '')(scope);
+
+			// scope.$watch(scope.bindForm.$name + '.' + scope.elName + '.$error',
+
+
+			// NOT work!
+			// scope.$watch(function() {
+			// 	// NOT WORK !!
+			// 		return formCtrl.$submitted;
+			// 	}, function(newValue, oldValue) {
+			// 	console.log(newValue);
+			// 	scope.formSubmitted = newValue;
+			// });
 
 
 			// Рабочий вариант
@@ -47,7 +95,7 @@ managerDirectives.directive('phone', function () {
 
 			//-----------------------------------------------------------------
 
-			// С таким вариантом нельзя отследить больше одной ошибки,
+			// С этим вариантом нельзя отследить больше одной ошибки,
 			// т.е. ошибка сменилась не другую ошибку, а состояние не переключалось.
 			//scope.$watch(scope.form.$name + '.' + scope.elName + '.$valid', 
 
@@ -61,7 +109,7 @@ managerDirectives.directive('phone', function () {
 
 		}
 	};
-});
+}]);
 
 managerDirectives.directive('ngMin', function () {
 	return {

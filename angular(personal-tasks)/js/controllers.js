@@ -3,6 +3,8 @@
 var managerControllers = angular.module('managerControllers', []);
 
 
+/* Controller - PersonDetailCtrl */
+
 managerControllers.controller('PersonDetailCtrl', 
 	['$scope', '$q', '$location', '$userService', '$filter', '$routeParams', personDetailCtrl]);
 
@@ -44,7 +46,21 @@ function personDetailCtrl($scope, $q, $location, $userService, $filter, $routePa
 }
 
 
-/* MainCtrl - ManagerListCtrl */
+/* Controller - TestPhoneDerectiveCtrl */
+
+managerControllers.controller('TestPhoneDerectiveCtrl', 
+	['$scope', '$q', '$location', '$userService', '$filter', testPhoneDerectiveCtrl]);
+
+function testPhoneDerectiveCtrl ($scope, $q, $location, $userService, $filter) {
+	$scope.personFaxPhone = '111-222-4444';
+
+	$scope.back = function() {
+		$location.path('/');
+	}
+}
+
+
+/* Controller - MainCtrl */
 
 managerControllers.controller('MainCtrl', 
 	['$scope', '$q', '$location', '$userService', '$filter', mainCtrl]);
