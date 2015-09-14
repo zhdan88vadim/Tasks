@@ -1,0 +1,142 @@
+
+<h2>Edit person: {{ personfullName }}</h2>
+
+<form name="form" class="person-form" role="form" novalidate event-submit>
+
+<div class="row">
+
+	<div class="col-md-10">
+		<div class="separator"></div>
+		<div class="col-md-6 no-lpad">
+			<div class="form-group" ng-class="{'has-error': form.$submitted && form.age.$invalid}">
+				<label>Age *</label>
+				<input 
+				ng-model="person.age" 
+				ng-value="person.age" 
+				ng-min="1"
+				ng-max="199"
+				ng-required="true"
+				name="age" 
+				type="number" 
+				class="form-control" 
+				id="age">
+			</input>
+				<div ng-show="form.$submitted">
+					<small ng-show="form.age.$error.required" class="help-block error">Age is required.</small>
+					<small ng-show="form.age.$error.min || form.age.$error.ngMin" class="help-block error">Age should be more than 0.</small>
+					<small ng-show="form.age.$error.max" class="help-block error">Unfortunately 199 years is our current system limit. Please contact Laws of Nature in case of questions.</small>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Street</label>
+				<input 
+				ng-model="person.address.streetAddress" 
+				ng-value="person.address.streetAddress" 
+				name="streetAddress"
+				type="text"
+				class="form-control"
+				id="street"></input>
+			</div>
+			<div class="form-group" ng-class="{'has-error': form.$submitted && form.city.$invalid}">
+				<label>City *</label>
+				<input 
+				ng-model="person.address.city" 
+				ng-value="person.address.city" 
+				type="text"
+				name="city"
+				ng-minlength="3"
+				ng-maxlength="50"
+				ng-required="true"
+				class="form-control" 
+				id="city"></input>
+				<div ng-show="form.$submitted">
+					<small ng-show="form.city.$error.required" class="help-block error">City is required.</small>
+					<small ng-show="form.city.$error.minlength" class="help-block error">City name should be more than 2 characters.</small>
+					<small ng-show="form.city.$error.maxlength" class="help-block error">City name should be less than 50 characters.</small>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>State</label>
+				<input 
+				ng-model="person.address.state" 
+				ng-value="person.address.state" 
+				type="text" 
+				class="form-control" 
+				id="state"></input>
+			</div>
+		</div>
+
+		<div class="col-md-6 no-rpad">
+			<div class="form-group">
+				<label>Postal Code</label>
+				<input 
+				ng-model="person.address.postalCode" 
+				ng-value="person.address.postalCode" 
+				type="text" 
+				class="form-control" 
+				id="postalCode"></input>
+			</div>
+			
+<!-- 			<div class="form-group" ng-class="{'has-error': form.$submitted && form.homePhone.$invalid}">
+				<label>Home Number *</label>
+				<input 
+				ng-model="personHomePhone"
+				type="text"
+				name="homePhone"
+				ng-required="true"
+				ng-pattern="/\d{3}[\s.-]\d{3}[\s.-]\d{4}$/"
+				class="form-control"></input>
+				<div ng-show="form.$submitted">
+					<small ng-show="form.homePhone.$error.required" class="help-block error">Phone is required.</small>
+					<small ng-show="form.homePhone.$error.pattern" class="help-block error">Please enter correct Phone (10 digits).</small>
+				</div>
+			</div> -->
+<!-- 			<div class="form-group" ng-class="{'has-error': form.$submitted && form.faxPhone.$invalid}">
+				<label>Fax Number *</label>
+				<input 
+				ng-model="personFaxPhone" 
+				type="text"
+				ng-required="true"
+				ng-pattern="/\d{3}[\s.-]\d{3}[\s.-]\d{4}$/"
+				name="faxPhone"
+				class="form-control"></input>
+				<div ng-show="form.$submitted">
+					<small ng-show="form.faxPhone.$error.required" class="help-block error">Phone is required.</small>
+					<small ng-show="form.faxPhone.$error.pattern" class="help-block error">Please enter correct Phone (10 digits).</small>
+				</div>
+			</div> -->
+
+			<div class="form-group" ng-class="{'has-error': form.$submitted && form.homePhone.$invalid}">
+				<label>Home Number *</label>
+				<phone ng-model="personHomePhone" name="homePhone" form="form"></phone>
+			</div>
+			<div class="form-group" ng-class="{'has-error': form.$submitted && form.faxPhone.$invalid}">
+				<label>Fax Number *</label>
+				<phone ng-model="personFaxPhone" name="faxPhone" form="form"></phone>
+			</div>
+		</div>
+
+		<div class="separator"></div>
+
+		<div class="form-group text-right">
+			<button ng-click="back()" type="button" class="btn btn-default">Cancel</button>
+			<button 
+			ng-click="form.$valid && personUpdate()"
+			ng-disabled="form.$pristine"
+			type="submit"
+			class="btn btn-primary">Update</button>
+			
+			<!-- form.$pristine || form.$invalid -->
+
+			<div 
+			ng-show="form.$submitted" 
+			ng-class="{'has-error': !form.$valid}"
+			class="summary-error"
+			>
+				<small ng-show="!form.$valid" class="help-block"> Please correct errors in the form above.</small>
+			</div>
+			<!-- ng-click="update()" -->
+		</div>
+	</div>
+</form>
+

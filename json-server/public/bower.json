@@ -1,0 +1,31 @@
+{
+  "name": "task 1",
+  "version": "0.0.0",
+  "authors": [
+    "Zhdan Vadim"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "jquery-ui": "~1.11.4",
+    "knockout": "~3.3.0",
+    "bootstrap": "~3.3.5",
+    "angular": "~1.4.4",
+    "angular-mocks": "1.4.x",
+    "angular-route": "1.4.x",
+    "angular-resource": "1.4.x",
+    "angular-animate": "1.4.x",
+    "protractor": "~2.1.0",
+    "angular-file-model": "~0.3.1",
+    "backbone": "~1.2.2",
+    "angular-sanitize": "~1.4.5",
+    "angular-ui-grid": "~3.0.5"
+  }
+}
