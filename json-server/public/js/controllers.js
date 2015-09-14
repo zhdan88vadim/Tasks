@@ -6,7 +6,7 @@ var managerControllers = angular.module('managerControllers', []);
 /* Controller - PersonDetailCtrl */
 
 managerControllers.controller('PersonDetailCtrl', 
-	['$scope', '$q', '$location', '$userService', '$filter', '$routeParams', personDetailCtrl]);
+	['$scope', '$q', '$location', '$userService', '$filter', '$routeParams', 'alertsService', personDetailCtrl]);
 
 function getPhone(phones, type) {
 	for (var i = 0; i < phones.length; ++i) {
@@ -16,20 +16,32 @@ function getPhone(phones, type) {
 	}
 }
 
-function personDetailCtrl($scope, $q, $location, $userService, $filter, $routeParams) {
+function updatePhone(person, homePhone, faxPhone) {
+
+	var copyPerson = angular.copy(person);
+	//var copyPerson = person;
+
+	var homePhone = getPhone(copyPerson.phoneNumber, 'home');
+	var faxPhone = getPhone(copyPerson.phoneNumber, 'fax');
+
+	homePhone.number = homePhone.number;
+	faxPhone.number = faxPhone.number;
+
+	return copyPerson;
+}
+
+function personDetailCtrl($scope, $q, $location, $userService, $filter, $routeParams, alertsService) {
 
 	$scope.back = function() {
 		$location.path('/');
 	}
 
 	$scope.personUpdate = function() {
-		var homePhone = getPhone($scope.person.phoneNumber, 'home');
-		var faxPhone = getPhone($scope.person.phoneNumber, 'fax');
-	
-		homePhone.number = $scope.personHomePhone;
-		faxPhone.number = $scope.personFaxPhone;
 
-		$userService.update($scope.person).success(function() {
+		var personNew = updatePhone($scope.person, $scope.personHomePhone, $scope.personFaxPhone);
+
+		$userService.update(personNew).success(function() {
+			alertsService.RenderSuccessMessage('<strong>Update was successfull!</strong>');
 			$location.path('/');
 		}).error(function() {
 
@@ -95,29 +107,31 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 		$event.stopPropagation();
 
 		$scope.selectPerson = person;
-
-		var personFullName = person.firstName + ' ' + person.lastName;
-		var phoneHome = $filter('phoneNumber')(person.phoneNumber, { type: 'home' });
-		var phoneFax = $filter('phoneNumber')(person.phoneNumber, { type: 'fax' });
-
-		// $scope.dialog.age = person.age;
-		// $scope.dialog.street = person.address.streetAddress;
-		// $scope.dialog.city = person.address.city;
-		// $scope.dialog.state = person.address.state;
-		// $scope.dialog.postalCode = person.address.postalCode;
-		// $scope.dialog.homeNumber = phoneHome;
-		// $scope.dialog.faxNumber = phoneFax;
-		// $scope.dialog.header = personFullName;
-		// $scope.personFullName = personFullName;
+		
+		$scope.dialog.header = $scope.selectPerson.firstName + ' ' + $scope.selectPerson.lastName;
+		$scope.personHomePhone = $filter('phoneNumber')($scope.selectPerson.phoneNumber, { type: 'home' });
+		$scope.personFaxPhone = $filter('phoneNumber')($scope.selectPerson.phoneNumber, { type: 'fax' });
 
 		$scope.showModal = true;
-		
 	};
 
 	$scope.testFunct = function(param) {
-		console.log('testFunct with param: ' + param);
+		//console.log('testFunct with param: ' + param);
 	};
+
 	$scope.update = function() {
+
+		debugger;
+		// не обновляется scope при изменении текста.
+		
+		var personNew = updatePhone($scope.selectPerson, $scope.personHomePhone, $scope.personFaxPhone);
+
+
+		$userService.update(personNew).success(function() {
+			alertsService.RenderSuccessMessage('<strong>Update was successfull!</strong>');
+		}).error(function() {
+			alertsService.RenderErrorMessage('<strong>Update was successfull!</strong>');
+		});
 
 		$scope.showModal = false;
 	};
