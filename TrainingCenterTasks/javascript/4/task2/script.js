@@ -30,6 +30,11 @@ function TaskRunning(config) {
 TaskRunning.prototype = Object.create(Task.prototype);
 
 
+// Warning!! Для того, чтобь ссылка была на реальный конструктор, а не на 
+// конструктор родителя!!
+
+TaskRunning.prototype.constructor = TaskRunning;
+
 // __proto__: Object
 //		__proto__: Task
 // 		addSubTask: (task)
@@ -92,3 +97,13 @@ var taskRunning = new TaskRunning({
 });
 
 taskRunning.addSubTask(task);
+
+
+
+// taskRunning instanceof TaskRunning
+// true
+// taskRunning instanceof Task
+// true
+
+
+

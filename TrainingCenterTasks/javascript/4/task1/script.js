@@ -1,7 +1,6 @@
 'use strict';
 
 function Vector(x, y, z) {
-	var length = 0;
 	this.x = x;
 	this.y = y;
 	this.z = z;
