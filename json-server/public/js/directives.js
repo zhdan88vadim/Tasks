@@ -185,6 +185,8 @@ managerDirectives.directive('customModal', function($parse) {
 			$scope.model.dialog.header = attrs.header;
 			$scope.model.dialog.okText = attrs.okText;
 			$scope.model.dialog.cancelText = attrs.cancelText;
+			$scope.model.isOkDisabled = false;
+
 
 			var invokerOk = $parse(attrs.onsubmit);
 			var invokerCancel = $parse(attrs.oncancel);
@@ -195,6 +197,13 @@ managerDirectives.directive('customModal', function($parse) {
 			$scope.model.dialog.clickCancel = function() {
 				invokerCancel($scope);
 			}
+			
+			$scope.$watch(attrs.show, function(value) {
+				if(value == true)
+					$(element).modal('show');
+				else
+					$(element).modal('hide');
+			});
 
 			$scope.$watch(attrs.show, function(value) {
 				if(value == true)
