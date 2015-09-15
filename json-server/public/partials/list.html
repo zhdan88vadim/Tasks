@@ -16,33 +16,33 @@
 		<tr>
 			<th class="col-sm-2">
 				<a ng-click="order('firstName')" href="">First Name</a>
-				<span class="sortorder" ng-show="predicate === 'firstName'" ng-class="{reverse:reverse}"></span>
+				<span class="sortorder" ng-show="model.predicate === 'firstName'" ng-class="{reverse:model.reverse}"></span>
 			</th>
 			<th class="col-sm-2">
 				<a ng-click="order('lastname')" href="">Last Name</a>
-				<span class="sortorder" ng-show="predicate === 'lastname'" ng-class="{reverse:reverse}"></span>
+				<span class="sortorder" ng-show="model.predicate === 'lastname'" ng-class="{reverse:model.reverse}"></span>
 			</th>
 			<th class="col-sm-2">
 				<a ng-click="order('age')" href="">Age</a>
-				<span class="sortorder" ng-show="predicate === 'age'" ng-class="{reverse:reverse}"></span>
+				<span class="sortorder" ng-show="model.predicate === 'age'" ng-class="{reverse:model.reverse}"></span>
 			</th>
 			<th class="col-sm-2">
 				<a ng-click="order('address.city')" href="">City</a>
-				<span class="sortorder" ng-show="predicate === 'address.city'" ng-class="{reverse:reverse}"></span>
+				<span class="sortorder" ng-show="model.predicate === 'address.city'" ng-class="{reverse:model.reverse}"></span>
 			</th>
-			<th class="col-sm-4"><select ng-model="selectPhoneType" ng-options="type.label for type in phoneTypes" class="form-control"></select></th>
+			<th class="col-sm-4"><select ng-model="model.selectPhoneType" ng-options="type.label for type in model.phoneTypes" class="form-control"></select></th>
 			<th>Actions</th>
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="person in persons 
-		| personFilter:searchText:selectPhoneType 
-		| orderBy:predicate:reverse">
+		<tr ng-repeat="person in model.persons 
+		| personFilter:searchText:model.selectPhoneType 
+		| orderBy:model.predicate:model.reverse">
 		<td><a href="#/person/{{ person.id }}">{{ person.firstName }}</a></td>
 		<td>{{ person.lastName }}</td>
 		<td>{{ person.age }}</td>
 		<td>{{ person.address.city }}</td>
-		<td>{{ person.phoneNumber | phoneNumber:selectPhoneType }}</td>
+		<td>{{ person.phoneNumber | phoneNumber:model.selectPhoneType }}</td>
 		<td>
 			<button ng-click="editPerson(person, $event)" type="button" class="btn btn-default">
 				<span class="glyphicon glyphicon-pencil" aria-hidden="true">
@@ -64,7 +64,7 @@ show="showModal"
 ok-text="Submit" 
 cancel-text="Close window" 
 oncancel="" 
-onsubmit="update()">
+onsubmit="personUpdate()">
 
 
 <form name="form" class="person-form" role="form" novalidate event-submit>
@@ -77,8 +77,8 @@ onsubmit="update()">
 			<div class="form-group" ng-class="{'has-error': form.$submitted && form.age.$invalid}">
 				<label>Age *</label>
 				<input 
-				ng-model="selectPerson.age" 
-				ng-value="selectPerson.age" 
+				ng-model="model.selectPerson.age" 
+				ng-value="model.selectPerson.age" 
 				ng-min="1"
 				ng-max="199"
 				ng-required="true"
@@ -96,8 +96,8 @@ onsubmit="update()">
 			<div class="form-group">
 				<label>Street</label>
 				<input 
-				ng-model="selectPerson.address.streetAddress" 
-				ng-value="selectPerson.address.streetAddress" 
+				ng-model="model.selectPerson.address.streetAddress" 
+				ng-value="model.selectPerson.address.streetAddress" 
 				name="streetAddress"
 				type="text"
 				class="form-control"
@@ -106,8 +106,8 @@ onsubmit="update()">
 			<div class="form-group" ng-class="{'has-error': form.$submitted && form.city.$invalid}">
 				<label>City *</label>
 				<input 
-				ng-model="selectPerson.address.city" 
-				ng-value="selectPerson.address.city" 
+				ng-model="model.selectPerson.address.city" 
+				ng-value="model.selectPerson.address.city" 
 				type="text"
 				name="city"
 				ng-minlength="3"
@@ -124,8 +124,8 @@ onsubmit="update()">
 			<div class="form-group">
 				<label>State</label>
 				<input 
-				ng-model="selectPerson.address.state" 
-				ng-value="selectPerson.address.state" 
+				ng-model="model.selectPerson.address.state" 
+				ng-value="model.selectPerson.address.state" 
 				type="text" 
 				class="form-control" 
 				id="state"></input>
@@ -136,8 +136,8 @@ onsubmit="update()">
 			<div class="form-group">
 				<label>Postal Code</label>
 				<input 
-				ng-model="selectPerson.address.postalCode" 
-				ng-value="selectPerson.address.postalCode" 
+				ng-model="model.selectPerson.address.postalCode" 
+				ng-value="model.selectPerson.address.postalCode" 
 				type="text" 
 				class="form-control" 
 				id="postalCode"></input>
@@ -145,11 +145,11 @@ onsubmit="update()">
 
 			<div class="form-group" ng-class="{'has-error': form.$submitted && form.homePhone.$invalid}">
 				<label>Home Number *</label>
-				<phone ng-model="personHomePhone" name="homePhone" form="form"></phone>
+				<phone ng-model="model.personHomePhone" name="homePhone" form="form"></phone>
 			</div>
 			<div class="form-group" ng-class="{'has-error': form.$submitted && form.faxPhone.$invalid}">
 				<label>Fax Number *</label>
-				<phone ng-model="personFaxPhone" name="faxPhone" form="form"></phone>
+				<phone ng-model="model.personFaxPhone" name="faxPhone" form="form"></phone>
 			</div>
 		</div>
 

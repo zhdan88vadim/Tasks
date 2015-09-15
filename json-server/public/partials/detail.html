@@ -1,5 +1,5 @@
 
-<h2>Edit person: {{ personfullName }}</h2>
+<h2>Edit person: {{ model.personfullName }}</h2>
 
 <form name="form" class="person-form" role="form" novalidate event-submit>
 
@@ -11,8 +11,8 @@
 			<div class="form-group" ng-class="{'has-error': form.$submitted && form.age.$invalid}">
 				<label>Age *</label>
 				<input 
-				ng-model="person.age" 
-				ng-value="person.age" 
+				ng-model="model.person.age" 
+				ng-value="model.person.age" 
 				ng-min="1"
 				ng-max="199"
 				ng-required="true"
@@ -30,8 +30,8 @@
 			<div class="form-group">
 				<label>Street</label>
 				<input 
-				ng-model="person.address.streetAddress" 
-				ng-value="person.address.streetAddress" 
+				ng-model="model.person.address.streetAddress" 
+				ng-value="model.person.address.streetAddress" 
 				name="streetAddress"
 				type="text"
 				class="form-control"
@@ -40,8 +40,8 @@
 			<div class="form-group" ng-class="{'has-error': form.$submitted && form.city.$invalid}">
 				<label>City *</label>
 				<input 
-				ng-model="person.address.city" 
-				ng-value="person.address.city" 
+				ng-model="model.person.address.city" 
+				ng-value="model.person.address.city" 
 				type="text"
 				name="city"
 				ng-minlength="3"
@@ -58,8 +58,8 @@
 			<div class="form-group">
 				<label>State</label>
 				<input 
-				ng-model="person.address.state" 
-				ng-value="person.address.state" 
+				ng-model="model.person.address.state" 
+				ng-value="model.person.address.state" 
 				type="text" 
 				class="form-control" 
 				id="state"></input>
@@ -70,49 +70,20 @@
 			<div class="form-group">
 				<label>Postal Code</label>
 				<input 
-				ng-model="person.address.postalCode" 
-				ng-value="person.address.postalCode" 
+				ng-model="model.person.address.postalCode" 
+				ng-value="model.person.address.postalCode" 
 				type="text" 
 				class="form-control" 
 				id="postalCode"></input>
 			</div>
-			
-<!-- 			<div class="form-group" ng-class="{'has-error': form.$submitted && form.homePhone.$invalid}">
-				<label>Home Number *</label>
-				<input 
-				ng-model="personHomePhone"
-				type="text"
-				name="homePhone"
-				ng-required="true"
-				ng-pattern="/\d{3}[\s.-]\d{3}[\s.-]\d{4}$/"
-				class="form-control"></input>
-				<div ng-show="form.$submitted">
-					<small ng-show="form.homePhone.$error.required" class="help-block error">Phone is required.</small>
-					<small ng-show="form.homePhone.$error.pattern" class="help-block error">Please enter correct Phone (10 digits).</small>
-				</div>
-			</div> -->
-<!-- 			<div class="form-group" ng-class="{'has-error': form.$submitted && form.faxPhone.$invalid}">
-				<label>Fax Number *</label>
-				<input 
-				ng-model="personFaxPhone" 
-				type="text"
-				ng-required="true"
-				ng-pattern="/\d{3}[\s.-]\d{3}[\s.-]\d{4}$/"
-				name="faxPhone"
-				class="form-control"></input>
-				<div ng-show="form.$submitted">
-					<small ng-show="form.faxPhone.$error.required" class="help-block error">Phone is required.</small>
-					<small ng-show="form.faxPhone.$error.pattern" class="help-block error">Please enter correct Phone (10 digits).</small>
-				</div>
-			</div> -->
 
 			<div class="form-group" ng-class="{'has-error': form.$submitted && form.homePhone.$invalid}">
 				<label>Home Number *</label>
-				<phone ng-model="personHomePhone" name="homePhone" form="form"></phone>
+				<phone ng-model="model.personHomePhone" name="homePhone" form="form"></phone>
 			</div>
 			<div class="form-group" ng-class="{'has-error': form.$submitted && form.faxPhone.$invalid}">
 				<label>Fax Number *</label>
-				<phone ng-model="personFaxPhone" name="faxPhone" form="form"></phone>
+				<phone ng-model="model.personFaxPhone" name="faxPhone" form="form"></phone>
 			</div>
 		</div>
 
@@ -125,8 +96,6 @@
 			ng-disabled="form.$pristine"
 			type="submit"
 			class="btn btn-primary">Update</button>
-			
-			<!-- form.$pristine || form.$invalid -->
 
 			<div 
 			ng-show="form.$submitted" 

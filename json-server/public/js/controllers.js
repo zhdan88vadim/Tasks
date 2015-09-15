@@ -19,18 +19,24 @@ function getPhone(phones, type) {
 function updatePhone(person, homePhone, faxPhone) {
 
 	var copyPerson = angular.copy(person);
+	
+	// You can't not make a copy, then you do not need to download data from
+	// the server. But as it not good for me.
+
 	//var copyPerson = person;
 
-	var homePhone = getPhone(copyPerson.phoneNumber, 'home');
-	var faxPhone = getPhone(copyPerson.phoneNumber, 'fax');
+	var homeLink = getPhone(copyPerson.phoneNumber, 'home');
+	var faxLink = getPhone(copyPerson.phoneNumber, 'fax');
 
-	homePhone.number = homePhone.number;
-	faxPhone.number = faxPhone.number;
+	homeLink.number = homePhone;
+	faxLink.number = faxPhone;
 
 	return copyPerson;
 }
 
 function personDetailCtrl($scope, $q, $location, $userService, $filter, $routeParams, alertsService) {
+
+	$scope.model = {};
 
 	$scope.back = function() {
 		$location.path('/');
@@ -38,9 +44,11 @@ function personDetailCtrl($scope, $q, $location, $userService, $filter, $routePa
 
 	$scope.personUpdate = function() {
 
-		var personNew = updatePhone($scope.person, $scope.personHomePhone, $scope.personFaxPhone);
+		var person = updatePhone($scope.model.person, 
+			$scope.model.personHomePhone, 
+			$scope.model.personFaxPhone);
 
-		$userService.update(personNew).success(function() {
+		$userService.update(person).success(function() {
 			alertsService.RenderSuccessMessage('<strong>Update was successfull!</strong>');
 			$location.path('/');
 		}).error(function() {
@@ -50,12 +58,12 @@ function personDetailCtrl($scope, $q, $location, $userService, $filter, $routePa
 
 	$userService.getById($routeParams.personId)
 	.success(function(data) {
-		$scope.person = data;
-		$scope.personfullName = $scope.person.firstName + ' ' + $scope.person.lastName;
-		$scope.personHomePhone = $filter('phoneNumber')($scope.person.phoneNumber, { type: 'home' });
-		$scope.personFaxPhone = $filter('phoneNumber')($scope.person.phoneNumber, { type: 'fax' });
+		$scope.model.person = data;
+		$scope.model.personfullName = $scope.person.firstName + ' ' + $scope.model.person.lastName;
+		$scope.model.personHomePhone = $filter('phoneNumber')($scope.model.person.phoneNumber, { type: 'home' });
+		$scope.model.personFaxPhone = $filter('phoneNumber')($scope.model.person.phoneNumber, { type: 'fax' });
 	}).error(function() {
-		$scope.personfullName = 'Warning! User Not Found!';
+		$scope.model.personfullName = 'Warning! User Not Found!';
 	});
 }
 
@@ -66,7 +74,7 @@ managerControllers.controller('TestPhoneDerectiveCtrl',
 	['$scope', '$q', '$location', '$userService', '$filter', testPhoneDerectiveCtrl]);
 
 function testPhoneDerectiveCtrl ($scope, $q, $location, $userService, $filter) {
-	$scope.personFaxPhone = '111-222-4444';
+	$scope.model.personFaxPhone = '111-222-4444';
 
 	$scope.back = function() {
 		$location.path('/');
@@ -90,13 +98,21 @@ managerControllers.controller('PersonListCtrl',
 	['$scope', '$q', '$location', '$userService', '$filter', 'alertsService', personListCtrl]);
 
 function personListCtrl ($scope, $q, $location, $userService, $filter, alertsService) {
+	
+	function loadUsers() {
+		$userService.getUsers().success(function(data) {
+			$scope.model.persons = data;
+		});
+	}
+
+	$scope.model = {};
 
 	$scope.showModal = false;
-	$scope.dialog = {};
+	$scope.model.dialog = {};
 
 	$scope.order = function(predicate) {
-		$scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
-		$scope.predicate = predicate;
+		$scope.model.reverse = ($scope.model.predicate === predicate) ? !$scope.model.reverse : false;
+		$scope.model.predicate = predicate;
 	}
 
 	$scope.addPerson = function() {
@@ -106,11 +122,11 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 	$scope.editPerson = function(person, $event) {
 		$event.stopPropagation();
 
-		$scope.selectPerson = person;
+		$scope.model.selectPerson = person;
 		
-		$scope.dialog.header = $scope.selectPerson.firstName + ' ' + $scope.selectPerson.lastName;
-		$scope.personHomePhone = $filter('phoneNumber')($scope.selectPerson.phoneNumber, { type: 'home' });
-		$scope.personFaxPhone = $filter('phoneNumber')($scope.selectPerson.phoneNumber, { type: 'fax' });
+		$scope.model.dialog.header = $scope.model.selectPerson.firstName + ' ' + $scope.model.selectPerson.lastName;
+		$scope.model.personHomePhone = $filter('phoneNumber')($scope.model.selectPerson.phoneNumber, { type: 'home' });
+		$scope.model.personFaxPhone = $filter('phoneNumber')($scope.model.selectPerson.phoneNumber, { type: 'fax' });
 
 		$scope.showModal = true;
 	};
@@ -119,16 +135,13 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 		//console.log('testFunct with param: ' + param);
 	};
 
-	$scope.update = function() {
-
-		debugger;
-		// не обновляется scope при изменении текста.
+	$scope.personUpdate = function() {
 		
-		var personNew = updatePhone($scope.selectPerson, $scope.personHomePhone, $scope.personFaxPhone);
+		var person = updatePhone($scope.model.selectPerson, $scope.model.personHomePhone, $scope.model.personFaxPhone);
 
-
-		$userService.update(personNew).success(function() {
+		$userService.update(person).success(function() {
 			alertsService.RenderSuccessMessage('<strong>Update was successfull!</strong>');
+			loadUsers();
 		}).error(function() {
 			alertsService.RenderErrorMessage('<strong>Update was successfull!</strong>');
 		});
@@ -136,16 +149,14 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 		$scope.showModal = false;
 	};
 
-	$scope.predicate = 'name';
-	$scope.reverse = false;
+	$scope.model.predicate = 'name';
+	$scope.model.reverse = false;
 
-	$scope.phoneTypes = [
+	$scope.model.phoneTypes = [
 	{ type: 'home', label: 'Home Phone Number'}, 
 	{ type: 'fax', label: 'Fax Number'}];
 
-	$scope.selectPhoneType = $scope.phoneTypes[0];
+	$scope.model.selectPhoneType = $scope.model.phoneTypes[0];
 
-	$userService.getUsers().success(function(data) {
-		$scope.persons = data;
-	});
+	loadUsers();
 }

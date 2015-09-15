@@ -58,6 +58,18 @@ managerDirectives.directive('phone', ['$interpolate', function ($interpolate) {
 			}, true);
 
 
+			// scope.$watch(function() {
+			// 	return scope.bindModel;
+			// }, function() {
+			// 	debugger;
+			// 	scope.$eval(attr.ngModel + ' = model');
+			// });
+
+			// scope.$watch(attr.ngModel, function(val) {
+			// 	debugger;
+			// 	scope.bindModel = val;
+			// });
+
 
 
 			// How get name elemetn from angular expression as {{ variable }}
@@ -170,17 +182,17 @@ managerDirectives.directive('customModal', function($parse) {
 		template: $('#dialog-template').html(),
 		link: function($scope, element, attrs, ctrl, transclude) {
 
-			$scope.dialog.header = attrs.header;
-			$scope.dialog.okText = attrs.okText;
-			$scope.dialog.cancelText = attrs.cancelText;
+			$scope.model.dialog.header = attrs.header;
+			$scope.model.dialog.okText = attrs.okText;
+			$scope.model.dialog.cancelText = attrs.cancelText;
 
 			var invokerOk = $parse(attrs.onsubmit);
 			var invokerCancel = $parse(attrs.oncancel);
 
-			$scope.dialog.clickOk = function() {
+			$scope.model.dialog.clickOk = function() {
 				invokerOk($scope);
 			}
-			$scope.dialog.clickCancel = function() {
+			$scope.model.dialog.clickCancel = function() {
 				invokerCancel($scope);
 			}
 
@@ -207,7 +219,10 @@ managerDirectives.directive('customModal', function($parse) {
 				});
 			});
 
-			
+			// $scope.$parent["model.showModal"]
+
+
+
 			// Note
 			// Этот код нужен в том случае если используется параметр transclude: true
 			// и в шаблоне HTML, который скопирывался мы хотим использовать scope созданный в директиве.
