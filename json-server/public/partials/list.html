@@ -61,11 +61,11 @@
 <!-- forms.form.$pristine -->
 
 <custom-modal
-onsubmit="forms.form.$valid && personUpdate()"
+onsubmit="personUpdate()"
 ok-disabled="forms.form.$pristine"
 header="some custom string or <b>HTML</b> header" 
-show="showModal" 
-ok-text="Submit" 
+show="showModal"
+ok-text="Submit"
 cancel-text="Close window" 
 oncancel="">
 
@@ -76,7 +76,7 @@ oncancel="">
 
 	<div class="col-md-12">
 		<div class="col-md-6 no-lpad">
-			<div ng-if="model.isAddForm">
+			<div ng-if="model.dialog.isAddForm">
 				<div class="form-group" ng-class="{'has-error': forms.form.$submitted && forms.form.firstName.$invalid}">
 					<label>First Name *</label>
 					<input 

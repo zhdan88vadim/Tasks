@@ -1,3 +1,5 @@
+'user strict';
+
 
 /* Controller - PersonDetailCtrl */
 
@@ -44,7 +46,8 @@ function personDetailCtrl($scope, $q, $location, $userService, $filter, $routePa
 			$scope.model.personHomePhone, 
 			$scope.model.personFaxPhone);
 
-		$userService.update(person).success(function() {
+		$userService.update(person)
+		.success(function() {
 			alertsService.RenderSuccessMessage('<strong>Update was successfull!</strong>');
 			$location.path('/');
 		}).error(function() {
@@ -55,9 +58,9 @@ function personDetailCtrl($scope, $q, $location, $userService, $filter, $routePa
 	$userService.getById($routeParams.personId)
 	.success(function(data) {
 		$scope.model.person = data;
-		$scope.model.personfullName = $scope.person.firstName + ' ' + $scope.model.person.lastName;
-		$scope.model.personHomePhone = $filter('phoneNumber')($scope.model.person.phoneNumber, { type: 'home' });
-		$scope.model.personFaxPhone = $filter('phoneNumber')($scope.model.person.phoneNumber, { type: 'fax' });
+		$scope.model.personfullName = data.firstName + ' ' + data.lastName;
+		$scope.model.personHomePhone = $filter('phoneNumber')(data.phoneNumber, { type: 'home' });
+		$scope.model.personFaxPhone = $filter('phoneNumber')(data.phoneNumber, { type: 'fax' });
 	}).error(function() {
 		$scope.model.personfullName = 'Warning! User Not Found!';
 	});

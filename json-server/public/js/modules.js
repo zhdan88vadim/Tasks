@@ -1,3 +1,9 @@
+
+
+var managerControllers = angular.module('managerControllers', []);
+var managerServices = angular.module('managerServices', []);
+
+
 angular.module('ui.bootstrap.alert', [])
 
 .controller('AlertController', ['$scope', '$attrs', function ($scope, $attrs) {

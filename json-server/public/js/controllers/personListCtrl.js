@@ -36,12 +36,16 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 	}
 
 	$scope.addPerson = function() {
-		$scope.model.editPerson = null;
+		// Clean form data.
+		$scope.model.editPerson = {};
+		$scope.model.editPerson.address = {};
 		$scope.model.personHomePhone = null;
 		$scope.model.personFaxPhone = null;
 
+		$scope.forms.form.$setUntouched();
+		$scope.forms.form.$setPristine();
 
-		$scope.model.isAddForm = true;
+		$scope.model.dialog.isAddForm = true;
 		$scope.showModal = true;
 	}
 
@@ -50,26 +54,39 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 
 		$scope.model.editPerson = person;
 		
-		$scope.model.dialog.header = $scope.model.editPerson.firstName + ' ' + $scope.model.editPerson.lastName;
-		$scope.model.personHomePhone = $filter('phoneNumber')($scope.model.editPerson.phoneNumber, { type: 'home' });
-		$scope.model.personFaxPhone = $filter('phoneNumber')($scope.model.editPerson.phoneNumber, { type: 'fax' });
+		$scope.model.dialog.header = person.firstName + ' ' + person.lastName;
+		$scope.model.personHomePhone = $filter('phoneNumber')(person.phoneNumber, { type: 'home' });
+		$scope.model.personFaxPhone = $filter('phoneNumber')(person.phoneNumber, { type: 'fax' });
 		
-		$scope.model.isAddForm = false;
+		$scope.model.dialog.isAddForm = false;
 		$scope.showModal = true;
 	};
 
 	$scope.personUpdate = function() {
+		// Check valid form.
+		if (!$scope.forms.form.$valid) return;
+
+		var person = $scope.model.editPerson;
 		
-debugger;
+		console.log(person);
 
-		if ($scope.model.isAddForm) {
+		person.phoneNumber = [{ 
+			"type":"fax", 
+			"number": $scope.model.personFaxPhone 
+		},
+		{
+			"type":"home", 
+			"number": $scope.model.personHomePhone 
+		}];
 
-		}
+		var promise = null;
 
+		if ($scope.model.dialog.isAddForm)
+			promise = $userService.create(person);
+		else
+			promise = $userService.update(person);
 
-		var person = updatePhone($scope.model.editPerson, $scope.model.personHomePhone, $scope.model.personFaxPhone);
-
-		$userService.update(person).success(function() {
+		promise.success(function() {
 			alertsService.RenderSuccessMessage('<strong>Update was successfull!</strong>');
 			loadUsers();
 		}).error(function() {
@@ -78,11 +95,6 @@ debugger;
 
 		$scope.showModal = false;
 	};
-
-	// $scope.$watch('forms.form.$pristine', function(newValue, oldValue) {
-	// 	if (newValue === oldValue) return;
-	// 	$scope.model.isOkDisabled = newValue;
-	// });
 
 	loadUsers();
 }

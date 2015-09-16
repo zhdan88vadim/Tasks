@@ -1,7 +1,5 @@
 'user strict';
 
-var managerControllers = angular.module('managerControllers', []);
-
 
 /* Controller - TestPhoneDerectiveCtrl */
 
@@ -14,14 +12,4 @@ function testPhoneDerectiveCtrl ($scope, $q, $location, $userService, $filter) {
 	$scope.back = function() {
 		$location.path('/');
 	}
-}
-
-
-/* Controller - MainCtrl */
-
-managerControllers.controller('MainCtrl', 
-	['$scope', '$q', '$location', '$userService', '$filter', mainCtrl]);
-
-function mainCtrl ($scope, $q, $location, $userService, $filter) {
-
 }

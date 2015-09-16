@@ -8,7 +8,7 @@
 	<base href="/">
 </head>
 <body>
-	<div class="page" ng-controller="MainCtrl">
+	<div class="page">
 
 		<nav class="navbar navbar-default">
 			<!--  navbar-fixed-top -->
@@ -62,6 +62,8 @@
 						data-dismiss="modal">{{ model.dialog.cancelText }}
 					</button>
 
+					<!-- // form id = "form-person"-->
+
 					<button 
 						form="form-person"
 						ng-disabled="model.dialog.isOkDisabled"
@@ -85,12 +87,16 @@
 	<script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
 
 	<script src="./js/modules.js"></script>
-	<script src="./js/services.js"></script>
+
+	<script src="./js/services/alertsService.js"></script>
+	<script src="./js/services/userService.js"></script>
+	
 	<script src="./js/filters.js"></script>	
 	<script src="./js/directives.js"></script>
-	<script src="./js/controllers/controllers.js"></script>
-	<script src="./js/controllers/personListCtrl.js"></script>	
+
+	<script src="./js/controllers/personListCtrl.js"></script>
 	<script src="./js/controllers/personDetailCtrl.js"></script>
+	<script src="./js/controllers/testPhoneDerectiveCtrl.js"></script>
 
 	<script src="./js/app.js"></script>
 

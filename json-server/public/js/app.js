@@ -1,5 +1,6 @@
 'use strict';
 
+
 var userManager = angular.module('personManager', 
 	['ngRoute', 'managerControllers', 'managerServices', 'managerFilters', 'managerDirectives', 'ngSanitize', 'ui.bootstrap.alert']);
 
@@ -28,3 +29,5 @@ userManager.config(['$routeProvider', '$locationProvider',
 		});
 
 	}]);
+
+
