@@ -34,7 +34,8 @@ managerDirectives.directive('phone', ['$interpolate', function ($interpolate) {
 		},
 		link: function (scope, elem, attr, formCtrl) {
 			if(!elem.inheritedData('augmented')) {
-				return;
+				console.log("!elem.inheritedData('augmented')");
+				//return;
 			}
 
 			scope.elName = attr.name;
@@ -182,11 +183,11 @@ managerDirectives.directive('customModal', function($parse) {
 		template: $('#dialog-template').html(),
 		link: function($scope, element, attrs, ctrl, transclude) {
 
+			$scope.model.isAddForm = true;
+
 			$scope.model.dialog.header = attrs.header;
 			$scope.model.dialog.okText = attrs.okText;
 			$scope.model.dialog.cancelText = attrs.cancelText;
-			$scope.model.isOkDisabled = false;
-
 
 			var invokerOk = $parse(attrs.onsubmit);
 			var invokerCancel = $parse(attrs.oncancel);
@@ -205,11 +206,11 @@ managerDirectives.directive('customModal', function($parse) {
 					$(element).modal('hide');
 			});
 
-			$scope.$watch(attrs.show, function(value) {
-				if(value == true)
-					$(element).modal('show');
-				else
-					$(element).modal('hide');
+			$scope.$watch(attrs.okDisabled, function(newValue, oldValue) {
+				if ( newValue === oldValue )
+					newValue = $scope.$eval(attrs.okDisabled); // Set default value.
+				
+				$scope.model.dialog.isOkDisabled = newValue;
 			});
 
 			$(element).on('shown.bs.modal', function() {

@@ -4,12 +4,12 @@
       "id": 13457,
       "firstName": "John",
       "lastName": "Smith",
-      "age": 1,
+      "age": 24,
       "address": {
         "streetAddress": "21 2nd Street",
         "city": "New York",
         "state": "NY",
-        "postalCode": "10021"
+        "postalCode": "234"
       },
       "phoneNumber": [
         {

@@ -47,32 +47,31 @@
 
 	<script type="text/ng-template" id="dialog-template">
 	<div class="modal fade">
-	<div class="modal-dialog">
-	<div class="modal-content">
-	<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h4 ng-bind-html="model.dialog.header" class="modal-title"></h4>
-	</div>
-	<div class="modal-body" ng-transclude></div>
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 ng-bind-html="model.dialog.header" class="modal-title"></h4>
+				</div>
+				<div class="modal-body" ng-transclude></div>
 
-	<div class="modal-footer">
-	
-	<button ng-click="model.dialog.clickCancel()"
-	type="button" 
-	class="btn btn-default" 
-	data-dismiss="modal">{{ model.dialog.cancelText }}
-	</button>
+				<div class="modal-footer">
+					<button ng-click="model.dialog.clickCancel()"
+						type="button" 
+						class="btn btn-default" 
+						data-dismiss="modal">{{ model.dialog.cancelText }}
+					</button>
 
-	<button 
-	ng-disabled="isOkDisabled"
-	ng-click="model.dialog.clickOk()" 
-	type="button" 
-	class="btn btn-primary">{{ model.dialog.okText }}
-	</button>
-
-	</div>
-	</div>
-	</div>
+					<button 
+						form="form-person"
+						ng-disabled="model.dialog.isOkDisabled"
+						ng-click="model.dialog.clickOk()"
+						type="submit"
+						class="btn btn-primary">{{ model.dialog.okText }}
+					</button>
+				</div>
+			</div>
+		</div>
 	</div>
 	</script>
 
@@ -89,7 +88,10 @@
 	<script src="./js/services.js"></script>
 	<script src="./js/filters.js"></script>	
 	<script src="./js/directives.js"></script>
-	<script src="./js/controllers.js"></script>
+	<script src="./js/controllers/controllers.js"></script>
+	<script src="./js/controllers/personListCtrl.js"></script>	
+	<script src="./js/controllers/personDetailCtrl.js"></script>
+
 	<script src="./js/app.js"></script>
 
 </body>

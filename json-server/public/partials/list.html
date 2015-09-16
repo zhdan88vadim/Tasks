@@ -58,27 +58,61 @@
 	Add New Person
 </button>
 
+<!-- forms.form.$pristine -->
+
 <custom-modal
+onsubmit="forms.form.$valid && personUpdate()"
+ok-disabled="forms.form.$pristine"
 header="some custom string or <b>HTML</b> header" 
 show="showModal" 
 ok-text="Submit" 
 cancel-text="Close window" 
-oncancel="" 
-onsubmit="personUpdate()">
+oncancel="">
 
 
-<form name="form" class="person-form" role="form" novalidate event-submit>
+<form id="form-person" name="forms.form" class="person-form" role="form" novalidate event-submit>
 
 <div class="row">
 
 	<div class="col-md-12">
-		<div class="separator"></div>
 		<div class="col-md-6 no-lpad">
-			<div class="form-group" ng-class="{'has-error': form.$submitted && form.age.$invalid}">
+			<div ng-if="model.isAddForm">
+				<div class="form-group" ng-class="{'has-error': forms.form.$submitted && forms.form.firstName.$invalid}">
+					<label>First Name *</label>
+					<input 
+					ng-model="model.editPerson.firstName" 
+					ng-value="model.editPerson.firstName" 
+					ng-required="true"
+					name="firstName" 
+					type="text" 
+					class="form-control" 
+					id="firstName">
+				</input>
+					<div ng-show="forms.form.$submitted">
+						<small ng-show="forms.form.firstName.$error.required" class="help-block error">First Name is required.</small>
+					</div>
+				</div>
+				<div class="form-group" ng-class="{'has-error': forms.form.$submitted && forms.form.lastName.$invalid}">
+					<label>Last Name *</label>
+					<input 
+					ng-model="model.editPerson.lastName" 
+					ng-value="model.editPerson.lastName" 
+					ng-required="true"
+					name="lastName" 
+					type="text" 
+					class="form-control" 
+					id="lastName">
+				</input>
+					<div ng-show="forms.form.$submitted">
+						<small ng-show="forms.form.lastName.$error.required" class="help-block error">Last Name is required.</small>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" ng-class="{'has-error': forms.form.$submitted && forms.form.age.$invalid}">
 				<label>Age *</label>
 				<input 
-				ng-model="model.selectPerson.age" 
-				ng-value="model.selectPerson.age" 
+				ng-model="model.editPerson.age" 
+				ng-value="model.editPerson.age" 
 				ng-min="1"
 				ng-max="199"
 				ng-required="true"
@@ -87,27 +121,27 @@ onsubmit="personUpdate()">
 				class="form-control" 
 				id="age">
 			</input>
-				<div ng-show="form.$submitted">
-					<small ng-show="form.age.$error.required" class="help-block error">Age is required.</small>
-					<small ng-show="form.age.$error.min || form.age.$error.ngMin" class="help-block error">Age should be more than 0.</small>
-					<small ng-show="form.age.$error.max" class="help-block error">Unfortunately 199 years is our current system limit. Please contact Laws of Nature in case of questions.</small>
+				<div ng-show="forms.form.$submitted">
+					<small ng-show="forms.form.age.$error.required" class="help-block error">Age is required.</small>
+					<small ng-show="forms.form.age.$error.min || forms.form.age.$error.ngMin" class="help-block error">Age should be more than 0.</small>
+					<small ng-show="forms.form.age.$error.max" class="help-block error">Unfortunately 199 years is our current system limit. Please contact Laws of Nature in case of questions.</small>
 				</div>
 			</div>
 			<div class="form-group">
 				<label>Street</label>
 				<input 
-				ng-model="model.selectPerson.address.streetAddress" 
-				ng-value="model.selectPerson.address.streetAddress" 
+				ng-model="model.editPerson.address.streetAddress" 
+				ng-value="model.editPerson.address.streetAddress" 
 				name="streetAddress"
 				type="text"
 				class="form-control"
 				id="street"></input>
 			</div>
-			<div class="form-group" ng-class="{'has-error': form.$submitted && form.city.$invalid}">
+			<div class="form-group" ng-class="{'has-error': forms.form.$submitted && forms.form.city.$invalid}">
 				<label>City *</label>
 				<input 
-				ng-model="model.selectPerson.address.city" 
-				ng-value="model.selectPerson.address.city" 
+				ng-model="model.editPerson.address.city" 
+				ng-value="model.editPerson.address.city" 
 				type="text"
 				name="city"
 				ng-minlength="3"
@@ -115,17 +149,17 @@ onsubmit="personUpdate()">
 				ng-required="true"
 				class="form-control" 
 				id="city"></input>
-				<div ng-show="form.$submitted">
-					<small ng-show="form.city.$error.required" class="help-block error">City is required.</small>
-					<small ng-show="form.city.$error.minlength" class="help-block error">City name should be more than 2 characters.</small>
-					<small ng-show="form.city.$error.maxlength" class="help-block error">City name should be less than 50 characters.</small>
+				<div ng-show="forms.form.$submitted">
+					<small ng-show="forms.form.city.$error.required" class="help-block error">City is required.</small>
+					<small ng-show="forms.form.city.$error.minlength" class="help-block error">City name should be more than 2 characters.</small>
+					<small ng-show="forms.form.city.$error.maxlength" class="help-block error">City name should be less than 50 characters.</small>
 				</div>
 			</div>
 			<div class="form-group">
 				<label>State</label>
 				<input 
-				ng-model="model.selectPerson.address.state" 
-				ng-value="model.selectPerson.address.state" 
+				ng-model="model.editPerson.address.state" 
+				ng-value="model.editPerson.address.state" 
 				type="text" 
 				class="form-control" 
 				id="state"></input>
@@ -136,23 +170,23 @@ onsubmit="personUpdate()">
 			<div class="form-group">
 				<label>Postal Code</label>
 				<input 
-				ng-model="model.selectPerson.address.postalCode" 
-				ng-value="model.selectPerson.address.postalCode" 
+				ng-model="model.editPerson.address.postalCode" 
+				ng-value="model.editPerson.address.postalCode" 
 				type="text" 
 				class="form-control" 
 				id="postalCode"></input>
 			</div>
 
-			<div class="form-group" ng-class="{'has-error': form.$submitted && form.homePhone.$invalid}">
+			<div class="form-group" ng-class="{'has-error': forms.form.$submitted && forms.form.homePhone.$invalid}">
 				<label>Home Number *</label>
-				<phone ng-model="model.personHomePhone" name="homePhone" form="form"></phone>
+				<phone ng-model="model.personHomePhone" name="homePhone" form="forms.form"></phone>
 			</div>
-			<div class="form-group" ng-class="{'has-error': form.$submitted && form.faxPhone.$invalid}">
+			<div class="form-group" ng-class="{'has-error': forms.form.$submitted && forms.form.faxPhone.$invalid}">
 				<label>Fax Number *</label>
-				<phone ng-model="model.personFaxPhone" name="faxPhone" form="form"></phone>
+				<phone ng-model="model.personFaxPhone" name="faxPhone" form="forms.form"></phone>
 			</div>
 		</div>
-
+<!-- 
 		<div class="separator"></div>
 
 		<div class="form-group text-right">
@@ -163,7 +197,7 @@ onsubmit="personUpdate()">
 			type="submit"
 			class="btn btn-primary">Update</button>
 			
-			<!-- form.$pristine || form.$invalid -->
+	
 
 			<div 
 			ng-show="form.$submitted" 
@@ -172,9 +206,11 @@ onsubmit="personUpdate()">
 			>
 				<small ng-show="!form.$valid" class="help-block"> Please correct errors in the form above.</small>
 			</div>
-			<!-- ng-click="update()" -->
 		</div>
+ -->
+
 	</div>
 </form>
+
 
 </custom-modal>
