@@ -62,7 +62,22 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 		$scope.showModal = true;
 	};
 
-	$scope.personUpdate = function() {
+	$scope.deletePerson = function(person, $event) {
+		$event.stopPropagation();
+		
+		debugger;
+
+		promise = $userService.delete(person.id);
+
+		promise.success(function() {
+			alertsService.RenderSuccessMessage('<strong>Update was successfull!</strong>');
+			loadUsers();
+		}).error(function() {
+			alertsService.RenderErrorMessage('<strong>Update was error!</strong>');
+		});
+	};
+
+	$scope.personAddUpdate = function() {
 		// Check valid form.
 		if (!$scope.forms.form.$valid) return;
 
@@ -90,7 +105,7 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 			alertsService.RenderSuccessMessage('<strong>Update was successfull!</strong>');
 			loadUsers();
 		}).error(function() {
-			alertsService.RenderErrorMessage('<strong>Update was successfull!</strong>');
+			alertsService.RenderErrorMessage('<strong>Update was error!</strong>');
 		});
 
 		$scope.showModal = false;

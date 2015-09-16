@@ -46,35 +46,35 @@
 	</div>
 
 	<script type="text/ng-template" id="dialog-template">
-	<div class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 ng-bind-html="model.dialog.header" class="modal-title"></h4>
-				</div>
-				<div class="modal-body" ng-transclude></div>
+		<div class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 ng-bind-html="model.dialog.header" class="modal-title"></h4>
+					</div>
+					<div class="modal-body" ng-transclude></div>
 
-				<div class="modal-footer">
-					<button ng-click="model.dialog.clickCancel()"
-						type="button" 
-						class="btn btn-default" 
-						data-dismiss="modal">{{ model.dialog.cancelText }}
-					</button>
+					<div class="modal-footer">
+						<button ng-click="model.dialog.clickCancel()"
+							type="button" 
+							class="btn btn-default" 
+							data-dismiss="modal">{{ model.dialog.cancelText }}
+						</button>
 
-					<!-- // form id = "form-person"-->
+						<!-- // form id = "form-person"-->
 
-					<button 
-						form="form-person"
-						ng-disabled="model.dialog.isOkDisabled"
-						ng-click="model.dialog.clickOk()"
-						type="submit"
-						class="btn btn-primary">{{ model.dialog.okText }}
-					</button>
+						<button 
+							form="form-person"
+							ng-disabled="model.dialog.isOkDisabled"
+							ng-click="model.dialog.clickOk()"
+							type="submit"
+							class="btn btn-primary">{{ model.dialog.okText }}
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 	</script>
 
 	<script src="../bower_components/jquery/dist/jquery.js"></script>

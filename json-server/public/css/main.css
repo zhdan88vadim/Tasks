@@ -47,3 +47,7 @@ body {
 .test a {
 	color: #fff !important;
 }
+
+.btn-toolbar.actions-toolbar {
+	width: 100px;
+}
