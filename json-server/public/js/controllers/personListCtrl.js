@@ -1,12 +1,21 @@
 'user strict';
 
 
+/* Controller - ModalController */
+
+managerControllers.controller('ModalController', function($scope, close) {
+	$scope.close = function(result) {
+		close(result, 500); // close, but give 500ms for bootstrap to animate
+	};
+});
+
+
 /* Controller - PersonListCtrl */
 
 managerControllers.controller('PersonListCtrl', 
-	['$scope', '$q', '$location', '$userService', '$filter', 'alertsService', personListCtrl]);
+	['$scope', '$q', '$location', '$userService', '$filter', 'alertsService', 'ModalService', personListCtrl]);
 
-function personListCtrl ($scope, $q, $location, $userService, $filter, alertsService) {
+function personListCtrl ($scope, $q, $location, $userService, $filter, alertsService, ModalService) {
 	
 	function loadUsers() {
 		$userService.getUsers().success(function(data) {
@@ -15,7 +24,6 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 	}
 
 	$scope.showModal = false;
-	$scope.showDeleteDialog = true;
 
 	$scope.forms = {};
 	$scope.model = {};
@@ -70,18 +78,27 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 
 	$scope.deletePerson = function(person) {
 		
-		$scope.showDeleteDialog = true;
+		ModalService.showModal({
+			templateUrl: 'confirm-modal.html',
+			controller: "ModalController"
+		}).then(function(modal) {
 
-		// debugger;
+			modal.element.modal();
 
-		// promise = $userService.delete(person.id);
+			modal.close.then(function(result) {
 
-		// promise.success(function() {
-		// 	alertsService.RenderSuccessMessage('<strong>Update was successfull!</strong>');
-		// 	loadUsers();
-		// }).error(function() {
-		// 	alertsService.RenderErrorMessage('<strong>Update was error!</strong>');
-		// });
+				if (result === true) {
+					promise = $userService.delete(person.id);
+
+					promise.success(function() {
+						alertsService.RenderSuccessMessage('<strong>Update was successfull!</strong>');
+						loadUsers();
+					}).error(function() {
+						alertsService.RenderErrorMessage('<strong>Update was error!</strong>');
+					});
+				}
+			});
+		});
 	};
 
 	$scope.personAddUpdate = function() {

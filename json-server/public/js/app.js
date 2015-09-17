@@ -2,7 +2,8 @@
 
 
 var userManager = angular.module('personManager', 
-	['ngRoute', 'managerControllers', 'managerServices', 'managerFilters', 'managerDirectives', 'ngSanitize', 'ui.bootstrap.alert']);
+	['ngRoute', 'managerControllers', 'managerServices', 
+	'managerFilters', 'managerDirectives', 'ngSanitize', 'modalService', 'ui.alert']);
 
 userManager.config(['$routeProvider', '$locationProvider',
 	function($routeProvider, $locationProvider) {

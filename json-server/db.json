@@ -4,11 +4,11 @@
       "id": 13457,
       "firstName": "John",
       "lastName": "Smith",
-      "age": 2,
+      "age": 3,
       "address": {
         "streetAddress": "21 2nd Street",
         "city": "New York",
-        "state": "NY",
+        "state": "123123",
         "postalCode": "234"
       },
       "phoneNumber": [
@@ -109,28 +109,6 @@
           "number": "973-605-6492"
         }
       ]
-    },
-    {
-      "address": {
-        "streetAddress": "street",
-        "city": "city",
-        "state": "state",
-        "postalCode": "123--222"
-      },
-      "firstName": "test person",
-      "lastName": "last name",
-      "age": 123,
-      "phoneNumber": [
-        {
-          "type": "fax",
-          "number": "123-123-2340"
-        },
-        {
-          "type": "home",
-          "number": "123-123-1235"
-        }
-      ],
-      "id": 76579
     }
   ]
 }
