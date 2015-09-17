@@ -3,8 +3,8 @@
 
 /* managerServices */
 
-managerServices.service('$userService', ['$q', '$http', '$rootScope', '$filter',
-	function ($q, $http, $rootScope, $filter) {
+managerServices.service('$userService', ['$q', '$http',
+	function ($q, $http) {
 
 		var serverUrl = "/person";
 

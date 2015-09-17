@@ -8,39 +8,39 @@ managerDirectives.directive('customModal', function($parse) {
 		transclude: true, // We want to insert custom content inside the directive
 		scope: true,
 		template: $('#dialog-template').html(),
-		link: function($scope, element, attrs, ctrl, transclude) {
+		link: function(scope, element, attrs, ctrl, transclude) {
 
-			$scope.model.dialog.header = attrs.header;
-			$scope.model.dialog.okText = attrs.okText;
-			$scope.model.dialog.cancelText = attrs.cancelText;
+			scope.model.dialog.header = attrs.header;
+			scope.model.dialog.okText = attrs.okText;
+			scope.model.dialog.cancelText = attrs.cancelText;
 
 			var invokerOk = $parse(attrs.onsubmit);
 			var invokerCancel = $parse(attrs.oncancel);
 
-			$scope.model.dialog.clickOk = function() {
-				invokerOk($scope);
+			scope.model.dialog.clickOk = function() {
+				invokerOk(scope);
 			}
-			$scope.model.dialog.clickCancel = function() {
-				invokerCancel($scope);
+			scope.model.dialog.clickCancel = function() {
+				invokerCancel(scope);
 			}
 			
-			$scope.$watch(attrs.show, function(value) {
+			scope.$watch(attrs.show, function(value) {
 				if(value == true)
 					$(element).modal('show');
 				else
 					$(element).modal('hide');
 			});
 
-			$scope.$watch(attrs.okDisabled, function(newValue, oldValue) {
+			scope.$watch(attrs.okDisabled, function(newValue, oldValue) {
 				if (newValue === oldValue)
-					newValue = $scope.$eval(attrs.okDisabled); // Set default value.
+					newValue = scope.$eval(attrs.okDisabled); // Set default value.
 				
-				$scope.model.dialog.isOkDisabled = newValue;
+				scope.model.dialog.isOkDisabled = newValue;
 			});
 
 			$(element).on('shown.bs.modal', function() {
-				$scope.$apply(function() {
-					$scope.$parent[attrs.show] = true;
+				scope.$apply(function() {
+					scope.$parent[attrs.show] = true;
 				});
 			});
 
@@ -49,14 +49,14 @@ managerDirectives.directive('customModal', function($parse) {
 			// otherwise it will not re-open as *watch* will not work.
 
 			$(element).on('hidden.bs.modal', function() {
-				$scope.$apply(function() {
-					$scope.$parent[attrs.show] = false;
+				scope.$apply(function() {
+					scope.$parent[attrs.show] = false;
 				});
 			});
 
-			
 
-			// $scope.$parent["model.showModal"]
+
+			// scope.$parent["model.showModal"]
 
 			// Note
 			// Этот код нужен в том случае если используется параметр transclude: true
@@ -64,7 +64,7 @@ managerDirectives.directive('customModal', function($parse) {
 			// иначи в шаблоне HTML используется scope контроллера.
 			// http://angular-tips.com/blog/2014/03/transclusion-and-scopes/
 
-			// transclude($scope, function(clone, $scope) {
+			// transclude(scope, function(clone, scope) {
 			// 	element.append(clone);
 			// });
 
