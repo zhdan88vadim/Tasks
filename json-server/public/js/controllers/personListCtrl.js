@@ -45,6 +45,7 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 		$scope.forms.form.$setUntouched();
 		$scope.forms.form.$setPristine();
 
+		$scope.model.dialog.header = 'Add Person';
 		$scope.model.dialog.isAddForm = true;
 		$scope.showModal = true;
 	}

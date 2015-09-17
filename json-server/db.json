@@ -18,7 +18,7 @@
         },
         {
           "type": "home",
-          "number": "123-123-1133"
+          "number": "234-234 2344"
         }
       ]
     },
@@ -26,7 +26,7 @@
       "id": 123,
       "firstName": "Test",
       "lastName": "Mor",
-      "age": 1,
+      "age": 3,
       "address": {
         "streetAddress": "3 Dr",
         "city": "Ashland",
@@ -35,12 +35,12 @@
       },
       "phoneNumber": [
         {
-          "type": "home",
-          "number": "419-232-2343"
-        },
-        {
           "type": "fax",
           "number": "419-800-2343"
+        },
+        {
+          "type": "home",
+          "number": "419-232-2343"
         }
       ]
     },
@@ -109,6 +109,28 @@
           "number": "973-605-6492"
         }
       ]
+    },
+    {
+      "address": {
+        "streetAddress": "street",
+        "city": "city",
+        "state": "state",
+        "postalCode": "123--222"
+      },
+      "firstName": "test person",
+      "lastName": "last name",
+      "age": 123,
+      "phoneNumber": [
+        {
+          "type": "fax",
+          "number": "123-123-2340"
+        },
+        {
+          "type": "home",
+          "number": "123-123-1235"
+        }
+      ],
+      "id": 76579
     }
   ]
 }

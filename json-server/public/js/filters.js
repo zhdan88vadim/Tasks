@@ -1,5 +1,6 @@
 'use strict';
 
+
 var managerFilters = angular.module('managerFilters', []);
 
 managerFilters.filter('phoneNumber', function() {
