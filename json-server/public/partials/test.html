@@ -3,7 +3,7 @@
 	<div class="form-group" ng-class="{'has-error': customForm.$submitted && customForm.age.$invalid}">
 		<label>Age *</label>
 		<input 
-		ng-model="person.age" 
+		ng-model="model.person.age" 
 		ng-value="person.age" 
 		ng-min="1"
 		ng-max="199"
@@ -29,7 +29,7 @@
 	<div class="form-group" ng-class="{'has-error': customForm.$submitted && customForm.homePhone.$invalid}">
 		<label>Home Number *</label>
 		
-		<phone ng-model="personHomePhone" name="homePhone"></phone>
+		<phone ng-model="model.personHomePhone" name="homePhone"></phone>
 	
 	</div>
 
@@ -38,7 +38,7 @@
 	<div class="form-group" ng-class="{'has-error': customForm.$submitted && customForm.faxPhone.$invalid}">
 		<label>Fax Number *</label>
 		
-		<phone ng-model="personFaxPhone" name="faxPhone"></phone>
+		<phone ng-model="model.personFaxPhone" name="faxPhone"></phone>
 	
 	</div>
 

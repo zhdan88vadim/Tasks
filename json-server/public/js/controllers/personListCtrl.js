@@ -15,6 +15,7 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 	}
 
 	$scope.showModal = false;
+	$scope.showDeleteDialog = true;
 
 	$scope.forms = {};
 	$scope.model = {};
@@ -33,6 +34,10 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 	$scope.order = function(predicate) {
 		$scope.model.reverse = ($scope.model.predicate === predicate) ? !$scope.model.reverse : false;
 		$scope.model.predicate = predicate;
+	}
+
+	$scope.test = function() {
+		console.log('Call test method from personListCtrl.');
 	}
 
 	$scope.addPerson = function() {
@@ -63,19 +68,20 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 		$scope.showModal = true;
 	};
 
-	$scope.deletePerson = function(person, $event) {
-		$event.stopPropagation();
+	$scope.deletePerson = function(person) {
 		
-		debugger;
+		$scope.showDeleteDialog = true;
 
-		promise = $userService.delete(person.id);
+		// debugger;
 
-		promise.success(function() {
-			alertsService.RenderSuccessMessage('<strong>Update was successfull!</strong>');
-			loadUsers();
-		}).error(function() {
-			alertsService.RenderErrorMessage('<strong>Update was error!</strong>');
-		});
+		// promise = $userService.delete(person.id);
+
+		// promise.success(function() {
+		// 	alertsService.RenderSuccessMessage('<strong>Update was successfull!</strong>');
+		// 	loadUsers();
+		// }).error(function() {
+		// 	alertsService.RenderErrorMessage('<strong>Update was error!</strong>');
+		// });
 	};
 
 	$scope.personAddUpdate = function() {

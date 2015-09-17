@@ -70,6 +70,23 @@
 
 <!-- forms.form.$pristine -->
 
+
+<confirm-dialog
+onsubmit="deletePerson()"
+header="Delete Person"
+show="showDeleteDialog"
+ok-text="Delete"
+cancel-text="Cancel"
+oncancel="test()">
+	<span>
+		Are you sure you want to remove 
+		{{ model.firstName + lastName }}
+		 from the list?
+	</span>
+</confirm-dialog>
+
+
+
 <custom-modal
 onsubmit="personAddUpdate()"
 ok-disabled="forms.form.$pristine"

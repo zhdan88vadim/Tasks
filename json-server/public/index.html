@@ -77,6 +77,43 @@
 		</div>
 	</script>
 
+
+	<script type="text/ng-template" id="confirm-dialog-template">
+		<div class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 ng-bind-html="header" class="modal-title"></h4>
+					</div>
+					<div class="modal-body" ng-transclude></div>
+
+					<div class="modal-footer">
+						<button ng-click="confirmDialog.clickCancel()"
+							type="button" 
+							class="btn btn-default" 
+							data-dismiss="modal">{{ cancelText }}
+						</button>
+
+						<!-- // form id = "form-person"-->
+
+						<button 
+							form="form-person"
+							ng-disabled="confirmDialog.isOkDisabled"
+							ng-click="confirmDialog.clickOk()"
+							type="submit"
+							class="btn btn-primary">{{ okText }}
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</script>
+
+
+
+
+
 	<script src="../bower_components/jquery/dist/jquery.js"></script>
 	<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
 	<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
@@ -94,7 +131,8 @@
 	<script src="./js/filters.js"></script>	
 
 	<script src="./js/directives/max_minNumber.js"></script>
-	<script src="./js/directives/customModal.js"></script>	
+	<script src="./js/directives/customModal.js"></script>
+	<script src="./js/directives/confirmDialog.js"></script>
 	<script src="./js/directives/phone.js"></script>
 
 	<script src="./js/controllers/personListCtrl.js"></script>
