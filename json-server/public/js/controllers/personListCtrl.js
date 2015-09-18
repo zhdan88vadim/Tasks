@@ -47,6 +47,25 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 	$scope.test = function() {
 		console.log('Call test method from personListCtrl.');
 	}
+	$scope.fillTestData = function() {
+		$scope.model.editPerson = {
+				"firstName": "First Name Test",
+				"lastName": "Last Name Test",
+				"age": 28,
+				"address": {
+					"streetAddress": "Mavra 45",
+					"city": "Minsk",
+					"state": "450",
+					"postalCode": "220100"
+				}
+			};
+
+		$scope.model.personHomePhone = '220-000-3344';
+		$scope.model.personFaxPhone = '220-300-0000';
+
+		$scope.forms.form.$dirty = true;
+		$scope.forms.form.$pristine = false;
+	}
 
 	$scope.addPerson = function() {
 		// Clean form data.
@@ -82,6 +101,11 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 			templateUrl: 'confirm-modal.html',
 			controller: "ModalController"
 		}).then(function(modal) {
+
+			modal.scope.model = {};
+
+			modal.scope.model.firstName = person.firstName;
+			modal.scope.model.lastName = person.lastName;
 
 			modal.element.modal();
 
