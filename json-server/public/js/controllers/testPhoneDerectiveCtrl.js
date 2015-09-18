@@ -4,9 +4,9 @@
 /* Controller - TestPhoneDerectiveCtrl */
 
 managerControllers.controller('TestPhoneDerectiveCtrl', 
-	['$scope', '$q', '$location', '$userService', '$filter', testPhoneDerectiveCtrl]);
+	['$scope', '$q', '$location', testPhoneDerectiveCtrl]);
 
-function testPhoneDerectiveCtrl ($scope, $q, $location, $userService, $filter) {
+function testPhoneDerectiveCtrl ($scope, $q, $location) {
 	$scope.model = {};
 	$scope.model.personFaxPhone = '111-222-4444';
 

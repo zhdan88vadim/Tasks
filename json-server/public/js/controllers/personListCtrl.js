@@ -13,9 +13,9 @@ managerControllers.controller('ModalController', function($scope, close) {
 /* Controller - PersonListCtrl */
 
 managerControllers.controller('PersonListCtrl', 
-	['$scope', '$q', '$location', '$userService', '$filter', 'alertsService', 'ModalService', personListCtrl]);
+	['$scope', '$q', '$location', '$userService', '$filter', 'alertsService', 'ModalService', '$Constants', personListCtrl]);
 
-function personListCtrl ($scope, $q, $location, $userService, $filter, alertsService, ModalService) {
+function personListCtrl ($scope, $q, $location, $userService, $filter, alertsService, ModalService, $Constants) {
 	
 	function loadUsers() {
 		$userService.getUsers().success(function(data) {
@@ -47,6 +47,7 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 	$scope.test = function() {
 		console.log('Call test method from personListCtrl.');
 	}
+
 	$scope.fillTestData = function() {
 		$scope.model.editPerson = {
 				"firstName": "First Name Test",
@@ -68,14 +69,15 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 	}
 
 	$scope.addPerson = function() {
+		$scope.forms.form.$setUntouched();
+		$scope.forms.form.$setPristine();
+		
 		// Clean form data.
 		$scope.model.editPerson = {};
 		$scope.model.editPerson.address = {};
 		$scope.model.personHomePhone = null;
 		$scope.model.personFaxPhone = null;
 
-		$scope.forms.form.$setUntouched();
-		$scope.forms.form.$setPristine();
 
 		$scope.model.dialog.header = 'Add Person';
 		$scope.model.dialog.isAddForm = true;
@@ -85,12 +87,15 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 	$scope.editPerson = function(person, $event) {
 		$event.stopPropagation();
 
+		$scope.forms.form.$setUntouched();
+		$scope.forms.form.$setPristine();
+		
 		$scope.model.editPerson = person;
 		
 		$scope.model.dialog.header = person.firstName + ' ' + person.lastName;
 		$scope.model.personHomePhone = $filter('phoneNumber')(person.phoneNumber, { type: 'home' });
 		$scope.model.personFaxPhone = $filter('phoneNumber')(person.phoneNumber, { type: 'fax' });
-		
+
 		$scope.model.dialog.isAddForm = false;
 		$scope.showModal = true;
 	};
@@ -103,7 +108,6 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 		}).then(function(modal) {
 
 			modal.scope.model = {};
-
 			modal.scope.model.firstName = person.firstName;
 			modal.scope.model.lastName = person.lastName;
 
@@ -115,10 +119,10 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 					promise = $userService.delete(person.id);
 
 					promise.success(function() {
-						alertsService.RenderSuccessMessage('<strong>Update was successfull!</strong>');
+						alertsService.RenderSuccessMessage($Constants.update_successfull);
 						loadUsers();
 					}).error(function() {
-						alertsService.RenderErrorMessage('<strong>Update was error!</strong>');
+						alertsService.RenderErrorMessage($Constants.update_error);
 					});
 				}
 			});
@@ -130,9 +134,6 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 		if (!$scope.forms.form.$valid) return;
 
 		var person = $scope.model.editPerson;
-		
-		console.log(person);
-
 		person.phoneNumber = [{ 
 			"type":"fax", 
 			"number": $scope.model.personFaxPhone 
@@ -150,10 +151,10 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 			promise = $userService.update(person);
 
 		promise.success(function() {
-			alertsService.RenderSuccessMessage('<strong>Update was successfull!</strong>');
+			alertsService.RenderSuccessMessage($Constants.update_successfull);
 			loadUsers();
 		}).error(function() {
-			alertsService.RenderErrorMessage('<strong>Update was error!</strong>');
+			alertsService.RenderErrorMessage($Constants.update_error);
 		});
 
 		$scope.showModal = false;

@@ -29,6 +29,10 @@ userManager.config(['$routeProvider', '$locationProvider',
 			redirectTo: '/list'
 		});
 
-	}]);
+	}])
+.constant('$Constants', {
+	'update_error': '<strong>Update was error!</strong>',
+	'update_successfull': '<strong>Update was successfull!</strong>'
+});
 
 
