@@ -44,7 +44,6 @@ managerDirectives.directive('customModal', function($parse) {
 				});
 			});
 
-
 			// When the dialog closes you need to change the state, 
 			// otherwise it will not re-open as *watch* will not work.
 
@@ -53,21 +52,6 @@ managerDirectives.directive('customModal', function($parse) {
 					scope.$parent[attrs.show] = false;
 				});
 			});
-
-
-
-			// scope.$parent["model.showModal"]
-
-			// Note
-			// Этот код нужен в том случае если используется параметр transclude: true
-			// и в шаблоне HTML, который скопирывался мы хотим использовать scope созданный в директиве.
-			// иначи в шаблоне HTML используется scope контроллера.
-			// http://angular-tips.com/blog/2014/03/transclusion-and-scopes/
-
-			// transclude(scope, function(clone, scope) {
-			// 	element.append(clone);
-			// });
-
 		}
 	}
 });

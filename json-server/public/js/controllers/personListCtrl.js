@@ -1,15 +1,6 @@
 'user strict';
 
 
-/* Controller - ModalController */
-
-managerControllers.controller('ModalController', function($scope, close) {
-	$scope.close = function(result) {
-		close(result, 500); // close, but give 500ms for bootstrap to animate
-	};
-});
-
-
 /* Controller - PersonListCtrl */
 
 managerControllers.controller('PersonListCtrl', 
@@ -38,28 +29,23 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 
 	$scope.model.selectPhoneType = $scope.model.phoneTypes[0];
 
-
 	$scope.order = function(predicate) {
 		$scope.model.reverse = ($scope.model.predicate === predicate) ? !$scope.model.reverse : false;
 		$scope.model.predicate = predicate;
 	}
 
-	$scope.test = function() {
-		console.log('Call test method from personListCtrl.');
-	}
-
 	$scope.fillTestData = function() {
 		$scope.model.editPerson = {
-				"firstName": "First Name Test",
-				"lastName": "Last Name Test",
-				"age": 28,
-				"address": {
-					"streetAddress": "Mavra 45",
-					"city": "Minsk",
-					"state": "450",
-					"postalCode": "220100"
-				}
-			};
+			"firstName": "First Name Test",
+			"lastName": "Last Name Test",
+			"age": 28,
+			"address": {
+				"streetAddress": "Mavra 45",
+				"city": "Minsk",
+				"state": "450",
+				"postalCode": "220100"
+			}
+		};
 
 		$scope.model.personHomePhone = '220-000-3344';
 		$scope.model.personFaxPhone = '220-300-0000';
@@ -98,13 +84,13 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 
 		$scope.model.dialog.isAddForm = false;
 		$scope.showModal = true;
-	};
+	}
 
 	$scope.deletePerson = function(person) {
 		
 		ModalService.showModal({
 			templateUrl: 'confirm-modal.html',
-			controller: "ModalController"
+			controller: "ModalDialogCtrl"
 		}).then(function(modal) {
 
 			modal.scope.model = {};
@@ -127,14 +113,14 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 				}
 			});
 		});
-	};
+	}
 
 	$scope.personAddUpdate = function() {
 		// Check valid form.
 		if (!$scope.forms.form.$valid) return;
 
 		var person = $scope.model.editPerson;
-		person.phoneNumber = [{ 
+		person.phoneNumber = [{
 			"type":"fax", 
 			"number": $scope.model.personFaxPhone 
 		},
@@ -158,7 +144,7 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 		});
 
 		$scope.showModal = false;
-	};
+	}
 
 	loadUsers();
 }

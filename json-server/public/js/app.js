@@ -10,7 +10,6 @@ userManager.config(['$routeProvider', '$locationProvider',
 
 		// Routing dont work with this code..
 		//$locationProvider.html5Mode(true);
-		//$locationProvider.hashPrefix('#');
 
 		$routeProvider
 		.when('/list', {

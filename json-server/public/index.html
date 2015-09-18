@@ -25,7 +25,7 @@
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="#/list">To List</a></li>
-						<li class="test"><a href="#/test">Test Phone Derective</a></li>
+						<li><a href="#/test">Test Phone Derective</a></li>
 						<li><a href="#">Help</a></li>
 					</ul>
 				</div>
@@ -77,40 +77,6 @@
 		</div>
 	</script>
 
-
-	<script type="text/ng-template" id="confirm-dialog-template">
-		<div class="modal fade">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 ng-bind-html="header" class="modal-title"></h4>
-					</div>
-					<div class="modal-body" ng-transclude></div>
-
-					<div class="modal-footer">
-						<button ng-click="confirmDialog.clickCancel()"
-							type="button" 
-							class="btn btn-default" 
-							data-dismiss="modal">{{ cancelText }}
-						</button>
-
-						<!-- // form id = "form-person"-->
-
-						<button 
-							form="form-person"
-							ng-disabled="confirmDialog.isOkDisabled"
-							ng-click="confirmDialog.clickOk()"
-							type="submit"
-							class="btn btn-primary">{{ okText }}
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</script>
-
-
 	<script type="text/ng-template" id="confirm-modal.html">
 		<div class="modal fade">
 			<div class="modal-dialog">
@@ -120,7 +86,6 @@
 						<h4 class="modal-title">Delete Person</h4>
 					</div>
 					<div class="modal-body">
-						<div ng-model="testModel"></div>
 						<span>
 							Are you sure you want to remove 
 							<strong>{{ model.firstName }} {{ model.lastName }}</strong>
@@ -135,7 +100,6 @@
 			</div>
 		</div>
 	</script>
-
 
 
 	<script src="../bower_components/jquery/dist/jquery.js"></script>
@@ -164,6 +128,7 @@
 	<script src="./js/controllers/personListCtrl.js"></script>
 	<script src="./js/controllers/personDetailCtrl.js"></script>
 	<script src="./js/controllers/testPhoneDerectiveCtrl.js"></script>
+	<script src="./js/controllers/modalDialogCtrl.js"></script>
 
 	<script src="./js/app.js"></script>
 
