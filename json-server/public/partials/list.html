@@ -81,8 +81,11 @@ oncancel="test()">
 
 
 
+<!-- If you use the this attr then it will attempt to perform a form submit -->
+<!-- onsubmit="personAddUpdate() -->
+
 <custom-modal
-onsubmit="personAddUpdate()"
+onaccept="personAddUpdate()"
 ok-disabled="forms.form.$pristine"
 header="some custom string or <b>HTML</b> header" 
 show="showModal"
