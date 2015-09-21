@@ -25,7 +25,7 @@ managerServices.service('$userService', ['$q', '$http',
 			return $http.get(serverUrl + '/' + id);
 		};
 
-		userService.getUsers = function() {
+		userService.getAll = function() {
 			return $http.get(serverUrl);
 		}
 

@@ -9,7 +9,7 @@ managerControllers.controller('PersonListCtrl',
 function personListCtrl ($scope, $q, $location, $userService, $filter, alertsService, ModalService, $Constants, $interpolate) {
 	
 	function loadUsers() {
-		$userService.getUsers().success(function(data) {
+		$userService.getAll().success(function(data) {
 			$scope.model.persons = data;
 		});
 	}
