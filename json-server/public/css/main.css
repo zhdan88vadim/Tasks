@@ -38,16 +38,16 @@ body {
 	}
 }
 
+.btn-toolbar.actions-toolbar {
+	width: 100px;
+}
+
 /*.person-form .form-group {
 	margin-bottom: 0px;
 }*/
-.test {
+/*.test {
 	background: #E56161;
 }
 .test a {
 	color: #fff !important;
-}
-
-.btn-toolbar.actions-toolbar {
-	width: 100px;
-}
+}*/

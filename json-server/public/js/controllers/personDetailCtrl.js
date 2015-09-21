@@ -45,7 +45,7 @@ function personDetailCtrl($scope, $q, $location, $userService, $filter, $routePa
 			alertsService.RenderSuccessMessage($Constants.update_successfull);
 			$scope.back();
 		}).error(function() {
-			alertsService.RenderSuccessMessage($Constants.update_error);
+			alertsService.RenderErrorMessage($Constants.update_error);
 		});
 	}
 
@@ -56,6 +56,6 @@ function personDetailCtrl($scope, $q, $location, $userService, $filter, $routePa
 		$scope.model.personHomePhone = $filter('phoneNumber')(data.phoneNumber, { type: 'home' });
 		$scope.model.personFaxPhone = $filter('phoneNumber')(data.phoneNumber, { type: 'fax' });
 	}).error(function() {
-		$scope.model.personfullName = 'Warning! User Not Found!';
+		alertsService.RenderErrorMessage($Constants.user_not_found);
 	});
 }

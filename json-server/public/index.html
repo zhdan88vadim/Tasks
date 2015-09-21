@@ -39,6 +39,9 @@
 			</div>
 
 			<div class="content-main">
+				<alert ng-repeat="alert in alerts" type="{{alert.type}}" 
+					close="closeAlert($index)"><div ng-bind-html="MessageBox"></div>
+				</alert>
 				<div ng-view></div>
 			</div>
 
