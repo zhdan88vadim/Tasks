@@ -25,6 +25,7 @@
 					<small ng-show="form.age.$error.required" class="help-block error">Age is required.</small>
 					<small ng-show="form.age.$error.min || form.age.$error.ngMin" class="help-block error">Age should be more than 0.</small>
 					<small ng-show="form.age.$error.max" class="help-block error">Unfortunately 199 years is our current system limit. Please contact Laws of Nature in case of questions.</small>
+					<small ng-show="forms.form.age.$error.number && !forms.form.age.$error.ngMin" class="help-block error">Age should be a number.</small>
 				</div>
 			</div>
 			<div class="form-group">

@@ -7,7 +7,7 @@ managerDirectives.directive('customModal', function($parse) {
 		replace: true, // Replace with the template below
 		transclude: true, // We want to insert custom content inside the directive
 		scope: {
-			header: '@',
+			header: '=',
 			okText: '@',
 			cancelText: '@',
 			show: '=',

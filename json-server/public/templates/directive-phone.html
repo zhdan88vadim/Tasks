@@ -5,6 +5,7 @@
 	ng-required="true"
 	ng-pattern="/\d{3}[\s.-]\d{3}[\s.-]\d{4}$/"
 	name="{{elName}}"
+	placeholder="999-999-9999"
 	class="form-control"></input>
 	<div ng-show="formSubmitted">
 		<small ng-show="requiredError" class="help-block">Phone is required.</small>
