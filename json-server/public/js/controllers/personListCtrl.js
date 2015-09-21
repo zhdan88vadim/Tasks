@@ -76,7 +76,7 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 		$scope.forms.form.$setUntouched();
 		$scope.forms.form.$setPristine();
 		
-		$scope.model.editPerson = person;
+		$scope.model.editPerson = angular.copy(person);
 		
 		$scope.model.dialog.header = person.firstName + ' ' + person.lastName;
 		$scope.model.personHomePhone = $filter('phoneNumber')(person.phoneNumber, { type: 'home' });
