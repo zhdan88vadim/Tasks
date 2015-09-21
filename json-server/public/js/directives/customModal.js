@@ -16,7 +16,8 @@ managerDirectives.directive('customModal', function($parse) {
 			oncancel: '&',
 			okDisabled: '='
 		},
-		template: $('#dialog-template').html(),
+		//template: $('#dialog-template').html(),
+		templateUrl: 'dialog-template.html',
 		link: function(scope, element, attrs, ctrl, transclude) {
 
 			scope.modalDialog = {};

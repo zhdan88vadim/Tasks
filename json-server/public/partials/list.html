@@ -65,29 +65,13 @@
 <!-- forms.form.$pristine -->
 
 
-<!-- <confirm-dialog
-onsubmit="deletePerson()"
-header="Delete Person"
-show="showDeleteDialog"
-ok-text="Delete"
-cancel-text="Cancel"
-oncancel="test()">
-	<span>
-		Are you sure you want to remove 
-		{{ model.firstName + lastName }}
-		 from the list?
-	</span>
-</confirm-dialog> -->
-
-
-
 <!-- If you use the this attr then it will attempt to perform a form submit -->
 <!-- onsubmit="personAddUpdate() -->
 
 <custom-modal
 onaccept="personAddUpdate()"
 ok-disabled="forms.form.$pristine"
-header="some custom string or <b>HTML</b> header" 
+header="model.dialog.header" 
 show="showModal"
 ok-text="Submit"
 cancel-text="Close window" 

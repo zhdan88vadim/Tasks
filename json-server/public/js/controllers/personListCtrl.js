@@ -4,9 +4,9 @@
 /* Controller - PersonListCtrl */
 
 managerControllers.controller('PersonListCtrl', 
-	['$scope', '$q', '$location', '$userService', '$filter', 'alertsService', 'ModalService', '$Constants', personListCtrl]);
+	['$scope', '$q', '$location', '$userService', '$filter', 'alertsService', 'ModalService', '$Constants', '$interpolate', personListCtrl]);
 
-function personListCtrl ($scope, $q, $location, $userService, $filter, alertsService, ModalService, $Constants) {
+function personListCtrl ($scope, $q, $location, $userService, $filter, alertsService, ModalService, $Constants, $interpolate) {
 	
 	function loadUsers() {
 		$userService.getUsers().success(function(data) {
@@ -94,8 +94,17 @@ function personListCtrl ($scope, $q, $location, $userService, $filter, alertsSer
 		}).then(function(modal) {
 
 			modal.scope.model = {};
-			modal.scope.model.firstName = person.firstName;
-			modal.scope.model.lastName = person.lastName;
+			modal.scope.model.okText = 'Delete';
+			modal.scope.model.cancelText = 'Cancel';
+			modal.scope.model.header = 'Delete Person';
+			modal.scope.model.body = 'Are you sure you want to remove <strong>' 
+			+ person.firstName + ' ' + person.lastName + '</strong> from the list?';
+
+
+			// modal.scope.model.firstName = person.firstName;
+			// modal.scope.model.lastName = person.lastName;
+			// var bodyStatement = 'Are you sure you want to remove <strong>{{ model.firstName }} {{ model.lastName }}</strong> from the list?';
+			// modal.scope.model.body = $interpolate(bodyStatement)(modal.scope);
 
 			modal.element.modal();
 
