@@ -5,11 +5,16 @@ var userManager = angular.module('personManager',
 	['ngRoute', 'managerControllers', 'managerServices', 
 	'managerFilters', 'managerDirectives', 'ngSanitize', 'modalService', 'ui.alert']);
 
-userManager.config(['$routeProvider', '$locationProvider',
-	function($routeProvider, $locationProvider) {
+userManager.config(['$routeProvider', '$locationProvider', '$httpProvider',
+	function($routeProvider, $locationProvider, $httpProvider) {
 
 		// Routing dont work with this code..
 		//$locationProvider.html5Mode(true);
+
+		$httpProvider.interceptors.push('sessionInjector');
+		$httpProvider.interceptors.push('httpInterceptor');
+		
+		//$httpProvider.interceptors.push('timestampMarker');
 
 		$routeProvider
 		.when('/list', {
