@@ -5,3 +5,8 @@
 /task7/DataServer.Web/DataServer.DatabaseAccess/obj
 /task7/DataServer.Web/DataServer.Web/Content/UploadedFiles
 /angular/jasmin_test/app/bower_components
+/angular(person-manager)/DataServer.DatabaseAccess/bin
+/angular(person-manager)/DataServer.DatabaseAccess/obj
+/angular(person-manager)/DataServer.Web/bin
+/angular(person-manager)/DataServer.Web/obj
+/json-server/public/bower_components

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>Тренинг по HTML и CSS</title>
+	<meta name="description" content="тренинг по html и css">
+	<meta name="keyword" content="html, css, training">
+	<meta name="autor" content="Alexey Volosevich">
+</head>
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li><a href="#">На главную</a></li>
+				<li><a href="#">Статьи</a></li>
+				<li><a href="#">Уроки</a></li>
+				<li><a href="#">Об авторе</a></li>
+			</ul>
+		</nav>
+		<!-- Тег <nav> задает навигацию по сайту. Если на странице несколько блоков ссылок, то в <nav> обычно помещают приоритетные ссылки -->
+	</header>
+
+	<!-- Валидатор просит наличие заголовка в section и article -->
+
+	<section>
+		<h2>Тренинг по HTML и CSS</h2>
+		<article>
+			<div>
+				Толстой Л. Н.
+				<q cite="http://www.wisdoms.ru/60.html">Знание - орудие, а не цель.</q>
+			</div>
+			<!-- div - универсальный тег -->
+			<h3>
+				Сегодня,
+				<time datatime="2015-08-28T 16:05">28 авгута</time>
+				<!-- datatime - текст помечается как дата и (или) время -->
+				стартовал тренинг по 
+				<b>
+					<abbr title="HyperText Markup Language">
+						HTML
+					</abbr>
+					 и
+					 <abbr title="Cascading Style Sheets">
+					 	CSS
+					 </abbr>
+					<!-- abbr - cокращения -->
+				</b>.
+			</h3>
+			<!-- b - привлечение внимания (ключевые слова) -->
+			<br>
+			<strong>
+				Цель тренинга – систематизация знаний по указанным технологиям.
+			</strong>
+			<!-- strong -  важность текста -->
+			<br>
+			<p>
+				Сейчас тренинг проходит в тестовом режиме, поэтому массовый набор на тренинг не объявлялся. В случае положительных отзывов данный тренинг будет проводится на регулярной основе.
+			</p>
+			<p>
+				Уже сейчас вы можете в комментариях оставлять заявки на участие, а также свои пожелания по программе тренинга 
+				<small>
+				(первая версия программы добавлена к данному сообщению)
+				</small>.
+				<!-- small - оговорки, уточнения -->
+			</p>
+		</article>
+
+		<article>
+			<h3>Программа тренинга</h3>
+			<ol>
+				<li>
+					<span>Обзор тренинга, рекомендуемая литература</span>
+					<ul type="square">
+						<li>
+							HTML – общая характеристика, версии HTML
+						</li>
+						<li>
+							Инструменты редактирования HTML, валидация HTML-документа
+						</li>
+						<li>Синтаксис HTML - общие понятия</li>
+						<li>Спецсимволы в HTML-документе</li>
+						<li>Сравнение HTML и XML. XHTML</li>
+						<li>Общие атрибуты элементов - категории, описание, назначение.</li>
+						<li>Атрибуты, описывающие события</li>
+						<li>Базовая структура HTML-документа, "HTML5 Boilerplate"</li>
+					</ul>
+				</li>
+				<li>
+					<span>Структрные элементы страницы в HTML5</span>
+					<ul type="square">
+						<li>Форматирование текста (абзацы, разрывы, заголовки, шрифты)</li>
+						<li>Списки</li>
+						<li>Таблицы</li>
+						<li>Изображения</li>
+						<li>Ссылки и якоря</li>
+						<li>Общие атрибуты элементов - категории, описание, назначение.</li>
+						<li>Атрибуты, описывающие события</li>
+						<li>Базовая структура HTML-документа, "HTML5 Boilerplate"</li>
+					</ul>
+				</li>
+				<li>
+					<span>HTML-формы</span>
+					<ul type="square">
+						<li>Элемент input, его разновидности</li>
+						<li>Элемент textarea</li>
+						<li>Списки выбора (элемент select)</li>
+						<li>Кнопка button</li>
+						<li>Новые элементы форм в HTML5 - описание, достоинства, проблемы</li>
+						<li>Общие атрибуты элементов - категории, описание, назначение.</li>
+						<li>Группировка элементов в форме</li>
+					</ul>
+				</li>
+			</ol>
+		</article>
+
+		<article>
+			<h3>Если коротко, то Вы начнете разбираться в этом :)</h3>
+				<pre style="tab-size: 4;">
+					&lt;table class="vertical-navbox"style="background:#F9F9F9;clear:right;float:right;"&gt;
+						&lt;tbody&gt;
+							&lt;tr style="background:gainsboro;"&gt;
+								&lt;th&gt;
+									&lt;span class="noprint plainlinksneverexpand" 
+										style="white-space:nowrap;float:left;"&gt;&nbsp;
+										&lt;a href="/wiki:HTML" title="Просмотр этого шаблона"&gt;
+											&lt;img alt="Просмотр этого шаблона" width="14" 
+												height="14" data-file-height="512"&gt;
+										&lt;/a&gt;&nbsp;
+									&lt;/span&gt;
+									&lt;a href="/wiki/HTML" title="HTML"&gt;HTML
+									&lt;/a&gt;
+								&lt;/th&gt;
+							&lt;/tr&gt;
+							&lt;tr&gt;
+								&lt;td&gt;
+				</pre>
+		</article>
+	</section>
+
+	<footer>
+		<address>
+			<div class="address">
+				Место проведения: aудитория 407
+			</div>
+			<div class="author">
+				Автор: <a href="mailto:alex@alex.com">Alexey Volosevich</a>
+			</div>
+			<div class="phone">
+				Телефон: <a href="tel:+375296757890">+375296757890</a>
+			</div>
+			<!-- Используется DIV, а не BR чтобы можно было менять отображение элемента из CSS не влезая в верстку, и классы чтобы отобразить иконку письма и телефона.-->
+		</address>
+	</footer>
+
+	</body>
+	</html>
