@@ -1,3 +1,4 @@
-/bower_components
+/dist
+/src
 /node_modules
-/content
+/bower_components
